@@ -13,7 +13,7 @@ namespace SiteMapGeneratorTool.WebCrawler
     /// <summary>
     /// Main crawler class
     /// </summary>
-    class Crawler
+    public class Crawler
     {
         // Constants
         private const string FRAGMENT = "#";
