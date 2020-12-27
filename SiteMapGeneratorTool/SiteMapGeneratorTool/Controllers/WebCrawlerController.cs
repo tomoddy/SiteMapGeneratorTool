@@ -13,7 +13,8 @@ namespace SiteMapGeneratorTool.Controllers
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Start();
             crawler.Stop();
-            return crawler.GetSitemapXml();
+            crawler.GetSitemapXml();
+            return crawler.GetGraphXml();
         }
     }
 }

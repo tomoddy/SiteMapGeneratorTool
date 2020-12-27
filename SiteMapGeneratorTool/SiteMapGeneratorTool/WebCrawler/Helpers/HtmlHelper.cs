@@ -75,7 +75,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         /// </summary>
         /// <param name="url">Webpage url</param>
         /// <returns>Last modified DateTime</returns>
-        private DateTime? GetLastModified(Uri url)
+        private static DateTime? GetLastModified(Uri url)
         {
             try
             {

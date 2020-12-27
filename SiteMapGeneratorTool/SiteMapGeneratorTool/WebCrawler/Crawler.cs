@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using static SiteMapGeneratorTool.WebCrawler.Objects.Graph;
 
 namespace SiteMapGeneratorTool.WebCrawler
 {
@@ -100,13 +101,23 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Generates sitemap Xml
+        /// Generates sitemap xml
         /// </summary>
         /// <returns>Xml string</returns>
         public string GetSitemapXml()
         {
             Sitemap sitemap = SitemapHelper.GenerateSitemap(Webpages);
             return SitemapHelper.GenerateXml(sitemap);
+        }
+
+        /// <summary>
+        /// Generates graph xml
+        /// </summary>
+        /// <returns>Xml string</returns>
+        public string GetGraphXml()
+        {
+            DirectedGraph directedGraph = GraphHelper.GenerateGraph(Webpages);
+            return GraphHelper.GenerateXml(directedGraph);
         }
 
         /// <summary>
