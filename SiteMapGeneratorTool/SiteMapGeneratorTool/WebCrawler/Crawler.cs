@@ -23,6 +23,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         // Variables
         private readonly HtmlHelper HtmlHelper;
         private readonly RobotsHelper RobotsHelper;
+        private readonly SitemapHelper SitemapHelper;
         private readonly Stopwatch Stopwatch;
 
         // Properties
@@ -46,6 +47,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         {
             HtmlHelper = new HtmlHelper();
             RobotsHelper = new RobotsHelper();
+            SitemapHelper = new SitemapHelper();
             Stopwatch = new Stopwatch();
 
             Domain = new Uri(domain);
@@ -95,6 +97,16 @@ namespace SiteMapGeneratorTool.WebCrawler
 
             // Return results
             return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// Generates sitemap Xml
+        /// </summary>
+        /// <returns>Xml string</returns>
+        public string GetSitemapXml()
+        {
+            Sitemap sitemap = SitemapHelper.GenerateSitemap(Webpages);
+            return SitemapHelper.GenerateXml(sitemap);
         }
 
         /// <summary>
