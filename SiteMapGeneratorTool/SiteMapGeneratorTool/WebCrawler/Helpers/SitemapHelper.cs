@@ -33,7 +33,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         /// </summary>
         /// <param name="webpages">List of webpages</param>
         /// <returns>Sitemap object</returns>
-        public Sitemap GenerateSitemap(List<Webpage> webpages)
+        public static Sitemap GenerateSitemap(List<Webpage> webpages)
         {
             // Create return object and sort webpages by url
             Sitemap retVal = new Sitemap();
