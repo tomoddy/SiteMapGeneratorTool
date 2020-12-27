@@ -5,14 +5,15 @@ namespace SiteMapGeneratorTool.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CrawlerController : ControllerBase
+    public class WebCrawlerController : ControllerBase
     {
         [HttpGet("start")]
         public string Start(string url, bool files, bool robots)
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Start();
-            return crawler.Stop();
+            crawler.Stop();
+            return crawler.GetSitemapXml();
         }
     }
 }
