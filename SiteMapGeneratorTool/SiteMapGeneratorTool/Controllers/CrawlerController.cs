@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMapGeneratorTool.WebCrawler;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -9,7 +10,9 @@ namespace SiteMapGeneratorTool.Controllers
         [HttpGet("start")]
         public string Start(string url)
         {
-            return "Crawling " + url;
+            Crawler crawler = new Crawler(url);
+            crawler.Start();
+            return crawler.Stop();
         }
     }
 }
