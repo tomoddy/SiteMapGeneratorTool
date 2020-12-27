@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "/DGwq3M5rJEZ8wuXmmxAQaI2vKXzlT0o8o78hK01Sw3A/3jxUUAy6oedBsZnBICzCdfxPVG5A2em1X0lmKVPSw==",
+  "dgSpecHash": "FubgTZ74JRNrSFWKhzPWJ6PbjLVwcMFVBIiSl6icPKuArkkfU8xLtNuBzR1j0uF8F1s6wOjarCpOmKZYlv95cw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Tom\\Google Drive (sc18tjo@leeds.ac.uk)\\Year 3\\C3931 Individual Project\\6. Code\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Tom\\.nuget\\packages\\htmlagilitypack\\1.11.29\\htmlagilitypack.1.11.29.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
