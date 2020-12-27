@@ -8,9 +8,9 @@ namespace SiteMapGeneratorTool.Controllers
     public class CrawlerController : ControllerBase
     {
         [HttpGet("start")]
-        public string Start(string url)
+        public string Start(string url, bool files, bool robots)
         {
-            Crawler crawler = new Crawler(url);
+            Crawler crawler = new Crawler(url, files, robots);
             crawler.Start();
             return crawler.Stop();
         }

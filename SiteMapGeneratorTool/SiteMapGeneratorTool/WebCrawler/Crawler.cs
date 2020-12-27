@@ -22,6 +22,7 @@ namespace SiteMapGeneratorTool.WebCrawler
 
         // Variables
         private readonly HtmlHelper HtmlHelper;
+        private readonly RobotsHelper RobotsHelper;
         private readonly Stopwatch Stopwatch;
 
         // Properties
@@ -35,19 +36,41 @@ namespace SiteMapGeneratorTool.WebCrawler
         public List<Webpage> Webpages { get; private set; }
         private List<Uri> Visited { get; set; }
         private bool Files { get; set; }
+        private bool Robots { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="domain">Base domain of website</param>
-        public Crawler(string domain)
+        public Crawler(string domain, bool files, bool robots)
         {
             HtmlHelper = new HtmlHelper();
+            RobotsHelper = new RobotsHelper();
             Stopwatch = new Stopwatch();
 
             Domain = new Uri(domain);
             Webpages = new List<Webpage>();
             Visited = new List<Uri>();
+
+            Files = files;
+            Robots = robots;
+        }
+
+        /// <summary>
+        /// Configures web crawler before it is started
+        /// </summary>
+        /// <param name="robots">Boolean for if robots exclusion is enabled</param>
+        public void Configure()
+        {
+            if (Robots)
+            {
+                // Get exclusions from file
+                RobotsHelper.FindExclusions(Domain);
+
+                // Add exclusions to visited list
+                foreach (string exclusion in RobotsHelper.GetExlusions())
+                    Visited.Add(new Uri(Domain, exclusion));
+            }
         }
 
         /// <summary>
