@@ -11,10 +11,9 @@ namespace SiteMapGeneratorTool.Controllers
         public string Start(string url, bool files, bool robots)
         {
             Crawler crawler = new Crawler(url, files, robots);
+            crawler.Configure();
             crawler.Start();
-            crawler.Stop();
-            crawler.GetSitemapXml();
-            return crawler.GetGraphXml();
+            return crawler.Stop() + "\n\n" + crawler.GetSitemapXml() + "\n\n" + crawler.GetGraphXml();
         }
     }
 }
