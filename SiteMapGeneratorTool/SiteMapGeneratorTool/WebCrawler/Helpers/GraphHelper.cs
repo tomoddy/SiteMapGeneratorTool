@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
     /// <summary>
     /// Graph helper
     /// </summary>
-    class GraphHelper
+    public class GraphHelper
     {
         /// <summary>
         /// Generates directed graph from webpages

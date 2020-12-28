@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace SiteMapGeneratorTool.WebCrawler.Objects
@@ -18,6 +19,11 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
             {
                 Nodes = nodes;
                 Links = links;
+            }
+
+            public override string ToString()
+            {
+                return JsonConvert.SerializeObject(this);
             }
         }
 

@@ -23,6 +23,20 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 		}
 
 		/// <summary>
+		/// Constructor for testing
+		/// </summary>
+		/// <param name="url">Url of webpage</param>
+		/// <param name="links">List of links</param>
+		public Webpage(string url, List<string> links)
+        {
+			Url = new Uri(url);
+			Links = new List<Uri>();
+
+			foreach (string link in links)
+				Links.Add(new Uri(link));
+        }
+
+		/// <summary>
 		/// Adds list of links to Links
 		/// </summary>
 		/// <param name="newLinks">List of links</param>
