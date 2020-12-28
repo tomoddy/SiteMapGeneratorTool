@@ -1,11 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "okheEynq756NfukOFp0DBGqHrKn/8zmaIO1k5NwBErrDbaDVyrv5n20v1hCiiubgXr9VMDwaKbZ9/hRd3j3i8g==",
+  "dgSpecHash": "urhqZ3QgdSd0/SoL79eVLKH4KqdWWNimadeCW0Xq5upj2nVO5i0RTfGaodcg4HoWU+Z0MygKjoazvJpzu55PGA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Tom\\Google Drive (sc18tjo@leeds.ac.uk)\\Year 3\\C3931 Individual Project\\6. Code\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tom\\.nuget\\packages\\htmlagilitypack\\1.11.29\\htmlagilitypack.1.11.29.nupkg.sha512",
-    "C:\\Users\\Tom\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\3.1.1\\microsoft.aspnetcore.mvc.razor.extensions.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\3.1.1\\microsoft.aspnetcore.mvc.razor.runtimecompilation.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.1\\microsoft.aspnetcore.razor.language.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\2.9.3\\microsoft.codeanalysis.analyzers.2.9.3.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.common\\3.3.0\\microsoft.codeanalysis.common.3.3.0.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.csharp\\3.3.0\\microsoft.codeanalysis.csharp.3.3.0.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.razor\\3.1.1\\microsoft.codeanalysis.razor.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.extensions.dependencymodel\\3.1.1\\microsoft.extensions.dependencymodel.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.text.encoding.codepages\\4.5.1\\system.text.encoding.codepages.4.5.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.text.json\\4.7.0\\system.text.json.4.7.0.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.3\\system.threading.tasks.extensions.4.5.3.nupkg.sha512"
   ],
   "logs": []
 }
