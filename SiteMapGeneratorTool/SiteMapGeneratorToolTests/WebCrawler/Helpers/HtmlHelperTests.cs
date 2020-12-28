@@ -10,7 +10,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
     {
         private const string URL = "http://www.sitemaps.org";
 
-        HtmlHelper HtmlHelper;
+        private HtmlHelper HtmlHelper;
 
         [SetUp]
         public void HtmlHelperSetUp()

@@ -7,7 +7,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
     /// <summary>
     /// Robots helper
     /// </summary>
-    class RobotsHelper
+    public class RobotsHelper
     {
         // Constants
         private const string ROBOTS = "robots.txt";
