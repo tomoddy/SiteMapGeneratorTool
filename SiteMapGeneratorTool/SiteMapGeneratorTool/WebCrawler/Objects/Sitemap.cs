@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace SiteMapGeneratorTool.WebCrawler.Objects
@@ -12,5 +13,10 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
         private readonly List<Url> ReadUrls = new List<Url>();
         [XmlElement("url")]
         public List<Url> Urls { get { return ReadUrls; } }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

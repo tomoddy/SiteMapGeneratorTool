@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
     /// <summary>
     /// Xml helper
     /// </summary>
-    class SitemapHelper
+    public class SitemapHelper
     {
         // Variables
         private readonly XmlSerializerNamespaces Namespaces;

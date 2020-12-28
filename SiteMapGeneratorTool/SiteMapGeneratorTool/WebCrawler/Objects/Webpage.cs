@@ -26,10 +26,12 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 		/// Constructor for testing
 		/// </summary>
 		/// <param name="url">Url of webpage</param>
+		/// <param name="lastModified">Last modified date</param>
 		/// <param name="links">List of links</param>
-		public Webpage(string url, List<string> links)
+		public Webpage(string url, DateTime? lastModified, List<string> links)
         {
 			Url = new Uri(url);
+			LastModified = lastModified;
 			Links = new List<Uri>();
 
 			foreach (string link in links)

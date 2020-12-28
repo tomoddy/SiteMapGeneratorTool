@@ -20,9 +20,9 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         {
             List<Webpage> webpages = new List<Webpage>
             {
-                new Webpage(LINK + EXT_1, new List<string> { LINK + EXT_2, LINK + EXT_3 }),
-                new Webpage(LINK + EXT_2, new List<string> { LINK + EXT_3, LINK + EXT_1 }),
-                new Webpage(LINK + EXT_3, new List<string> { LINK + EXT_1, LINK + EXT_2 }),
+                new Webpage(LINK + EXT_1, null, new List<string> { LINK + EXT_2, LINK + EXT_3 }),
+                new Webpage(LINK + EXT_2, null, new List<string> { LINK + EXT_3, LINK + EXT_1 }),
+                new Webpage(LINK + EXT_3, null, new List<string> { LINK + EXT_1, LINK + EXT_2 })
             };
 
             DirectedGraph expected = new DirectedGraph
