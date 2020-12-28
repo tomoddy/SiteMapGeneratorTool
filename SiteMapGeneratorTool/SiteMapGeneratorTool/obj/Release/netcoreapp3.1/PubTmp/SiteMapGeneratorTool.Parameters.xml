@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="SiteMapGeneratorTool" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Tom\\Google\ Drive\ \(sc18tjo@leeds\.ac\.uk\)\\Year\ 3\\C3931\ Individual\ Project\\6\.\ Code\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
+  </parameter>
+</parameters>
