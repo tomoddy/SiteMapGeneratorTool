@@ -7,13 +7,32 @@ namespace SiteMapGeneratorTool.Controllers
     [ApiController]
     public class WebCrawlerController : ControllerBase
     {
-        [HttpGet("start")]
-        public string Start(string url, bool files, bool robots)
+        [HttpGet("")]
+        public string Index(string url, bool files, bool robots)
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
             crawler.Start();
-            return crawler.Stop() + "\n\n" + crawler.GetSitemapXml() + "\n\n" + crawler.GetGraphXml();
+            return crawler.Stop();
+        }
+
+        [HttpGet("sitemap")]
+        public string Sitemap(string url, bool files, bool robots)
+        {
+            Crawler crawler = new Crawler(url, files, robots);
+            crawler.Configure();
+            crawler.Start();
+            crawler.Stop();
+            return crawler.GetSitemapXml();
+        }
+
+        [HttpGet("graph")]
+        public string Graph(string url, bool files, bool robots)
+        {
+            Crawler crawler = new Crawler(url, files, robots);
+            crawler.Configure();
+            crawler.Start();
+            return crawler.GetGraphXml();
         }
     }
 }
