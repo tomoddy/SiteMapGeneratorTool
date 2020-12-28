@@ -24,6 +24,8 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         public SitemapHelper()
         {
             Namespaces = new XmlSerializerNamespaces();
+            Namespaces.Add("", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
             Serlializer = new XmlSerializer(typeof(Sitemap));
             StringWriter = new StringWriter();
         }
@@ -52,7 +54,6 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         /// <returns>Xml string</returns>
         public string GenerateXml(Sitemap sitemap)
         {
-            Namespaces.Add("", "http://www.sitemaps.org/schemas/sitemap/0.9");
             Serlializer.Serialize(StringWriter, sitemap, Namespaces);
             return StringWriter.ToString();
         }

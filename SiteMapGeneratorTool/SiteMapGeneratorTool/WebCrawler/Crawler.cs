@@ -25,6 +25,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private readonly HtmlHelper HtmlHelper;
         private readonly RobotsHelper RobotsHelper;
         private readonly SitemapHelper SitemapHelper;
+
         private readonly Stopwatch Stopwatch;
 
         // Properties
@@ -108,6 +109,13 @@ namespace SiteMapGeneratorTool.WebCrawler
         {
             Sitemap sitemap = SitemapHelper.GenerateSitemap(Webpages);
             return SitemapHelper.GenerateXml(sitemap);
+        }
+
+        public FileInfo GetSitemapXmlFile()
+        {
+            FileInfo fileInfo = new FileInfo("sitemap-" + DateTime.Now.Ticks + ".xml");
+            File.WriteAllText(fileInfo.FullName, GetSitemapXml());
+            return fileInfo;
         }
 
         /// <summary>
