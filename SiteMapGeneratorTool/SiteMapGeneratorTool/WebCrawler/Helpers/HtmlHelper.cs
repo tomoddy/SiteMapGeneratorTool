@@ -3,14 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace SiteMapGeneratorTool.WebCrawler.Helpers
 {
     /// <summary>
     /// Html helper
     /// </summary>
-    class HtmlHelper
+    public class HtmlHelper
     {
         // Constants
         const string TAGS = "a,area,link";
@@ -75,7 +74,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         /// </summary>
         /// <param name="url">Webpage url</param>
         /// <returns>Last modified DateTime</returns>
-        private static DateTime? GetLastModified(Uri url)
+        public static DateTime? GetLastModified(Uri url)
         {
             try
             {
