@@ -29,8 +29,8 @@ namespace SiteMapGeneratorTool.Controllers
             return crawler.GetSitemapXml();
         }
 
-        [HttpGet("sitemap/file")]
-        public async Task<IActionResult> SitemapFile(string url, bool files, bool robots)
+        [HttpGet("sitemap/download")]
+        public async Task<IActionResult> SitemapDownload(string url, bool files, bool robots)
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
