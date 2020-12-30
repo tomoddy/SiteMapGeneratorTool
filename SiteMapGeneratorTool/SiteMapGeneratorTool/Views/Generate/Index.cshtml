@@ -3,9 +3,37 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Generate</h1>
-    <p><a href="api/webcrawler?url=http://www.sitemaps.org&files=false&robots=true">Basic Crawl</a> (No Files, Respecting Robots)</p>
-    <p><a href="api/webcrawler/graph?url=http://www.sitemaps.org&files=false&robots=true">Generate Graph</a> (No Files, Respecting Robots)</p>
-    <p><a href="api/webcrawler/sitemap?url=http://www.sitemaps.org&files=false&robots=true">Generate Sitemap</a> (No Files, Respecting Robots)</p>
-    <p><a href="api/webcrawler/sitemap/download?url=http://www.sitemaps.org&files=false&robots=true">Download Sitemap File</a> (No Files, Respecting Robots)</p>
+    <h2 class="display-4">Request</h2>
+    <form method="get" action="api/webcrawler/request">
+        URL : <input type="text" name="url" /><br />
+        Files : <input type="checkbox" name="files" value="true" /><br />
+        <input type="hidden" name="files" value="false" />
+        Robots : <input type="checkbox" name="robots" value="true" /><br />
+        <input type="hidden" name="robots" value="false" />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+<br />
+<div class="text-center">
+    <h2 class="display-4">Information File</h2>
+    <form method="get" action="api/webcrawler/response/information">
+        GUID : <input type="text" name="guid" /><br />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+<br />
+<div class="text-center">
+    <h2 class="display-4">Sitemap File</h2>
+    <form method="get" action="api/webcrawler/response/sitemap">
+        GUID : <input type="text" name="guid" /><br />
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+<br />
+<div class="text-center">
+    <h2 class="display-4">Graph File</h2>
+    <form method="get" action="api/webcrawler/response/graph">
+        GUID : <input type="text" name="guid" /><br />
+        <input type="submit" value="Submit" />
+    </form>
 </div>
