@@ -356,3 +356,6 @@ C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\refs\System.Security.Permissions.dll
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\refs\System.Security.Principal.Windows.dll
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\refs\System.Windows.Extensions.dll
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\appsettings-git.Development.json
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\appsettings-git.json
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\obj\Debug\netcoreapp3.1\Razor\Views\Generate\Results.cshtml.g.cs
