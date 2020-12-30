@@ -115,6 +115,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.5.7.3, )"
+            },
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.11.29, )"

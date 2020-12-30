@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "CJMnPW5NN//gk7bGAF+yINO6xe6Z0R4mKzkYzaClbZEFRnfuCFaOn42tgFx8CAJj9XciHln5jbddKz0f7AzsrQ==",
+  "dgSpecHash": "2EEmkQ7uWjVnQO0GALte1y5VxUQaPPz0WbzAu0rR8Bi0WIAg5C2cLw/WmwF1UJichAvFHKdmGMpCv0MedDDlKg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Tom\\Google Drive (sc18tjo@leeds.ac.uk)\\Year 3\\C3931 Individual Project\\6. Code\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorToolTests\\SiteMapGeneratorToolTests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Tom\\.nuget\\packages\\awssdk.core\\3.5.1.56\\awssdk.core.3.5.1.56.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\awssdk.s3\\3.5.7.3\\awssdk.s3.3.5.7.3.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\htmlagilitypack\\1.11.29\\htmlagilitypack.1.11.29.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\3.1.1\\microsoft.aspnetcore.mvc.razor.extensions.3.1.1.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\3.1.1\\microsoft.aspnetcore.mvc.razor.runtimecompilation.3.1.1.nupkg.sha512",
