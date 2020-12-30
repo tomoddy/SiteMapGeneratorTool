@@ -27,7 +27,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         [HttpGet("")]
         public bool Check(string guid)
         {
-            return S3Helper.FileExists(guid);
+            return S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"));
         }
 
         [HttpGet("information")]
@@ -50,25 +50,12 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
         private ActionResult DownloadFile(string guid, string name)
         {
-            // Create file information and get response from s3
             FileInfo fileInfo = new FileInfo(name);
-            Task<GetObjectResponse> response = S3Helper.DownloadResponse($"{guid}/{fileInfo.Name}");
-
-            // Write response to memory
-            MemoryStream memoryStream = new MemoryStream();
-            try
-            {
-                using Stream responseStream = response.Result.ResponseStream;
-                responseStream.CopyTo(memoryStream);
-            }
-            catch(AggregateException)
-            {
+            MemoryStream memoryStream = S3Helper.DownloadResponse(guid, fileInfo);
+            if (memoryStream is null)
                 return new JsonResult(INVALID_RESPONSE);
-            }
-
-            // Set memory position and download file
-            memoryStream.Position = 0;
-            return File(memoryStream, FileHelper.GetMimeTypes()[fileInfo.Extension], fileInfo.Name);
+            else
+                return File(memoryStream, FileHelper.GetMimeTypes()[fileInfo.Extension], fileInfo.Name);
         }
     }
 }
