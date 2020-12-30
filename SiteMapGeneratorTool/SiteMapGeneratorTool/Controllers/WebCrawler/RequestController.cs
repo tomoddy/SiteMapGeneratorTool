@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SiteMapGeneratorTool.S3;
+using Microsoft.Extensions.Configuration;
 
 namespace SiteMapGeneratorTool.Controllers.WebCrawler
 {
@@ -7,6 +7,13 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
     [ApiController]
     public class RequestController : ControllerBase
     {
+        private readonly IConfiguration Configuration;
+
+        public RequestController(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         [HttpGet("")]
         public string Index(string url, bool files, bool robots)
         {
@@ -14,7 +21,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             Request request = new Request(url, files, robots);
 
             // Return request information
-            return "Success";
+            return request.ToString();
         }
     }
 }
