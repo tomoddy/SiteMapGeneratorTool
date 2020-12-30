@@ -36,15 +36,15 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         /// <param name="files">Include files</param>
         /// <param name="robots">Respect robots</param>
         /// <returns>GUID</returns>
-        [HttpPost("")]
+        [HttpGet("")]
         public string Index(string url, bool files, bool robots)
         {
             // Create request
-            Logger.LogInformation($"Creating request");
+            Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation = new WebCrawlerRequestModel(url, files, robots);
 
             // Run web crawler
-            Logger.LogInformation($"Crawling {url}");
+            Logger.LogInformation($"Crawling {requestInformation}");
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
             crawler.Run();
