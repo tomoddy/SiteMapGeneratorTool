@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.WebCrawler;
 using SiteMapGeneratorTool.WebCrawler.Helpers;
 using System.IO;
