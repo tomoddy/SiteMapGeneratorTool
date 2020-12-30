@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SiteMapGeneratorTool.Helpers;
+using SiteMapGeneratorTool.Models;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -22,7 +23,11 @@ namespace SiteMapGeneratorTool.Controllers
 
         public IActionResult Results(string guid)
         {
-            ViewBag.Message = S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"));
+            ViewBag.Message = new ResultsModel
+            {
+                Guid = guid,
+                Complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"))
+            };
             return View();
         }
     }

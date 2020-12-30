@@ -2,9 +2,12 @@
     ViewData["Title"] = "Generate Response";
 }
 
-@if (ViewBag.Message)
+@if (ViewBag.Message.Complete)
 {
-    <h1>Request complete.</h1>
+    <h1>Request complete for @ViewBag.Message.Guid</h1><br />
+    <a href="../api/webcrawler/response/information?guid=@ViewBag.Message.Guid">information.json</a><br />
+    <a href="../api/webcrawler/response/sitemap?guid=@ViewBag.Message.Guid">sitemap.xml</a><br />
+    <a href="../api/webcrawler/response/graph?guid=@ViewBag.Message.Guid">graph.dgml</a>
 }
 else
 {
