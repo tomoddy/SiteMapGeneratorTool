@@ -41,6 +41,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         [HttpGet("")]
         public bool Check(string guid)
         {
+            Logger.LogInformation("Checking if file exists");
             return S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"));
         }
 
