@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SiteMapGeneratorTool.WebCrawler.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
@@ -15,6 +16,7 @@ namespace SiteMapGeneratorTool.WebCrawler
     /// </summary>
     public class Crawler
     {
+
         // Constants
         private const string FRAGMENT = "#";
         private const string TEL = "tel:";
@@ -25,7 +27,6 @@ namespace SiteMapGeneratorTool.WebCrawler
         private readonly HtmlHelper HtmlHelper;
         private readonly RobotsHelper RobotsHelper;
         private readonly SitemapHelper SitemapHelper;
-
         private readonly Stopwatch Stopwatch;
 
         // Properties
