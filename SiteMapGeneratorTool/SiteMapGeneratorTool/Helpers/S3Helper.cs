@@ -63,7 +63,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// <param name="guid"></param>
         /// <param name="fileInfo"></param>
         /// <returns></returns>
-        private MemoryStream DownloadResponse(string guid, FileInfo fileInfo)
+        public MemoryStream DownloadResponse(string guid, FileInfo fileInfo)
         {
             // Create file information and get response from s3
             Task<GetObjectResponse> response = Client.GetObjectAsync(BucketName, $"{guid}/{fileInfo.Name}");
