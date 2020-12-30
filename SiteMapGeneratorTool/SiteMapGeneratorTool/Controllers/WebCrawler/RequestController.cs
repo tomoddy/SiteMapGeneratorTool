@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SiteMapGeneratorTool.Models;
 
 namespace SiteMapGeneratorTool.Controllers.WebCrawler
 {
@@ -18,7 +19,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public string Index(string url, bool files, bool robots)
         {
             // Create request
-            Request request = new Request(url, files, robots);
+            WebCrawlerRequestModel request = new WebCrawlerRequestModel(url, files, robots);
 
             // Return request information
             return request.ToString();

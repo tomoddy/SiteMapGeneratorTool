@@ -1,16 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace SiteMapGeneratorTool.Controllers.WebCrawler
+namespace SiteMapGeneratorTool.Models
 {
-    public class Request
+    public class WebCrawlerRequestModel
     {
         public Guid Guid { get; set; }
         public Uri Url { get; set; }
         public bool Files { get; set; }
         public bool Robots { get; set; }
 
-        public Request(string url, bool files, bool robots)
+        public WebCrawlerRequestModel(string url, bool files, bool robots)
         {
             Guid = Guid.NewGuid();
             Url = new Uri(url);
