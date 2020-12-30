@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
-using SiteMapGeneratorTool.S3;
 using SiteMapGeneratorTool.WebCrawler;
 
 namespace SiteMapGeneratorTool.Controllers.WebCrawler
@@ -29,10 +29,10 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             crawler.Run();
 
             // Upload information
-            S3Client s3Client = new S3Client(Configuration.GetValue<string>("S3:AccessKey"), Configuration.GetValue<string>("S3:SecretKey"), Configuration.GetValue<string>("S3:BucketName"));
-            s3Client.UploadFile(requestInformation.Guid.ToString(), "information.json", crawler.GetInformationJson());
-            s3Client.UploadFile(requestInformation.Guid.ToString(), "sitemap.xml", crawler.GetSitemapXml());
-            s3Client.UploadFile(requestInformation.Guid.ToString(), "graph.dgml", crawler.GetGraphXml());
+            S3Helper s3helper = new S3Helper(Configuration.GetValue<string>("S3:Credentials:AccessKey"), Configuration.GetValue<string>("S3:Credentials:SecretKey"), Configuration.GetValue<string>("S3:Credentials:BucketName"));
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Information"), crawler.GetInformationJson());
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Sitemap"), crawler.GetSitemapXml());
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Graph"), crawler.GetGraphXml());
 
             // Return request information
             return requestInformation.ToString();

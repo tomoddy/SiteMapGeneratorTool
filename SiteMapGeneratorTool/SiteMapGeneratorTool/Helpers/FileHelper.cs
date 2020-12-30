@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SiteMapGeneratorTool.WebCrawler.Helpers
+namespace SiteMapGeneratorTool.Helpers
 {
     public class FileHelper
     {
