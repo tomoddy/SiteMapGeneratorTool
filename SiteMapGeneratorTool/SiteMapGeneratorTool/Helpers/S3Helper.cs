@@ -58,11 +58,11 @@ namespace SiteMapGeneratorTool.Helpers
         }
 
         /// <summary>
-        /// 
+        /// Converts s3 file to memory stream
         /// </summary>
-        /// <param name="guid"></param>
-        /// <param name="fileInfo"></param>
-        /// <returns></returns>
+        /// <param name="guid">GUID of file</param>
+        /// <param name="name">Name of file</param>
+        /// <returns>Memory stream</returns>
         public MemoryStream DownloadResponse(string guid, FileInfo fileInfo)
         {
             // Create file information and get response from s3

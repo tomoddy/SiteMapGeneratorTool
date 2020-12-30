@@ -417,3 +417,5 @@ C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorToolTests\obj\Debug\netcoreapp3.1\SiteMapGeneratorToolTests.dll
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorToolTests\obj\Debug\netcoreapp3.1\SiteMapGeneratorToolTests.pdb
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorToolTests\obj\Debug\netcoreapp3.1\SiteMapGeneratorToolTests.genruntimeconfig.cache
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorToolTests\bin\Debug\netcoreapp3.1\AWSSDK.Core.dll
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorToolTests\bin\Debug\netcoreapp3.1\AWSSDK.S3.dll
