@@ -37,7 +37,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         /// <param name="robots">Respect robots</param>
         /// <returns>GUID</returns>
         [HttpGet("")]
-        public string Index(string url, bool files, bool robots)
+        public IActionResult Index(string url, bool files, bool robots)
         {
             // Create request
             Logger.LogInformation($"Creating request for {url}");
@@ -58,7 +58,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
             // Return request information
             Logger.LogInformation("Request complete");
-            return requestInformation.ToString();
+            return Redirect($"https://{HttpContext.Request.Host}/generate/results?guid={requestInformation.Guid}");
         }
     }
 }
