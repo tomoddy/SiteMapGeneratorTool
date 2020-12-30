@@ -3,6 +3,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO;
 using System.Text;
@@ -16,8 +17,7 @@ namespace SiteMapGeneratorTool.Helpers
     public class S3Helper
     {
         // Properties
-        // TODO Fix access
-        public AmazonS3Client Client { get; set; }
+        private AmazonS3Client Client { get; set; }
         private TransferUtility TransferUtility { get; set; }
         public string BucketName { get; set; }
 
@@ -34,12 +34,15 @@ namespace SiteMapGeneratorTool.Helpers
             BucketName = bucketName;
         }
 
-        public bool FileExists(string guid)
+        /// <summary>
+        /// Checks if file exists in s3 bucket
+        /// </summary>
+        /// <param name="guid">GUID of file</param>
+        /// <param name="name">Name of file</param>
+        /// <returns>True if exists, false if not</returns>
+        public bool FileExists(string guid, string name)
         {
-            
-            var _ = Client.GetObjectAsync(BucketName, guid);
-            var _2 = Client.GetObjectAsync(BucketName, "6d91fcb5-a0d2-4013-a7ca-d8b9ddaac58d");
-            return false;
+            return !(DownloadResponse(guid, new FileInfo(name)) is null);
         }
 
         /// <summary>
@@ -54,9 +57,30 @@ namespace SiteMapGeneratorTool.Helpers
             TransferUtility.Upload(memoryStream, BucketName, $"{guid}/{name}");
         }
 
-        public Task<GetObjectResponse> DownloadResponse(string name)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <param name="fileInfo"></param>
+        /// <returns></returns>
+        private MemoryStream DownloadResponse(string guid, FileInfo fileInfo)
         {
-            return Client.GetObjectAsync(BucketName, name);
+            // Create file information and get response from s3
+            Task<GetObjectResponse> response = Client.GetObjectAsync(BucketName, $"{guid}/{fileInfo.Name}");
+
+            // Write response to memory
+            MemoryStream retVal = new MemoryStream();
+            try
+            {
+                using Stream responseStream = response.Result.ResponseStream;
+                responseStream.CopyTo(retVal);
+                retVal.Position = 0;
+                return retVal;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
         }
     }
 }
