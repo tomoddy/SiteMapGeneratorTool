@@ -10,6 +10,8 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         [HttpGet("")]
         public string Index(string guid)
         {
+
+
             return new Guid(guid).ToString();
         }
     }

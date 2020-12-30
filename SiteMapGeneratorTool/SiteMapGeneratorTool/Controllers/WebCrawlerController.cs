@@ -15,8 +15,8 @@ namespace SiteMapGeneratorTool.Controllers
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
-            crawler.Start();
-            return crawler.Stop();
+            crawler.Run();
+            return crawler.GetInformationJson();
         }
 
         [HttpGet("sitemap")]
@@ -24,8 +24,8 @@ namespace SiteMapGeneratorTool.Controllers
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
-            crawler.Start();
-            crawler.Stop();
+            crawler.Run();
+            crawler.GetInformationJson();
             return crawler.GetSitemapXml();
         }
 
@@ -34,8 +34,8 @@ namespace SiteMapGeneratorTool.Controllers
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
-            crawler.Start();
-            crawler.Stop();
+            crawler.Run();
+            crawler.GetInformationJson();
 
             FileInfo fileInfo = crawler.GetSitemapXmlFile();
             if (fileInfo.Exists)
@@ -55,7 +55,7 @@ namespace SiteMapGeneratorTool.Controllers
         {
             Crawler crawler = new Crawler(url, files, robots);
             crawler.Configure();
-            crawler.Start();
+            crawler.Run();
             return crawler.GetGraphXml();
         }
     }

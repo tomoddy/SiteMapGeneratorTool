@@ -36,8 +36,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private int Pages { get; set; }
         [JsonProperty]
         private double Elapsed { get; set; }
-        [JsonProperty]
-        public List<Webpage> Webpages { get; private set; }
+        private List<Webpage> Webpages { get; set; }
         private List<Uri> Visited { get; set; }
         private bool Files { get; set; }
         private bool Robots { get; set; }
@@ -81,7 +80,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// <summary>
         /// Starts web crawler
         /// </summary>
-        public void Start()
+        public void Run()
         {
             Stopwatch.Start();
             Visit(Domain);
@@ -92,7 +91,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// Stops web crawler
         /// </summary>
         /// <returns>Json string</returns>
-        public string Stop()
+        public string GetInformationJson()
         {
             // Record results
             Pages = Visited.Count;
@@ -112,6 +111,10 @@ namespace SiteMapGeneratorTool.WebCrawler
             return SitemapHelper.GenerateXml(sitemap);
         }
 
+        /// <summary>
+        /// Generate sitemap xml file
+        /// </summary>
+        /// <returns>File info for file</returns>
         public FileInfo GetSitemapXmlFile()
         {
             FileInfo fileInfo = new FileInfo("sitemap-" + DateTime.Now.Ticks + ".xml");
