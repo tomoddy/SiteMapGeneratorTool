@@ -1,9 +1,12 @@
 ﻿using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -13,7 +16,9 @@ namespace SiteMapGeneratorTool.Helpers
     public class S3Helper
     {
         // Properties
-        private TransferUtility Client { get; set; }
+        // TODO Fix access
+        public AmazonS3Client Client { get; set; }
+        private TransferUtility TransferUtility { get; set; }
         public string BucketName { get; set; }
 
         /// <summary>
@@ -24,8 +29,17 @@ namespace SiteMapGeneratorTool.Helpers
         /// <param name="bucketName">S3 bucket name</param>
         public S3Helper(string accessKey, string privateKey, string bucketName)
         {
-            Client = new TransferUtility(new AmazonS3Client(new BasicAWSCredentials(accessKey, privateKey), RegionEndpoint.EUWest2));
+            Client = new AmazonS3Client(new BasicAWSCredentials(accessKey, privateKey), RegionEndpoint.EUWest2);
+            TransferUtility = new TransferUtility(Client);
             BucketName = bucketName;
+        }
+
+        public bool FileExists(string guid)
+        {
+            
+            var _ = Client.GetObjectAsync(BucketName, guid);
+            var _2 = Client.GetObjectAsync(BucketName, "6d91fcb5-a0d2-4013-a7ca-d8b9ddaac58d");
+            return false;
         }
 
         /// <summary>
@@ -37,19 +51,12 @@ namespace SiteMapGeneratorTool.Helpers
         public void UploadFile(string guid, string name, string data)
         {
             using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-            Client.Upload(memoryStream, BucketName, $"{guid}/{name}");
+            TransferUtility.Upload(memoryStream, BucketName, $"{guid}/{name}");
         }
 
-        /// <summary>
-        /// Downloadsa file from S3 to local storage
-        /// </summary>
-        /// <param name="guid">GUID of file</param>
-        /// <param name="name">Name of file</param>
-        public FileInfo DownloadFile(string guid, string name)
+        public Task<GetObjectResponse> DownloadResponse(string name)
         {
-            string retVal = $"LocalS3Files/{guid}/{name}";
-            Client.Download(retVal, BucketName, $"{guid}/{name}");
-            return new FileInfo(retVal);
+            return Client.GetObjectAsync(BucketName, name);
         }
     }
 }
