@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
-using SiteMapGeneratorTool.WebCrawler;
 
 namespace SiteMapGeneratorTool.Controllers.WebCrawler
 {
@@ -13,11 +12,12 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
     [Route("api/webcrawler/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase
-    { 
+    {
         // Variables
         private readonly IConfiguration Configuration;
         private readonly FirebaseHelper FirebaseHelper;
         private readonly ILogger Logger;
+        private readonly SQSHelper SQSHelper;
 
         /// <summary>
         /// Default constructor
@@ -29,6 +29,12 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             Configuration = configuration;
             FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
             Logger = logger;
+            SQSHelper = new SQSHelper(
+                Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
+                Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
+                Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
+                Configuration.GetValue<string>("AWS:SQS:QueueName"),
+                Configuration.GetValue<string>("AWS:Credentials:AccountId"));
         }
 
         /// <summary>
@@ -45,22 +51,13 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation = new WebCrawlerRequestModel(url, files, robots);
 
+            // Submit message
+            Logger.LogInformation("Submitting request to SQS");
+            SQSHelper.SendMessage(requestInformation);
+
             // Add user to database
             Logger.LogInformation($"Adding user {requestInformation.Guid} to database");
             FirebaseHelper.AddUser(requestInformation.Guid.ToString());
-
-            // Run web crawler
-            Logger.LogInformation($"Crawling {requestInformation}");
-            Crawler crawler = new Crawler(url, files, robots);
-            crawler.Configure();
-            crawler.Run();
-
-            // Upload information
-            Logger.LogInformation("Uploading files");
-            S3Helper s3helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
 
             // Return request information
             Logger.LogInformation("Request complete");

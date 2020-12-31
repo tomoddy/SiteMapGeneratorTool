@@ -18,7 +18,7 @@ namespace SiteMapGeneratorTool
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .ConfigureServices(services => services.AddHostedService<BackgroundWorker>()
+                .ConfigureServices(services => services.AddHostedService<WebCrawlerWorker>()
             );
     }
 }
