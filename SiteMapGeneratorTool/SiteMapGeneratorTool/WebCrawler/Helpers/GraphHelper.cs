@@ -46,7 +46,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
 
             // Write xml to string and return
             using StringWriter stringWriter = new StringWriter();
-            using (var xmlWriter = XmlWriter.Create(stringWriter, settings))
+            using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, settings))
                 serializer.Serialize(xmlWriter, graph);
             return stringWriter.ToString();
         }
