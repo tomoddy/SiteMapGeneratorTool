@@ -1,6 +1,6 @@
 # SiteMapGeneratorTool
 
-## Sprint1
+## Sprint 1
 Basic project setup and development of prototype webcrawler in console application.
 
 ## Sprint 2
