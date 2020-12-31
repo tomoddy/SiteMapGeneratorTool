@@ -365,3 +365,5 @@ C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\Microsoft.Threading.Tasks.dll
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\System.Net.Http.Extensions.dll
 C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\System.Net.Http.Primitives.dll
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\AWSSDK.Extensions.NETCore.Setup.dll
+C:\Users\Tom\Google Drive (sc18tjo@leeds.ac.uk)\Year 3\C3931 Individual Project\6. Code\SiteMapGeneratorTool\SiteMapGeneratorTool\SiteMapGeneratorTool\bin\Debug\netcoreapp3.1\AWSSDK.SQS.dll

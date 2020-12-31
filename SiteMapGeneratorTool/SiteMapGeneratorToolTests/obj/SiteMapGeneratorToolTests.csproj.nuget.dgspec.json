@@ -115,9 +115,17 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AWSSDK.Extensions.NETCore.Setup": {
+              "target": "Package",
+              "version": "[3.3.101, )"
+            },
             "AWSSDK.S3": {
               "target": "Package",
               "version": "[3.5.7.3, )"
+            },
+            "AWSSDK.SQS": {
+              "target": "Package",
+              "version": "[3.5.1.6, )"
             },
             "FireSharp": {
               "target": "Package",

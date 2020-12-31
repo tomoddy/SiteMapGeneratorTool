@@ -24,7 +24,9 @@
     ".NETCoreApp,Version=v3.1": {
       "SiteMapGeneratorTool/1.0.0": {
         "dependencies": {
+          "AWSSDK.Extensions.NETCore.Setup": "3.3.101",
           "AWSSDK.S3": "3.5.7.3",
+          "AWSSDK.SQS": "3.5.1.6",
           "FireSharp": "2.0.4",
           "HtmlAgilityPack": "1.11.29",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "3.1.1",
@@ -109,7 +111,7 @@
           "Microsoft.CSharp": "4.0.0.0",
           "Microsoft.Extensions.Caching.Abstractions": "3.1.0.0",
           "Microsoft.Extensions.Caching.Memory": "3.1.0.0",
-          "Microsoft.Extensions.Configuration.Abstractions": "3.1.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions.Reference": "3.1.0.0",
           "Microsoft.Extensions.Configuration.Binder": "3.1.0.0",
           "Microsoft.Extensions.Configuration.CommandLine": "3.1.0.0",
           "Microsoft.Extensions.Configuration": "3.1.0.0",
@@ -120,7 +122,7 @@
           "Microsoft.Extensions.Configuration.KeyPerFile": "3.1.0.0",
           "Microsoft.Extensions.Configuration.UserSecrets": "3.1.0.0",
           "Microsoft.Extensions.Configuration.Xml": "3.1.0.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions.Reference": "3.1.0.0",
           "Microsoft.Extensions.DependencyInjection": "3.1.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "3.1.0.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "3.1.0.0",
@@ -136,7 +138,7 @@
           "Microsoft.Extensions.Identity.Stores": "3.1.0.0",
           "Microsoft.Extensions.Localization.Abstractions": "3.1.0.0",
           "Microsoft.Extensions.Localization": "3.1.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "3.1.0.0",
+          "Microsoft.Extensions.Logging.Abstractions.Reference": "3.1.0.0",
           "Microsoft.Extensions.Logging.Configuration": "3.1.0.0",
           "Microsoft.Extensions.Logging.Console": "3.1.0.0",
           "Microsoft.Extensions.Logging.Debug": "3.1.0.0",
@@ -148,7 +150,7 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "3.1.0.0",
           "Microsoft.Extensions.Options.DataAnnotations": "3.1.0.0",
           "Microsoft.Extensions.Options": "3.1.0.0",
-          "Microsoft.Extensions.Primitives": "3.1.0.0",
+          "Microsoft.Extensions.Primitives.Reference": "3.1.0.0",
           "Microsoft.Extensions.WebEncoders": "3.1.0.0",
           "Microsoft.JSInterop": "3.1.0.0",
           "Microsoft.Net.Http.Headers": "3.1.0.0",
@@ -319,20 +321,37 @@
           "SiteMapGeneratorTool.dll": {}
         }
       },
-      "AWSSDK.Core/3.5.1.56": {
+      "AWSSDK.Core/3.5.1.57": {
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {
             "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.5.1.56"
+            "fileVersion": "3.5.1.57"
           }
         },
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.Core.dll": {}
         }
       },
+      "AWSSDK.Extensions.NETCore.Setup/3.3.101": {
+        "dependencies": {
+          "AWSSDK.Core": "3.5.1.57",
+          "Microsoft.Extensions.Configuration.Abstractions": "2.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/AWSSDK.Extensions.NETCore.Setup.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.3.100.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/AWSSDK.Extensions.NETCore.Setup.dll": {}
+        }
+      },
       "AWSSDK.S3/3.5.7.3": {
         "dependencies": {
-          "AWSSDK.Core": "3.5.1.56"
+          "AWSSDK.Core": "3.5.1.57"
         },
         "runtime": {
           "lib/netcoreapp3.1/AWSSDK.S3.dll": {
@@ -342,6 +361,20 @@
         },
         "compile": {
           "lib/netcoreapp3.1/AWSSDK.S3.dll": {}
+        }
+      },
+      "AWSSDK.SQS/3.5.1.6": {
+        "dependencies": {
+          "AWSSDK.Core": "3.5.1.57"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.SQS.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.5.1.6"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.1/AWSSDK.SQS.dll": {}
         }
       },
       "FireSharp/2.0.4": {
@@ -576,6 +609,12 @@
           "lib/netstandard2.0/Microsoft.CodeAnalysis.Razor.dll": {}
         }
       },
+      "Microsoft.Extensions.Configuration.Abstractions/2.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "2.0.0"
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {},
       "Microsoft.Extensions.DependencyModel/3.1.1": {
         "dependencies": {
           "System.Text.Json": "4.7.0"
@@ -588,6 +627,12 @@
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions/2.0.0": {},
+      "Microsoft.Extensions.Primitives/2.0.0": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
         }
       },
       "Microsoft.Net.Http/2.2.28": {
@@ -1118,7 +1163,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.Configuration.Abstractions/3.1.0.0": {
+      "Microsoft.Extensions.Configuration.Abstractions.Reference/3.1.0.0": {
         "compile": {
           "Microsoft.Extensions.Configuration.Abstractions.dll": {}
         },
@@ -1184,7 +1229,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions.Reference/3.1.0.0": {
         "compile": {
           "Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         },
@@ -1280,7 +1325,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.Logging.Abstractions/3.1.0.0": {
+      "Microsoft.Extensions.Logging.Abstractions.Reference/3.1.0.0": {
         "compile": {
           "Microsoft.Extensions.Logging.Abstractions.dll": {}
         },
@@ -1352,7 +1397,7 @@
         },
         "compileOnly": true
       },
-      "Microsoft.Extensions.Primitives/3.1.0.0": {
+      "Microsoft.Extensions.Primitives.Reference/3.1.0.0": {
         "compile": {
           "Microsoft.Extensions.Primitives.dll": {}
         },
@@ -2338,12 +2383,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.5.1.56": {
+    "AWSSDK.Core/3.5.1.57": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-xelIjB/sHrSDtQdy9rZFaP3iXBu8youwV7OXHXJshM0P0e/LT7uz8h9vNzhz81IdPL6unFID1kyq322wYAsppQ==",
-      "path": "awssdk.core/3.5.1.56",
-      "hashPath": "awssdk.core.3.5.1.56.nupkg.sha512"
+      "sha512": "sha512-ejhDvIToxqfxaNAVGiSJUtXemmoDzNZ9mVa8e9ogtqhyWrGXVY+dAOmAYwPYqxDzsdQXsuPgVwA3Y8DmhkXufA==",
+      "path": "awssdk.core/3.5.1.57",
+      "hashPath": "awssdk.core.3.5.1.57.nupkg.sha512"
+    },
+    "AWSSDK.Extensions.NETCore.Setup/3.3.101": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mbFGOX62zG4A/0bIhKy+I3NmNBAwSCKClFl+Y6RzuRj+0cQDBbmH33JMe8x3SWizhoyl+ATm2ldOR1phIFTGvA==",
+      "path": "awssdk.extensions.netcore.setup/3.3.101",
+      "hashPath": "awssdk.extensions.netcore.setup.3.3.101.nupkg.sha512"
     },
     "AWSSDK.S3/3.5.7.3": {
       "type": "package",
@@ -2351,6 +2403,13 @@
       "sha512": "sha512-3Y6hYemnaOooe4LEsCqeeOyjVOcBeJ5V69AWaz95RxNM5b+a7FH+zWxh0vNugWF4ODVrH/6an4Jy54sEcAXVdQ==",
       "path": "awssdk.s3/3.5.7.3",
       "hashPath": "awssdk.s3.3.5.7.3.nupkg.sha512"
+    },
+    "AWSSDK.SQS/3.5.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6qASyHOJoA1v0rizPYc7rYOrY5GqzjG8y3bvZLnvQsNsO/uG0BWFh/qwmR0OapqZi6b9gAkn/w5ngMJhiruByg==",
+      "path": "awssdk.sqs/3.5.1.6",
+      "hashPath": "awssdk.sqs.3.5.1.6.nupkg.sha512"
     },
     "FireSharp/2.0.4": {
       "type": "package",
@@ -2436,12 +2495,40 @@
       "path": "microsoft.codeanalysis.razor/3.1.1",
       "hashPath": "microsoft.codeanalysis.razor.3.1.1.nupkg.sha512"
     },
+    "Microsoft.Extensions.Configuration.Abstractions/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rHFrXqMIvQNq51H8RYTO4IWmDOYh8NUzyqGlh0xHWTP6XYnKk7Ryinys2uDs+Vu88b3AMlM3gBBSs78m6OQpYQ==",
+      "path": "microsoft.extensions.configuration.abstractions/2.0.0",
+      "hashPath": "microsoft.extensions.configuration.abstractions.2.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eUdJ0Q/GfVyUJc0Jal5L1QZLceL78pvEM9wEKcHeI24KorqMDoVX+gWsMGLulQMfOwsUaPtkpQM2pFERTzSfSg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/2.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.2.0.0.nupkg.sha512"
+    },
     "Microsoft.Extensions.DependencyModel/3.1.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-JjNCPx5Jbk7WTjaFI9Kyq+ZRVwMJ7Ee2AmgLKraQUS8AuciAO+euxHAhlhv0AWCsVyibyRr+5USxjyc7U6VsMA==",
       "path": "microsoft.extensions.dependencymodel/3.1.1",
       "hashPath": "microsoft.extensions.dependencymodel.3.1.1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6ZCllUYGFukkymSTx3Yr0G/ajRxoNJp7/FqSxSB4fGISST54ifBhgu4Nc0ItGi3i6DqwuNd8SUyObmiC++AO2Q==",
+      "path": "microsoft.extensions.logging.abstractions/2.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Primitives/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ukg53qNlqTrK38WA30b5qhw0GD7y3jdI9PHHASjdKyTcBHTevFM2o23tyk3pWCgAV27Bbkm+CPQ2zUe1ZOuYSA==",
+      "path": "microsoft.extensions.primitives/2.0.0",
+      "hashPath": "microsoft.extensions.primitives.2.0.0.nupkg.sha512"
     },
     "Microsoft.Net.Http/2.2.28": {
       "type": "package",
@@ -2913,7 +3000,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Configuration.Abstractions/3.1.0.0": {
+    "Microsoft.Extensions.Configuration.Abstractions.Reference/3.1.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -2968,7 +3055,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/3.1.0.0": {
+    "Microsoft.Extensions.DependencyInjection.Abstractions.Reference/3.1.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -3048,7 +3135,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Logging.Abstractions/3.1.0.0": {
+    "Microsoft.Extensions.Logging.Abstractions.Reference/3.1.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""
@@ -3108,7 +3195,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Primitives/3.1.0.0": {
+    "Microsoft.Extensions.Primitives.Reference/3.1.0.0": {
       "type": "referenceassembly",
       "serviceable": false,
       "sha512": ""

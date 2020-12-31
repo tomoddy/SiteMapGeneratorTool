@@ -15,7 +15,7 @@ namespace SiteMapGeneratorTool.Controllers
         {
             Configuration = configuration;
             FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
-            S3Helper = new S3Helper(Configuration.GetValue<string>("S3:Credentials:AccessKey"), Configuration.GetValue<string>("S3:Credentials:SecretKey"), Configuration.GetValue<string>("S3:Credentials:BucketName"));
+            S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
         }
 
         public IActionResult Index()
@@ -29,7 +29,7 @@ namespace SiteMapGeneratorTool.Controllers
             {
                 Guid = guid,
                 Valid = FirebaseHelper.UserExists(guid),
-                Complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"))
+                Complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"))
             };
             return View();
         }
