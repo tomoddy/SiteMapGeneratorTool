@@ -16,6 +16,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
     { 
         // Variables
         private readonly IConfiguration Configuration;
+        private readonly FirebaseHelper FirebaseHelper;
         private readonly ILogger Logger;
 
         /// <summary>
@@ -26,6 +27,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public RequestController(IConfiguration configuration, ILogger<RequestController> logger)
         {
             Configuration = configuration;
+            FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
             Logger = logger;
         }
 
@@ -42,6 +44,10 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             // Create request
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation = new WebCrawlerRequestModel(url, files, robots);
+
+            // Add user to database
+            Logger.LogInformation($"Adding user {requestInformation.Guid} to database");
+            FirebaseHelper.AddUser(requestInformation.Guid.ToString());
 
             // Run web crawler
             Logger.LogInformation($"Crawling {requestInformation}");
