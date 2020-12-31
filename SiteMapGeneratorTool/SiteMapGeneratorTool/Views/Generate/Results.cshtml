@@ -2,26 +2,51 @@
     ViewData["Title"] = "Generate Response";
 }
 
-@if (ViewBag.Message.Valid)
-{
-    if (ViewBag.Message.Complete)
-    {
-        <h1>Request complete for @ViewBag.Message.Information.Domain</h1>
-        <p>@ViewBag.Message.Information.Pages pages found in @ViewBag.Message.Information.Elapsed seconds.</p>
-        <a href="../api/webcrawler/response/information?guid=@ViewBag.Message.Guid">information.json</a>
-        <br />
-        <a href="../api/webcrawler/response/sitemap?guid=@ViewBag.Message.Guid">sitemap.xml</a>
-        <br />
-        <a href="../api/webcrawler/response/graph?guid=@ViewBag.Message.Guid">graph.dgml</a>
-    }
-    else
-    {
-        <meta http-equiv="refresh" content="1" />
-        <h1>Request incomplete, please come back later.</h1>
-    }
-}
-else
-{
-    <h1>Invalid GUID.</h1>
-}
+<div class="container">
+    <div class="loader">Generating site map...</div>
+</div>
 
+@section Scripts{
+    <script>
+        var guid = "@ViewBag.Message"
+    </script>
+    <script>
+        $(function () {
+            const $loader = $(".loader")
+
+            function getData() {
+                $.ajax({
+                    url: "/ajax/generate",
+                    data: {
+                        guid: guid
+                    },
+                    success: function (data, _, jQXHR) {
+                        if (jQXHR.status === 202)
+                            setTimeout(getData, 1000)
+                        else if (jQXHR.status === 200) {
+                            $loader.html(`
+                                        <h1>Request complete for ${data.information.domain}</h1>
+                                        <p>${data.information.pages} pages found in ${data.information.elapsed} seconds.</p>
+                                        <a href="../api/webcrawler/response/information?guid=${data.guid}">information.json</a>
+                                        <br />
+                                        <a href="../api/webcrawler/response/sitemap?guid=${data.guid}">sitemap.xml</a>
+                                        <br />
+                                        <a href="../api/webcrawler/response/graph?guid=${data.guid}">graph.dgml</a>
+                                            `)
+                            console.log(data)
+                        }
+                        else
+                            $loader.text("Server Error (Success)")
+                    },
+                    error: function (jQXHR) {
+                        if (jQXHR.status === 422)
+                            $loader.html(`<h1>Invalid GUID.</h1>`)
+                        else
+                            $loader.text("Server Error (Error)")
+                    }
+                })
+            }
+            getData()
+        })
+    </script>
+}
