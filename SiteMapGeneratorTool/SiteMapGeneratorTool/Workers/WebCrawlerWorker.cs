@@ -20,6 +20,7 @@ namespace SiteMapGeneratorTool.Workers
 
         // Variables
         private readonly IConfiguration Configuration;
+        private readonly EmailHelper EmailHelper;
         private readonly ILogger<WebCrawlerWorker> Logger;
         private readonly SQSHelper SQSHelper;
         private readonly S3Helper S3Helper;
@@ -32,6 +33,12 @@ namespace SiteMapGeneratorTool.Workers
         public WebCrawlerWorker(IConfiguration configuration, ILogger<WebCrawlerWorker> logger)
         {
             Configuration = configuration;
+            EmailHelper = new EmailHelper(
+                Configuration.GetValue<string>("SMTP:UserName"),
+                Configuration.GetValue<string>("SMTP:DisplayName"),
+                Configuration.GetValue<string>("SMTP:Password"),
+                Configuration.GetValue<string>("SMTP:Host"),
+                Configuration.GetValue<string>("SMTP:Port"));
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
@@ -83,6 +90,10 @@ namespace SiteMapGeneratorTool.Workers
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
+
+                    // Send email notification
+                    Logger.LogInformation($"Sending email to {request.Email}");
+                    EmailHelper.SendEmail(request.Email, request.Domain, request.Guid.ToString());
 
                     // Return completed task
                     Logger.LogInformation("Task completed");

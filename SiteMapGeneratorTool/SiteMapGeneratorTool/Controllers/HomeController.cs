@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Models;
@@ -9,12 +10,12 @@ namespace SiteMapGeneratorTool.Controllers
     public class HomeController : Controller
     {
         private readonly IConfiguration Configuration;
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> Logger;
 
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             Configuration = configuration;
-            _logger = logger;
+            Logger = logger;
         }
 
         public IActionResult Index()
