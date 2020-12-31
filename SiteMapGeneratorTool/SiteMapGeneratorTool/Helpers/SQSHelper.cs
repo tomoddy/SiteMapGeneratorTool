@@ -2,7 +2,9 @@
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json;
+using SiteMapGeneratorTool.Models;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 
@@ -13,10 +15,6 @@ namespace SiteMapGeneratorTool.Helpers
     /// </summary>
     public class SQSHelper
     {
-        // Constants
-        private const int TRIES = 100;
-        private const int REST = 500;
-
         // Variables
         private readonly AmazonSQSClient Client;
         private readonly string QueueUrl;
@@ -44,12 +42,12 @@ namespace SiteMapGeneratorTool.Helpers
         /// </summary>
         /// <param name="guid">GUID of message</param>
         /// <param name="messageBody">Object body of message</param>
-        public void SendMessage(string guid, object messageBody)
+        public void SendMessage(WebCrawlerRequestModel messageBody)
         {
             SendMessageResponse response = Client.SendMessageAsync(new SendMessageRequest
             {
-                MessageGroupId = guid,
-                MessageDeduplicationId = guid,
+                MessageGroupId = messageBody.Guid.ToString(),
+                MessageDeduplicationId = messageBody.Guid.ToString(),
                 QueueUrl = QueueUrl,
                 MessageBody = JsonConvert.SerializeObject(messageBody)
             }).Result;
@@ -62,42 +60,25 @@ namespace SiteMapGeneratorTool.Helpers
         /// Delete and retireve top message from queue
         /// </summary>
         /// <returns>Object of message body</returns>
-        public object DeleteAndReieveFirstMessage()
+        public WebCrawlerRequestModel DeleteAndReieveFirstMessage()
         {
-            Message message = GetTopMessage();
-            DeleteMessageResponse response = Client.DeleteMessageAsync(new DeleteMessageRequest
-            {
-                QueueUrl = QueueUrl,
-                ReceiptHandle = message.ReceiptHandle
-            }).Result;
-
-            if (response.HttpStatusCode == HttpStatusCode.OK)
-                return JsonConvert.DeserializeObject(message.Body);
+            List<Message> messages = Client.ReceiveMessageAsync(QueueUrl).Result.Messages;
+            if (messages.Count == 0)
+                return null;
             else
-                throw new AmazonServiceException($"Message could not be deleted : {response.HttpStatusCode}");
-        }
-
-        /// <summary>
-        /// Makes multiple attempts to get top message from queue
-        /// </summary>
-        /// <returns>Message object</returns>
-        private Message GetTopMessage()
-        {
-            int count = 0;
-            do
             {
-                try
+                Message message = messages[0];
+                DeleteMessageResponse response = Client.DeleteMessageAsync(new DeleteMessageRequest
                 {
-                    Console.WriteLine(count);
-                    return Client.ReceiveMessageAsync(QueueUrl).Result.Messages[0];
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Thread.Sleep(REST);
-                    count++;
-                }
-            } while (count < TRIES);
-            throw new Exception("No messages found");
+                    QueueUrl = QueueUrl,
+                    ReceiptHandle = message.ReceiptHandle
+                }).Result;
+
+                if (response.HttpStatusCode == HttpStatusCode.OK)
+                    return JsonConvert.DeserializeObject<WebCrawlerRequestModel>(message.Body);
+                else
+                    throw new AmazonServiceException($"Message could not be deleted : {response.HttpStatusCode}");
+            }
         }
     }
 }
