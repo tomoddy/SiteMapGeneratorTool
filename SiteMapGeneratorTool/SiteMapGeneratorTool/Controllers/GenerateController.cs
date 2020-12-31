@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
+using SiteMapGeneratorTool.WebCrawler;
+using System.IO;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -25,11 +27,14 @@ namespace SiteMapGeneratorTool.Controllers
 
         public IActionResult Results(string guid)
         {
+            bool complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"));
+
             ViewBag.Message = new ResultsModel
             {
                 Guid = guid,
                 Valid = FirebaseHelper.UserExists(guid),
-                Complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"))
+                Complete = complete,
+                Information = complete ? S3Helper.DownloadObject<Crawler>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Information"))) : null
             };
             return View();
         }

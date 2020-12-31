@@ -3,6 +3,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Text;
@@ -80,6 +81,17 @@ namespace SiteMapGeneratorTool.Helpers
             {
                 return null;
             }
+        }
+
+        public T DownloadObject<T>(string guid, FileInfo fileInfo)
+        {
+            // Create file information and get response from s3
+            Task<GetObjectResponse> response = Client.GetObjectAsync(BucketName, $"{guid}/{fileInfo.Name}");
+
+            // Convert object to output stream and return deserliased object
+            using Stream responseStream = response.Result.ResponseStream;
+            StreamReader streamReader = new StreamReader(responseStream, true);
+            return JsonConvert.DeserializeObject<T>(streamReader.ReadToEnd());
         }
     }
 }

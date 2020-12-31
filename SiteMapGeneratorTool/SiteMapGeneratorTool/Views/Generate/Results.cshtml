@@ -6,8 +6,8 @@
 {
     if (ViewBag.Message.Complete)
     {
-        <h1>Request complete for @ViewBag.Message.Guid</h1>
-        <br />
+        <h1>Request complete for @ViewBag.Message.Information.Domain</h1>
+        <p>@ViewBag.Message.Information.Pages pages found in @ViewBag.Message.Information.Elapsed seconds.</p>
         <a href="../api/webcrawler/response/information?guid=@ViewBag.Message.Guid">information.json</a>
         <br />
         <a href="../api/webcrawler/response/sitemap?guid=@ViewBag.Message.Guid">sitemap.xml</a>
