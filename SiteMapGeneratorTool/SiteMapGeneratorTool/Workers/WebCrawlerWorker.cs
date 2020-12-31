@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SiteMapGeneratorTool.Worker
+namespace SiteMapGeneratorTool.Workers
 {
     /// <summary>
     /// Worker for web crawling
@@ -88,7 +88,8 @@ namespace SiteMapGeneratorTool.Worker
                     Logger.LogInformation("Task completed");
                 }
             }
-            throw new Exception("Task cancelled");
+            Logger.LogError("Task cancelled");
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace SiteMapGeneratorTool.Worker
         /// <returns>Completed task</returns>
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            Logger.LogError("Task cancelled");
             return Task.CompletedTask;
         }
     }
