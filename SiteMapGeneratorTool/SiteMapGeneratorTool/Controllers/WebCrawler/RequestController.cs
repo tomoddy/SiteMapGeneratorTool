@@ -46,14 +46,14 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         /// <param name="robots">Respect robots</param>
         /// <returns>GUID</returns>
         [HttpGet("")]
-        public IActionResult Index(string url, bool files, bool robots)
+        public IActionResult Index(string url, string email, bool files, bool robots)
         {
             // Create request
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation;
             try
             {
-                requestInformation = new WebCrawlerRequestModel(url, files, robots);
+                requestInformation = new WebCrawlerRequestModel(HttpContext.Request.Host.Value, url, email, files, robots);
             }
             catch (UriFormatException)
             {
