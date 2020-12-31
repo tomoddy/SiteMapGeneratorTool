@@ -57,10 +57,10 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
             // Upload information
             Logger.LogInformation("Uploading files");
-            S3Helper s3helper = new S3Helper(Configuration.GetValue<string>("S3:Credentials:AccessKey"), Configuration.GetValue<string>("S3:Credentials:SecretKey"), Configuration.GetValue<string>("S3:Credentials:BucketName"));
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Information"), crawler.GetInformationJson());
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Sitemap"), crawler.GetSitemapXml());
-            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("S3:Files:Graph"), crawler.GetGraphXml());
+            S3Helper s3helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
+            s3helper.UploadFile(requestInformation.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
 
             // Return request information
             Logger.LogInformation("Request complete");

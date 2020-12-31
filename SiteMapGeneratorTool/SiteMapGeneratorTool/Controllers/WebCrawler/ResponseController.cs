@@ -30,7 +30,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         {
             Configuration = configuration;
             Logger = logger;
-            S3Helper = new S3Helper(Configuration.GetValue<string>("S3:Credentials:AccessKey"), Configuration.GetValue<string>("S3:Credentials:SecretKey"), Configuration.GetValue<string>("S3:Credentials:BucketName"));
+            S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public bool Check(string guid)
         {
             Logger.LogInformation("Checking if file exists");
-            return S3Helper.FileExists(guid, Configuration.GetValue<string>("S3:Files:Information"));
+            return S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"));
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public ActionResult Information(string guid)
         {
             Logger.LogInformation($"Returning information file for {guid}");
-            return DownloadFile(guid, Configuration.GetValue<string>("S3:Files:Information"));
+            return DownloadFile(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public ActionResult Sitemap(string guid)
         {
             Logger.LogInformation($"Returning sitemap file for {guid}");
-            return DownloadFile(guid, Configuration.GetValue<string>("S3:Files:Sitemap"));
+            return DownloadFile(guid, Configuration.GetValue<string>("AWS:S3:Files:Sitemap"));
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         public ActionResult Graph(string guid)
         {
             Logger.LogInformation($"Returning graph file for {guid}");
-            return DownloadFile(guid, Configuration.GetValue<string>("S3:Files:Graph"));
+            return DownloadFile(guid, Configuration.GetValue<string>("AWS:S3:Files:Graph"));
         }
 
         /// <summary>
