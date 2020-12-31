@@ -1,20 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "Ooywb+QMG6uojshwOeZs0okjIvtFPI1UChiUyKBtoZILwu2D5BbV5bH3S4D1mYFm375d93D6Xj6CAoIU6ehFNA==",
+  "dgSpecHash": "c7w8B3Vibe1e22QFoTBJWNLnrszs6NCcyWm+uiB7zJ9zDAnf/xBo0VOL11iCipK6Z+dp8c8n2tEEcEEdYXV9fg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Tom\\Google Drive (sc18tjo@leeds.ac.uk)\\Year 3\\C3931 Individual Project\\6. Code\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool\\SiteMapGeneratorTool.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tom\\.nuget\\packages\\awssdk.core\\3.5.1.56\\awssdk.core.3.5.1.56.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\awssdk.s3\\3.5.7.3\\awssdk.s3.3.5.7.3.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\firesharp\\2.0.4\\firesharp.2.0.4.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\htmlagilitypack\\1.11.29\\htmlagilitypack.1.11.29.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\3.1.1\\microsoft.aspnetcore.mvc.razor.extensions.3.1.1.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\3.1.1\\microsoft.aspnetcore.mvc.razor.runtimecompilation.3.1.1.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.1\\microsoft.aspnetcore.razor.language.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.bcl\\1.1.9\\microsoft.bcl.1.1.9.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.bcl.async\\1.0.168\\microsoft.bcl.async.1.0.168.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.bcl.build\\1.0.14\\microsoft.bcl.build.1.0.14.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\2.9.3\\microsoft.codeanalysis.analyzers.2.9.3.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.common\\3.3.0\\microsoft.codeanalysis.common.3.3.0.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.csharp\\3.3.0\\microsoft.codeanalysis.csharp.3.3.0.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.codeanalysis.razor\\3.1.1\\microsoft.codeanalysis.razor.3.1.1.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.extensions.dependencymodel\\3.1.1\\microsoft.extensions.dependencymodel.3.1.1.nupkg.sha512",
+    "C:\\Users\\Tom\\.nuget\\packages\\microsoft.net.http\\2.2.28\\microsoft.net.http.2.2.28.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",
@@ -25,5 +30,46 @@
     "C:\\Users\\Tom\\.nuget\\packages\\system.text.json\\4.7.0\\system.text.json.4.7.0.nupkg.sha512",
     "C:\\Users\\Tom\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.3\\system.threading.tasks.extensions.4.5.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'FireSharp 2.0.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "FireSharp",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Bcl 1.1.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Bcl",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Bcl.Async 1.0.168' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Bcl.Async",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Net.Http 2.2.28' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Net.Http",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

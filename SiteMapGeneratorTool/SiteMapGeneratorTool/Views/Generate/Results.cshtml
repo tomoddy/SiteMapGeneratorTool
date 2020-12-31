@@ -2,14 +2,25 @@
     ViewData["Title"] = "Generate Response";
 }
 
-@if (ViewBag.Message.Complete)
+@if (ViewBag.Message.Valid)
 {
-    <h1>Request complete for @ViewBag.Message.Guid</h1><br />
-    <a href="../api/webcrawler/response/information?guid=@ViewBag.Message.Guid">information.json</a><br />
-    <a href="../api/webcrawler/response/sitemap?guid=@ViewBag.Message.Guid">sitemap.xml</a><br />
-    <a href="../api/webcrawler/response/graph?guid=@ViewBag.Message.Guid">graph.dgml</a>
+    if (ViewBag.Message.Complete)
+    {
+        <h1>Request complete for @ViewBag.Message.Guid</h1>
+        <br />
+        <a href="../api/webcrawler/response/information?guid=@ViewBag.Message.Guid">information.json</a>
+        <br />
+        <a href="../api/webcrawler/response/sitemap?guid=@ViewBag.Message.Guid">sitemap.xml</a>
+        <br />
+        <a href="../api/webcrawler/response/graph?guid=@ViewBag.Message.Guid">graph.dgml</a>
+    }
+    else
+    {
+        <h1>Request incomplete, please come back later.</h1>
+    }
 }
 else
 {
-    <h1>Request incomplete, please come back later.</h1>
+    <h1>Invalid GUID.</h1>
 }
+
