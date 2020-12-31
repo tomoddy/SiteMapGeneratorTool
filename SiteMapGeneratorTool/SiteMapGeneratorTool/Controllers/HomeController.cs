@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
-using System;
 using System.Diagnostics;
 
 namespace SiteMapGeneratorTool.Controllers

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
+using System;
 
 namespace SiteMapGeneratorTool.Controllers.WebCrawler
 {
@@ -49,7 +50,16 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         {
             // Create request
             Logger.LogInformation($"Creating request for {url}");
-            WebCrawlerRequestModel requestInformation = new WebCrawlerRequestModel(url, files, robots);
+            WebCrawlerRequestModel requestInformation;
+            try
+            {
+                requestInformation = new WebCrawlerRequestModel(url, files, robots);
+            }
+            catch (UriFormatException)
+            {
+                // TODO Make  unique error page
+                return Redirect($"https://{HttpContext.Request.Host}/generate/results?guid=invalid");
+            }
 
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
