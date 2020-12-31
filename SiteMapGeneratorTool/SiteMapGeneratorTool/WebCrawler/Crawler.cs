@@ -31,11 +31,11 @@ namespace SiteMapGeneratorTool.WebCrawler
 
         // Properties
         [JsonProperty]
-        private Uri Domain { get; set; }
+        public Uri Domain { get; private set; }
         [JsonProperty]
-        private int Pages { get; set; }
+        public int Pages { get; private set; }
         [JsonProperty]
-        private double Elapsed { get; set; }
+        public double Elapsed { get; private set; }
         private List<Webpage> Webpages { get; set; }
         private List<Uri> Visited { get; set; }
         private bool Files { get; set; }
