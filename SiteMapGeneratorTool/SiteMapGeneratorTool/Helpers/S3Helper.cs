@@ -83,6 +83,13 @@ namespace SiteMapGeneratorTool.Helpers
             }
         }
 
+        /// <summary>
+        /// Download contents of S3 file to object
+        /// </summary>
+        /// <typeparam name="T">Type of object</typeparam>
+        /// <param name="guid">GUID of file</param>
+        /// <param name="fileInfo">File information</param>
+        /// <returns>Object of given type</returns>
         public T DownloadObject<T>(string guid, FileInfo fileInfo)
         {
             // Create file information and get response from s3

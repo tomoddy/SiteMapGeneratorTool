@@ -33,6 +33,8 @@ namespace SiteMapGeneratorTool.WebCrawler
         [JsonProperty]
         public Uri Domain { get; private set; }
         [JsonProperty]
+        public DateTime Completion { get; set; }
+        [JsonProperty]
         public int Pages { get; private set; }
         [JsonProperty]
         public double Elapsed { get; private set; }
@@ -94,6 +96,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         public string GetInformationJson()
         {
             // Record results
+            Completion = DateTime.Now;
             Pages = Visited.Count;
             Elapsed = Stopwatch.ElapsedMilliseconds / 1000.0;
 
