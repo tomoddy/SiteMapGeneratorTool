@@ -71,7 +71,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
             // Return request information
             Logger.LogInformation("Request complete");
-            return Redirect($"https://{HttpContext.Request.Host}/generate/results?guid={requestInformation.Guid}");
+            return Redirect($"https://{HttpContext.Request.Host}/results?guid={requestInformation.Guid}");
         }
     }
 }
