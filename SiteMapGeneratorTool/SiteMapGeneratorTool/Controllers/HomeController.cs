@@ -7,22 +7,39 @@ using System.Diagnostics;
 
 namespace SiteMapGeneratorTool.Controllers
 {
+    /// <summary>
+    /// Home controoler
+    /// </summary>
     public class HomeController : Controller
     {
+        // Variables
         private readonly IConfiguration Configuration;
         private readonly ILogger<HomeController> Logger;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="configuration">Injected dependancy</param>
+        /// <param name="logger">Injected dependancy</param>
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             Configuration = configuration;
             Logger = logger;
         }
 
+        /// <summary>
+        /// Index
+        /// </summary>
+        /// <returns>View</returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Error
+        /// </summary>
+        /// <returns>View</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

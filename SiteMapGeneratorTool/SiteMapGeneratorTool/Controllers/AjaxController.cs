@@ -7,12 +7,20 @@ using System.IO;
 
 namespace SiteMapGeneratorTool.Controllers
 {
+    /// <summary>
+    /// Ajax controoler
+    /// </summary>
     public class AjaxController : Controller
     {
+        // Variables
         private readonly IConfiguration Configuration;
         private readonly FirebaseHelper FirebaseHelper;
         private readonly S3Helper S3Helper;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="configuration">Injected dependency</param>
         public AjaxController(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,8 +28,14 @@ namespace SiteMapGeneratorTool.Controllers
             S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
         }
 
-        public IActionResult Generate(string guid)
+        /// <summary>
+        /// Performs background refresh for results
+        /// </summary>
+        /// <param name="guid">Guid of request</param>
+        /// <returns>Result or status code</returns>
+        public IActionResult Results(string guid)
         {
+            // Create variables
             bool complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"));
             ResultsModel model = new ResultsModel
             {
@@ -31,6 +45,7 @@ namespace SiteMapGeneratorTool.Controllers
                 Information = complete ? S3Helper.DownloadObject<Crawler>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Information"))) : null
             };
 
+            // Return results if completed otherwise processing http code
             if (complete)
                 return new JsonResult(model);
             else
