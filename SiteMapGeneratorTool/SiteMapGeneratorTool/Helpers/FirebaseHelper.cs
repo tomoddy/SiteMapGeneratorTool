@@ -1,7 +1,10 @@
 ﻿using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -34,7 +37,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// Adds user to database as valid
         /// </summary>
         /// <param name="guid">GUID of user</param>
-        public void AddUser(string guid)
+        public void Add(string guid)
         {
             if (Client.Set($"users/{guid}", VALID).ResultAs<string>() != VALID)
                 throw new Exception($"Could not create Firebase entry for {guid}");
@@ -45,7 +48,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// </summary>
         /// <param name="guid">GUID of user</param>
         /// <returns>True if exists, otherwise false</returns>
-        public bool UserExists(string guid)
+        public bool Exists(string guid)
         {
             string result = Client.Get($"users/{guid}").ResultAs<string>();
             if (result is null)
@@ -54,6 +57,15 @@ namespace SiteMapGeneratorTool.Helpers
                 return true;
             else
                 throw new Exception($"Firebase entry for {guid} does not contain valid information");
+        }
+
+        /// <summary>
+        /// Gets all guids stored in database
+        /// </summary>
+        /// <returns>List of guids</returns>
+        public List<string> GetAll()
+        {            
+            return Client.Get("users").ResultAs<JObject>().Properties().Select(p => p.Name).ToList();
         }
     }
 }

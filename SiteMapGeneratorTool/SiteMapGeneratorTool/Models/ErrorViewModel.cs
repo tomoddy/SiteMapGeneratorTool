@@ -1,8 +1,6 @@
-using System;
-
 namespace SiteMapGeneratorTool.Models
 {
-	public class ErrorViewModel
+    public class ErrorViewModel
 	{
 		public string RequestId { get; set; }
 
