@@ -67,7 +67,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
             // Add user to database
             Logger.LogInformation($"Adding user {requestInformation.Guid} to database");
-            FirebaseHelper.AddUser(requestInformation.Guid.ToString());
+            FirebaseHelper.Add(requestInformation.Guid.ToString());
 
             // Return request information
             Logger.LogInformation("Request complete");

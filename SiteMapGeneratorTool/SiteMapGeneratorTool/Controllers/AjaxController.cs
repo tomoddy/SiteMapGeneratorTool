@@ -26,7 +26,7 @@ namespace SiteMapGeneratorTool.Controllers
             ResultsModel model = new ResultsModel
             {
                 Guid = guid,
-                Valid = FirebaseHelper.UserExists(guid),
+                Valid = FirebaseHelper.Exists(guid),
                 Complete = complete,
                 Information = complete ? S3Helper.DownloadObject<Crawler>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Information"))) : null
             };

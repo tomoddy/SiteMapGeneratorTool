@@ -92,8 +92,11 @@ namespace SiteMapGeneratorTool.Workers
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
 
                     // Send email notification
-                    Logger.LogInformation($"Sending email to {request.Email}");
-                    EmailHelper.SendEmail(request.Email, request.Domain, request.Guid.ToString());
+                    if (!(request.Email is null))
+                    {
+                        Logger.LogInformation($"Sending email to {request.Email}");
+                        EmailHelper.SendEmail(request.Email, request.Domain, request.Guid.ToString());
+                    }
 
                     // Return completed task
                     Logger.LogInformation("Task completed");
