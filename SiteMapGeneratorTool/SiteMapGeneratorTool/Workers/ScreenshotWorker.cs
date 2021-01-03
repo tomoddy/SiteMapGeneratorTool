@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using RestSharp;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
+using System;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,11 +32,6 @@ namespace SiteMapGeneratorTool.Workers
         /// <param name="logger">Injected dependancy</param>
         public ScreenshotWorker(IConfiguration configuration, ILogger<ParentWorker> logger)
         {
-            ChromeOptions options = new ChromeOptions();
-            options.AddArgument("headless");
-            options.AddArgument("window-size=1280, 720");
-            ChromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), options);
-
             Configuration = configuration;
             Logger = logger;
             SQSHelper = new SQSHelper(
@@ -67,9 +62,7 @@ namespace SiteMapGeneratorTool.Workers
                     await Task.Delay(REST, cancellationToken);
                 else
                 {
-                    // Navigate to web page and take screenshot
-                    ChromeDriver.Navigate().GoToUrl(request.Address);
-                    (ChromeDriver as ITakesScreenshot).GetScreenshot().SaveAsFile($"wwwroot/screenshots/{request.Guid}.png");
+                    throw new NotImplementedException();
                 }
             }
         }

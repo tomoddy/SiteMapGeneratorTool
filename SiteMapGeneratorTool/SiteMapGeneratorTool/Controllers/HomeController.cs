@@ -2,8 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NReco.ImageGenerator;
 using SiteMapGeneratorTool.Models;
+using System;
+using System.IO;
 using System.Diagnostics;
+using System.Net;
 
 namespace SiteMapGeneratorTool.Controllers
 {

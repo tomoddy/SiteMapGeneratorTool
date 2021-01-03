@@ -36,8 +36,7 @@ namespace SiteMapGeneratorTool.Workers
         {
             return Task.Factory.StartNew(async () =>
             {
-                List<Task> tasks = new List<Task>()
-                { /*ScreenshotWorker.Start(cancellationToken)*/ };
+                List<Task> tasks = new List<Task>();
                 for (int i = 1; i <= Configuration.GetValue<int>("Workers"); i++)
                     tasks.Add(new WebCrawlerWorker(Configuration, Logger, i).Start(cancellationToken));
 
