@@ -3,10 +3,7 @@
 }
 
 <h1>History</h1>
-
-<p>Sort By (Date)<br /> <a href="?order=ascending">Ascending</a> | <a href="?order=descending">Descending</a></p>
-
-<table class="table">
+<table class="table sortable">
     <tr>
         <th>Domain</th>
         <th>Pages</th>
@@ -23,3 +20,7 @@
         </tr>
     }
 </table>
+
+@section Scripts{
+    <script src="~/js/sorttable.js"></script>
+}

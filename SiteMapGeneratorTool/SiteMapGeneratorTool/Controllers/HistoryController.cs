@@ -35,7 +35,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="order">Sort order</param>
         /// <returns>View</returns>
-        public IActionResult Index(string order)
+        public IActionResult Index()
         {
             HistoryModel message = new HistoryModel(HttpContext.Request.Host.Value);
             foreach (string guid in FirebaseHelper.GetAll())
@@ -48,11 +48,7 @@ namespace SiteMapGeneratorTool.Controllers
                     continue;
                 }
 
-            if (order == "ascending")
-                message.Entries = message.Entries.OrderBy(x => x.Information.Completion).ToList();
-            else
-                message.Entries = message.Entries.OrderByDescending(x => x.Information.Completion).ToList();
-
+            message.Entries = message.Entries.OrderByDescending(x => x.Information.Completion).ToList();
             ViewBag.Message = message;
             return View();
         }
