@@ -15,7 +15,7 @@ namespace SiteMapGeneratorTool.Controllers
         public IActionResult Index(string guid)
         {
             ViewBag.Message = guid;
-            return View();
+            return View("Index");
         }
     }
 }
