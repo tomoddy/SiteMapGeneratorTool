@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,12 +30,7 @@ namespace SiteMapGeneratorTool.Workers
         {
             Configuration = configuration;
             Logger = logger;
-
             ScreenshotWorker = new ScreenshotWorker(Configuration, Logger);
-            WebCrawlerWorker1 = new WebCrawlerWorker(Configuration, Logger, 1);
-            WebCrawlerWorker2 = new WebCrawlerWorker(Configuration, Logger, 2);
-            WebCrawlerWorker3 = new WebCrawlerWorker(Configuration, Logger, 3);
-            WebCrawlerWorker4 = new WebCrawlerWorker(Configuration, Logger, 4);
         }
 
         /// <summary>
@@ -46,15 +42,12 @@ namespace SiteMapGeneratorTool.Workers
         {
             return Task.Factory.StartNew(async () =>
             {
+                List<Task> tasks = new List<Task>() { ScreenshotWorker.Start(cancellationToken) };
+                for (int i = 1; i <= Configuration.GetValue<int>("Workers"); i++)
+                    tasks.Add(new WebCrawlerWorker(Configuration, Logger, i).Start(cancellationToken));
+
                 while (!cancellationToken.IsCancellationRequested)
-                    await Task.WhenAll(new Task[]
-                    {
-                        ScreenshotWorker.Start(cancellationToken),
-                        WebCrawlerWorker1.Start(cancellationToken),
-                        WebCrawlerWorker2.Start(cancellationToken),
-                        WebCrawlerWorker3.Start(cancellationToken),
-                        WebCrawlerWorker4.Start(cancellationToken)
-                    });
+                    await Task.WhenAll(tasks);
             }, cancellationToken);
         }
     }
