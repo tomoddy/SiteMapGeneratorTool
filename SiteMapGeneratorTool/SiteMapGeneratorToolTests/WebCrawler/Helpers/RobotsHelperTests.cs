@@ -32,7 +32,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
             };
 
             Assert.AreEqual(new List<string>(), RobotsHelper.Exclusions);
-            RobotsHelper.FindExclusions(new Uri(URL));
+            RobotsHelper.FindExclusions(new Uri("http://www.latex-project.org"));
             Assert.AreEqual(expected, RobotsHelper.Exclusions);
         }
 
