@@ -82,6 +82,18 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         }
 
         /// <summary>
+        /// Downloads image file for given guid
+        /// </summary>
+        /// <param name="guid">GUID of file</param>
+        /// <returns>Action result</returns>
+        [HttpGet("image")]
+        public ActionResult Image(string guid)
+        {
+            Logger.LogInformation($"Returning image file for {guid}");
+            return DownloadFile(guid, Configuration.GetValue<string>("AWS:S3:Files:Image"));
+        }
+
+        /// <summary>
         /// Downloads file
         /// </summary>
         /// <param name="guid">GUID of file</param>
