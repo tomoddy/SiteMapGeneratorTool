@@ -15,11 +15,6 @@ namespace SiteMapGeneratorTool.Workers
         // Variables
         private readonly IConfiguration Configuration;
         private readonly ILogger<ParentWorker> Logger;
-        private readonly ScreenshotWorker ScreenshotWorker;
-        private readonly WebCrawlerWorker WebCrawlerWorker1;
-        private readonly WebCrawlerWorker WebCrawlerWorker2;
-        private readonly WebCrawlerWorker WebCrawlerWorker3;
-        private readonly WebCrawlerWorker WebCrawlerWorker4;
 
         /// <summary>
         /// Default constructor
@@ -30,7 +25,6 @@ namespace SiteMapGeneratorTool.Workers
         {
             Configuration = configuration;
             Logger = logger;
-            ScreenshotWorker = new ScreenshotWorker(Configuration, Logger);
         }
 
         /// <summary>
@@ -42,7 +36,8 @@ namespace SiteMapGeneratorTool.Workers
         {
             return Task.Factory.StartNew(async () =>
             {
-                List<Task> tasks = new List<Task>() { ScreenshotWorker.Start(cancellationToken) };
+                List<Task> tasks = new List<Task>()
+                { /*ScreenshotWorker.Start(cancellationToken)*/ };
                 for (int i = 1; i <= Configuration.GetValue<int>("Workers"); i++)
                     tasks.Add(new WebCrawlerWorker(Configuration, Logger, i).Start(cancellationToken));
 

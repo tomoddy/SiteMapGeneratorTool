@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SiteMapGeneratorTool.WebCrawler.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
