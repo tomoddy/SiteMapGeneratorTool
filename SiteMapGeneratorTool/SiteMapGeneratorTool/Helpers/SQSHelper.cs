@@ -3,10 +3,8 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json;
 using SiteMapGeneratorTool.Models;
-using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -40,7 +38,6 @@ namespace SiteMapGeneratorTool.Helpers
         /// <summary>
         /// Sends message to SQS queue
         /// </summary>
-        /// <param name="guid">GUID of message</param>
         /// <param name="messageBody">Object body of message</param>
         public void SendMessage(WebCrawlerRequestModel messageBody)
         {
@@ -57,14 +54,32 @@ namespace SiteMapGeneratorTool.Helpers
         }
 
         /// <summary>
+        /// Sends message to SQS queue
+        /// </summary>
+        /// <param name="messageBody">Object bodt of message</param>
+        public void SendMessage(ScreenshotRequestModel messageBody)
+        {
+            SendMessageResponse response = Client.SendMessageAsync(new SendMessageRequest
+            {
+                MessageGroupId = messageBody.Guid,
+                MessageDeduplicationId = messageBody.Guid,
+                QueueUrl = QueueUrl,
+                MessageBody = JsonConvert.SerializeObject(messageBody)
+            }).Result;
+
+            if (response.HttpStatusCode != HttpStatusCode.OK)
+                throw new AmazonServiceException($"Message could not be sent : {response.HttpStatusCode}");
+        }
+
+        /// <summary>
         /// Delete and retireve top message from queue
         /// </summary>
         /// <returns>Object of message body</returns>
-        public WebCrawlerRequestModel DeleteAndReieveFirstMessage()
+        public T DeleteAndReieveFirstMessage<T>()
         {
             List<Message> messages = Client.ReceiveMessageAsync(QueueUrl).Result.Messages;
             if (messages.Count == 0)
-                return null;
+                return default;
             else
             {
                 Message message = messages[0];
@@ -75,7 +90,7 @@ namespace SiteMapGeneratorTool.Helpers
                 }).Result;
 
                 if (response.HttpStatusCode == HttpStatusCode.OK)
-                    return JsonConvert.DeserializeObject<WebCrawlerRequestModel>(message.Body);
+                    return JsonConvert.DeserializeObject<T>(message.Body);
                 else
                     throw new AmazonServiceException($"Message could not be deleted : {response.HttpStatusCode}");
             }

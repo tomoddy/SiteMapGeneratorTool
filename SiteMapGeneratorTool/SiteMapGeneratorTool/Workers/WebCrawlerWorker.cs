@@ -64,7 +64,7 @@ namespace SiteMapGeneratorTool.Workers
             {
                 // Get request information
                 Logger.LogInformation($"Web Crawler {Id}: Obtaining messages");
-                WebCrawlerRequestModel request = SQSHelper.DeleteAndReieveFirstMessage();
+                WebCrawlerRequestModel request = SQSHelper.DeleteAndReieveFirstMessage<WebCrawlerRequestModel>();
 
                 if (request is null)
                     await Task.Delay(REST, cancellationToken);
