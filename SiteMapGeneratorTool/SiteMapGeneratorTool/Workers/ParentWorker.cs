@@ -30,7 +30,7 @@ namespace SiteMapGeneratorTool.Workers
             Configuration = configuration;
             Logger = logger;
 
-            ScreenshotWorker = new ScreenshotWorker(Logger);
+            ScreenshotWorker = new ScreenshotWorker(Configuration, Logger);
             WebCrawlerWorker1 = new WebCrawlerWorker(Configuration, Logger, 1);
             WebCrawlerWorker2 = new WebCrawlerWorker(Configuration, Logger, 2);
             WebCrawlerWorker3 = new WebCrawlerWorker(Configuration, Logger, 3);
