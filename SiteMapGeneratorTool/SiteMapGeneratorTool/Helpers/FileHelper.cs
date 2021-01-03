@@ -17,7 +17,8 @@ namespace SiteMapGeneratorTool.Helpers
             {
                 { ".xml", "application/xml" },
                 { ".dgml", "application/xml" },
-                { ".json", "application/json" }
+                { ".json", "application/json" },
+                { ".png", "image/png" }
             };
         }
     }

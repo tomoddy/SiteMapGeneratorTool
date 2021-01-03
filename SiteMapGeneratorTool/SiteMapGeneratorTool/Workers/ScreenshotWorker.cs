@@ -25,6 +25,7 @@ namespace SiteMapGeneratorTool.Workers
         private readonly IConfiguration Configuration;
         private readonly ILogger<ParentWorker> Logger;
         private readonly SQSHelper SQSHelper;
+        private readonly S3Helper S3Helper;
 
         /// <summary>
         /// Default constructor
@@ -45,6 +46,9 @@ namespace SiteMapGeneratorTool.Workers
                 Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
                 Configuration.GetValue<string>("AWS:SQS:QueueNameScreenshots"),
                 Configuration.GetValue<string>("AWS:Credentials:AccountId"));
+            S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
+                Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
+                Configuration.GetValue<string>("AWS:S3:BucketName"));
         }
 
         /// <summary>
@@ -64,15 +68,10 @@ namespace SiteMapGeneratorTool.Workers
                     await Task.Delay(REST, cancellationToken);
                 else
                 {
-                    // Create output path
-                    string path = request.Guid + DateTime.Now.ToString("-yyyy-MM-dd-HH-mm-ss") + ".png";
-
                     // Navigate to web page and take screenshot
                     ChromeDriver.Navigate().GoToUrl(request.Address);
                     Screenshot screenshot = (ChromeDriver as ITakesScreenshot).GetScreenshot();
-
-                    // Save screenshot and return path
-                    screenshot.SaveAsFile(path);
+                    S3Helper.UploadFile(request.Guid, Configuration.GetValue<string>("AWS:S3:Files:Image"), screenshot);
                 }
             }
         }
