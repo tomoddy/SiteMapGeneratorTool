@@ -70,8 +70,7 @@ namespace SiteMapGeneratorTool.Workers
                 {
                     // Navigate to web page and take screenshot
                     ChromeDriver.Navigate().GoToUrl(request.Address);
-                    Screenshot screenshot = (ChromeDriver as ITakesScreenshot).GetScreenshot();
-                    S3Helper.UploadFile(request.Guid, Configuration.GetValue<string>("AWS:S3:Files:Image"), screenshot);
+                    (ChromeDriver as ITakesScreenshot).GetScreenshot().SaveAsFile($"wwwroot/screenshots/{request.Guid}.png");
                 }
             }
         }

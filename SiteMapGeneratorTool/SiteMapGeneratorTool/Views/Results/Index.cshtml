@@ -25,16 +25,16 @@
                             setTimeout(getData, 1000)
                         else if (jQXHR.status === 200) {
                             $loader.html(`
-                                        <h1>Request complete for ${data.information.domain}</h1>
-                                        <p>${data.information.pages} pages found in ${data.information.elapsed} seconds.</p>
-                                        <a href="../api/webcrawler/response/information?guid=${data.guid}">information.json</a>
-                                        <br />
-                                        <a href="../api/webcrawler/response/sitemap?guid=${data.guid}">sitemap.xml</a>
-                                        <br />
-                                        <a href="../api/webcrawler/response/graph?guid=${data.guid}">graph.dgml</a>
-                                        <br />
-                                        <a href="../api/webcrawler/response/image?guid=${data.guid}">image.png</a>
-                                            `)
+                                            <h1>Request complete for ${data.information.domain}</h1>
+                                            <p>${data.information.pages} pages found in ${data.information.elapsed} seconds.</p>
+                                            <a href="../api/webcrawler/response/information?guid=${data.guid}">information.json</a>
+                                            <br />
+                                            <a href="../api/webcrawler/response/sitemap?guid=${data.guid}">sitemap.xml</a>
+                                            <br />
+                                            <a href="../api/webcrawler/response/graph?guid=${data.guid}">graph.dgml</a>
+                                            <br />
+                                            <img src="../screenshots/${data.guid}.png" />
+                                                `)
                             console.log(data)
                         }
                         else
