@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
 using SiteMapGeneratorTool.WebCrawler;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +11,7 @@ namespace SiteMapGeneratorTool.Workers
     /// <summary>
     /// Worker for web crawling
     /// </summary>
-    public class WebCrawlerWorker : IHostedService, IDisposable
+    public class WebCrawlerWorker
     {
         // Constants
         private const int REST = 500;
@@ -21,16 +19,18 @@ namespace SiteMapGeneratorTool.Workers
         // Variables
         private readonly IConfiguration Configuration;
         private readonly EmailHelper EmailHelper;
-        private readonly ILogger<WebCrawlerWorker> Logger;
+        private readonly ILogger<ParentWorker> Logger;
         private readonly SQSHelper SQSHelper;
         private readonly S3Helper S3Helper;
+
+        private int Id { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="configuration">Injected configuration</param>
         /// <param name="logger">Injected logger</param>
-        public WebCrawlerWorker(IConfiguration configuration, ILogger<WebCrawlerWorker> logger)
+        public WebCrawlerWorker(IConfiguration configuration, ILogger<ParentWorker> logger, int id)
         {
             Configuration = configuration;
             EmailHelper = new EmailHelper(
@@ -49,44 +49,35 @@ namespace SiteMapGeneratorTool.Workers
             S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
                 Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
                 Configuration.GetValue<string>("AWS:S3:BucketName"));
+
+            Id = id;
         }
 
         /// <summary>
-        /// Dispose method
-        /// </summary>
-        public void Dispose()
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Method to begin checking crawl queue and perfoming crawls
+        /// Start worker
         /// </summary>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns></returns>
-        public Task StartAsync(CancellationToken cancellationToken)
+        /// <returns>Completed task</returns>
+        public async Task Start(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Get request information
-                Logger.LogInformation("Obtaining messages");
+                Logger.LogInformation($"Web Crawler {Id}: Obtaining messages");
                 WebCrawlerRequestModel request = SQSHelper.DeleteAndReieveFirstMessage();
 
                 if (request is null)
-                {
-                    Logger.LogInformation("No reqests, sleeping");
-                    Thread.Sleep(REST);
-                }
+                    await Task.Delay(REST, cancellationToken);
                 else
                 {
                     // Run web crawler
-                    Logger.LogInformation($"Crawling {request}");
+                    Logger.LogInformation($"Web Crawler {Id}: Crawling {request}");
                     Crawler crawler = new Crawler(request.Url.ToString(), request.Files, request.Robots);
                     crawler.Configure();
                     crawler.Run();
 
                     // Upload information
-                    Logger.LogInformation("Uploading files");
+                    Logger.LogInformation($"Web Crawler {Id}: Uploading files");
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
@@ -94,27 +85,15 @@ namespace SiteMapGeneratorTool.Workers
                     // Send email notification
                     if (!(request.Email is null))
                     {
-                        Logger.LogInformation($"Sending email to {request.Email}");
+                        Logger.LogInformation($"Web Crawler {Id}: Sending email to {request.Email}");
                         EmailHelper.SendEmail(request.Email, request.Domain, request.Guid.ToString());
                     }
 
                     // Return completed task
-                    Logger.LogInformation("Task completed");
+                    Logger.LogInformation($"Web Crawler {Id}: Task completed");
                 }
             }
-            Logger.LogError("Task cancelled");
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Method to stop crawl
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>Completed task</returns>
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            Logger.LogError("Task cancelled");
-            return Task.CompletedTask;
+            Logger.LogError($"Web Crawler {Id}: Task cancelled");
         }
     }
 }
