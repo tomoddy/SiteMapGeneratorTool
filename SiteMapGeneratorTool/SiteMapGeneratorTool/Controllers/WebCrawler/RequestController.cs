@@ -57,7 +57,6 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             }
             catch (UriFormatException)
             {
-                // TODO Make  unique error page
                 return Redirect($"https://{HttpContext.Request.Host}/generate/results?guid=invalid");
             }
 

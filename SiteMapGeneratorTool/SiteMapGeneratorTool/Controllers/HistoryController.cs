@@ -48,10 +48,10 @@ namespace SiteMapGeneratorTool.Controllers
                     continue;
                 }
 
-            if (order == "descending")
-                message.Entries = message.Entries.OrderByDescending(x => x.Information.Completion).ToList();
-            else
+            if (order == "ascending")
                 message.Entries = message.Entries.OrderBy(x => x.Information.Completion).ToList();
+            else
+                message.Entries = message.Entries.OrderByDescending(x => x.Information.Completion).ToList();
 
             ViewBag.Message = message;
             return View();
