@@ -1,16 +1,12 @@
 ﻿using NUnit.Framework;
-using SiteMapGeneratorTool.WebCrawler.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
 {
     [TestFixture()]
     public class RobotsHelperTests
     {
-        private const string URL = "http://www.latex-project.org";
-
         private RobotsHelper RobotsHelper;
 
         [SetUp()]
@@ -43,7 +39,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         [Test()]
         public void GetExlusionsTest()
         {
-            RobotsHelper.FindExclusions(new Uri(URL));
+            RobotsHelper.FindExclusions(new Uri("http://www.latex-project.org"));
 
             List<string> expected = new List<string> 
             { 
