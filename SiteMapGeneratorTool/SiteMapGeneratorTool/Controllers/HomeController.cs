@@ -33,7 +33,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         /// <summary>
