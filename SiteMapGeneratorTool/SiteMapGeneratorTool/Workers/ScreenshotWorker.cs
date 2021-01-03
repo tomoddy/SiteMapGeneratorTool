@@ -4,7 +4,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
-using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -15,7 +14,7 @@ namespace SiteMapGeneratorTool.Workers
     /// <summary>
     /// Screenshot worker
     /// </summary>
-    public class ScreenshotWorker
+    public class ScreenshotWorker : IWorker
     {
         // Constants
         private const int REST = 500;

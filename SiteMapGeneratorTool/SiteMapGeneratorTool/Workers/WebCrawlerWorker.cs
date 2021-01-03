@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.Workers
     /// <summary>
     /// Worker for web crawling
     /// </summary>
-    public class WebCrawlerWorker
+    public class WebCrawlerWorker : IWorker
     {
         // Constants
         private const int REST = 500;
@@ -23,6 +23,7 @@ namespace SiteMapGeneratorTool.Workers
         private readonly SQSHelper SQSHelper;
         private readonly S3Helper S3Helper;
 
+        // Properties
         private int Id { get; set; }
 
         /// <summary>
