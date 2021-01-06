@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OpenQA.Selenium.Chrome;
-using RestSharp;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +17,7 @@ namespace SiteMapGeneratorTool.Workers
         private const int REST = 500;
 
         // Variables
-        private readonly ChromeDriver ChromeDriver;
+        //private readonly ChromeDriver ChromeDriver;
         private readonly IConfiguration Configuration;
         private readonly ILogger<ParentWorker> Logger;
         private readonly SQSHelper SQSHelper;
