@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
@@ -37,7 +38,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            HistoryModel message = new HistoryModel(HttpContext.Request.Host.Value);
+            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("TestDomain") : HttpContext.Request.Host.Value);
             foreach (string guid in FirebaseHelper.GetAll())
                 try
                 {

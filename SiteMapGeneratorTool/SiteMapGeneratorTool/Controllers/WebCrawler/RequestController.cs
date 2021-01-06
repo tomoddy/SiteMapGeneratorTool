@@ -55,16 +55,19 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         [HttpGet("")]
         public IActionResult Index(string url, string email, bool files, bool robots)
         {
+            // Get domain
+            string domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("TestDomain") : HttpContext.Request.Host.Value;
+
             // Create request
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation;
             try
             {
-                requestInformation = new WebCrawlerRequestModel(HttpContext.Request.Host.Value, url, email, files, robots);
+                requestInformation = new WebCrawlerRequestModel(domain, url, email, files, robots);
             }
             catch (UriFormatException)
             {
-                return Redirect($"https://{HttpContext.Request.Host}/generate/results?guid=invalid");
+                return Redirect($"https://{domain}/generate/results?guid=invalid");
             }
 
             // Submit message
@@ -78,7 +81,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
 
             // Return request information
             Logger.LogInformation("Request complete");
-            return Redirect($"https://{HttpContext.Request.Host}/results?guid={requestInformation.Guid}");
+            return Redirect($"https://{domain}/results?guid={requestInformation.Guid}");
         }
     }
 }
