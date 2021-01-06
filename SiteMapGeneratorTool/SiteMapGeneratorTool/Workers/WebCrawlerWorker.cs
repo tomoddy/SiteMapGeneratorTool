@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GiGraph.Dot.Entities.Graphs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
@@ -19,6 +20,7 @@ namespace SiteMapGeneratorTool.Workers
         // Variables
         private readonly IConfiguration Configuration;
         private readonly EmailHelper EmailHelper;
+        private readonly GraphHelper GraphHelper;
         private readonly ILogger<ParentWorker> Logger;
         private readonly SQSHelper SQSHelper;
         private readonly S3Helper S3Helper;
@@ -40,6 +42,7 @@ namespace SiteMapGeneratorTool.Workers
                 Configuration.GetValue<string>("SMTP:Password"),
                 Configuration.GetValue<string>("SMTP:Host"),
                 Configuration.GetValue<string>("SMTP:Port"));
+            GraphHelper = new GraphHelper();
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
@@ -77,11 +80,17 @@ namespace SiteMapGeneratorTool.Workers
                     crawler.Configure();
                     crawler.Run();
 
+                    // TODO Remove excample graph
+                    DotGraph exampleGraph = new DotGraph(true);
+                    exampleGraph.Edges.Add("Hello", "World!");
+
+                    // Generate graph
+                    GraphHelper.Render(request.Guid.ToString(), exampleGraph);
+
                     // Upload information
                     Logger.LogInformation($"Web Crawler {Id}: Uploading files");
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
-                    S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), crawler.GetGraphXml());
 
                     // Send email notification
                     if (!(request.Email is null))
