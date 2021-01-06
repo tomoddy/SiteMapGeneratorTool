@@ -36,7 +36,8 @@ namespace SiteMapGeneratorTool.WebCrawler
         public int Pages { get; private set; }
         [JsonProperty]
         public double Elapsed { get; private set; }
-        private List<Webpage> Webpages { get; set; }
+        [JsonIgnore]
+        public List<Webpage> Webpages { get; private set; }
         private List<Uri> Visited { get; set; }
         private bool Files { get; set; }
         private bool Robots { get; set; }
