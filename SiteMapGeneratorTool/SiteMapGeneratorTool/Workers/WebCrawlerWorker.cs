@@ -80,12 +80,8 @@ namespace SiteMapGeneratorTool.Workers
                     crawler.Configure();
                     crawler.Run();
 
-                    // TODO Remove excample graph
-                    DotGraph exampleGraph = new DotGraph(true);
-                    exampleGraph.Edges.Add("Hello", "World!");
-
                     // Generate graph
-                    GraphHelper.Render(request.Guid.ToString(), exampleGraph);
+                    GraphHelper.Render(request.Guid.ToString(), crawler.Webpages);
 
                     // Upload information
                     Logger.LogInformation($"Web Crawler {Id}: Uploading files");
