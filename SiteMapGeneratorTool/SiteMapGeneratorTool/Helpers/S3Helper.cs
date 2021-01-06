@@ -4,7 +4,6 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Newtonsoft.Json;
-using OpenQA.Selenium;
 using System;
 using System.IO;
 using System.Text;
@@ -55,18 +54,6 @@ namespace SiteMapGeneratorTool.Helpers
         public void UploadFile(string guid, string name, string data)
         {
             using MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(data));
-            TransferUtility.Upload(memoryStream, BucketName, $"{guid}/{name}");
-        }
-
-        /// <summary>
-        /// Uploads file to S3 bucket
-        /// </summary>
-        /// <param name="guid">GUID of file</param>
-        /// <param name="name">Name of file</param>
-        /// <param name="data">Data to put in file</param>
-        public void UploadFile(string guid, string name, Screenshot data)
-        {
-            using MemoryStream memoryStream = new MemoryStream(data.AsByteArray);
             TransferUtility.Upload(memoryStream, BucketName, $"{guid}/{name}");
         }
 
