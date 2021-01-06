@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using SiteMapGeneratorTool.Models;
 
 namespace SiteMapGeneratorTool.Controllers.Tests
 {
@@ -20,7 +21,9 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         {
             HistoryController controller = new HistoryController(Configuration);
             ViewResult result = controller.Index() as ViewResult;
-            result.ViewData.TryGetValue("Message", out object message);
+
+            result.ViewData.TryGetValue("Message", out object actual);
+            Assert.IsInstanceOf(typeof(HistoryModel), actual);
         }
     }
 }
