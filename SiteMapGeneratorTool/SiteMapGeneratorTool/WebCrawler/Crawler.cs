@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using static SiteMapGeneratorTool.WebCrawler.Objects.Graph;
 
 namespace SiteMapGeneratorTool.WebCrawler
 {
@@ -122,16 +121,6 @@ namespace SiteMapGeneratorTool.WebCrawler
             FileInfo fileInfo = new FileInfo("sitemap-" + DateTime.Now.Ticks + ".xml");
             File.WriteAllText(fileInfo.FullName, GetSitemapXml());
             return fileInfo;
-        }
-
-        /// <summary>
-        /// Generates graph xml
-        /// </summary>
-        /// <returns>Xml string</returns>
-        public string GetGraphXml()
-        {
-            DirectedGraph directedGraph = GraphHelper.GenerateGraph(Webpages);
-            return GraphHelper.GenerateXml(directedGraph);
         }
 
         /// <summary>
