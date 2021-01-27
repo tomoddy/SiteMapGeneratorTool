@@ -19,7 +19,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         private readonly FirebaseHelper FirebaseHelper;
         private readonly ILogger Logger;
         private readonly SQSHelper SQSHelperWebCrawler;
-        private readonly SQSHelper SQSHelperScreenshot;
+        //private readonly SQSHelper SQSHelperScreenshot;
 
         /// <summary>
         /// Default constructor
@@ -37,12 +37,12 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
                 Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
                 Configuration.GetValue<string>("AWS:SQS:QueueName"),
                 Configuration.GetValue<string>("AWS:Credentials:AccountId"));
-            SQSHelperScreenshot = new SQSHelper(
-                Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
-                Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
-                Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
-                Configuration.GetValue<string>("AWS:SQS:QueueNameScreenshots"),
-                Configuration.GetValue<string>("AWS:Credentials:AccountId"));
+            //SQSHelperScreenshot = new SQSHelper(
+            //    Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
+            //    Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
+            //    Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
+            //    Configuration.GetValue<string>("AWS:SQS:QueueNameScreenshots"),
+            //    Configuration.GetValue<string>("AWS:Credentials:AccountId"));
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
             SQSHelperWebCrawler.SendMessage(requestInformation);
-            SQSHelperScreenshot.SendMessage(new ScreenshotRequestModel(requestInformation.Guid.ToString(), url));
+            //SQSHelperScreenshot.SendMessage(new ScreenshotRequestModel(requestInformation.Guid.ToString(), url));
 
             // Add user to database
             Logger.LogInformation($"Adding user {requestInformation.Guid} to database");
