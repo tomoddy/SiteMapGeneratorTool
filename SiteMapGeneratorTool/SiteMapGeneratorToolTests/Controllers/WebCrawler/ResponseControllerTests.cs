@@ -41,14 +41,5 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler.Tests
             Assert.AreEqual("application/xml", file.ContentType);
             Assert.AreEqual(Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), file.FileDownloadName);
         }
-
-        [Test()]
-        public void GraphTest()
-        {
-            ResponseController requestController = new ResponseController(Configuration, new NullLogger<RequestController>());
-            FileResult file = (FileResult)requestController.Graph("7c785e83-1b47-420e-940b-500c3ef20e43");
-            Assert.AreEqual("application/xml", file.ContentType);
-            Assert.AreEqual(Configuration.GetValue<string>("AWS:S3:Files:Graph"), file.FileDownloadName);
-        }
     }
 }
