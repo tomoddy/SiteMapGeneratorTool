@@ -54,24 +54,6 @@ namespace SiteMapGeneratorTool.Helpers
         }
 
         /// <summary>
-        /// Sends message to SQS queue
-        /// </summary>
-        /// <param name="messageBody">Object bodt of message</param>
-        public void SendMessage(ScreenshotRequestModel messageBody)
-        {
-            SendMessageResponse response = Client.SendMessageAsync(new SendMessageRequest
-            {
-                MessageGroupId = messageBody.Guid,
-                MessageDeduplicationId = messageBody.Guid,
-                QueueUrl = QueueUrl,
-                MessageBody = JsonConvert.SerializeObject(messageBody)
-            }).Result;
-
-            if (response.HttpStatusCode != HttpStatusCode.OK)
-                throw new AmazonServiceException($"Message could not be sent : {response.HttpStatusCode}");
-        }
-
-        /// <summary>
         /// Delete and retireve top message from queue
         /// </summary>
         /// <returns>Object of message body</returns>
