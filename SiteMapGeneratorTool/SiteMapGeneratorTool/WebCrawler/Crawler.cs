@@ -88,6 +88,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             Stopwatch.Start();
             Visit(Domain);
             Stopwatch.Stop();
+            Structure.GenerateLink(Domain);
         }
 
         /// <summary>

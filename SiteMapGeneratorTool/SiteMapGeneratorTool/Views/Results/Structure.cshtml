@@ -7,7 +7,7 @@
     {
         foreach (SiteMapGeneratorTool.WebCrawler.Objects.Page p in page.Pages)
         {
-            <li>@p.Address</li>
+            <li><a href="@p.Link">@p.Address</a></li>
             if (p.Pages.Count > 0)
             {
                 <ul class="nested">
