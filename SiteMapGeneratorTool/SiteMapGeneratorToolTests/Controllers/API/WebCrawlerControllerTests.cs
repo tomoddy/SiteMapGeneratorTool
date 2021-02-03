@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 
-namespace SiteMapGeneratorTool.Controllers.WebCrawler.Tests
+namespace SiteMapGeneratorTool.Controllers.API.Tests
 {
     [TestFixture()]
-    public class RequestControllerTests
+    public class WebCrawlerControllerTests
     {
         IConfiguration Configuration;
 
@@ -19,7 +19,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler.Tests
         [Test()]
         public void IndexTest()
         {
-            RequestController requestController = new RequestController(Configuration, new NullLogger<RequestController>());
+            WebCrawlerController requestController = new WebCrawlerController(Configuration, new NullLogger<WebCrawlerController>());
             RedirectResult actual = requestController.Index("http://sitemaps.org", null, false, false) as RedirectResult;
             StringAssert.StartsWith($"https://{Configuration.GetValue<string>("TestDomain")}/results?guid=", actual.Url);
         }

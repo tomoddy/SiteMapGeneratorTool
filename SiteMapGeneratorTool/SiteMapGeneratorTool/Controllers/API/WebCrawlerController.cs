@@ -5,14 +5,14 @@ using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
 using System;
 
-namespace SiteMapGeneratorTool.Controllers.WebCrawler
+namespace SiteMapGeneratorTool.Controllers.API
 {
     /// <summary>
     /// Web crawler request controller
     /// </summary>
-    [Route("api/webcrawler/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class RequestController : ControllerBase
+    public class WebCrawlerController : ControllerBase
     {
         // Variables
         private readonly IConfiguration Configuration;
@@ -26,7 +26,7 @@ namespace SiteMapGeneratorTool.Controllers.WebCrawler
         /// </summary>
         /// <param name="configuration">Injected object</param>
         /// <param name="logger">Injected object</param>
-        public RequestController(IConfiguration configuration, ILogger<RequestController> logger)
+        public WebCrawlerController(IConfiguration configuration, ILogger<WebCrawlerController> logger)
         {
             Configuration = configuration;
             FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
