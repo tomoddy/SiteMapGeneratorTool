@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteMapGeneratorTool.WebCrawler.Objects
@@ -11,6 +12,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 
         // Properties
         public string Address { get; set; }
+        public string Link { get; set; }
         public int Level { get; set; }
         public List<Page> Pages { get; set; }
 
@@ -21,6 +23,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
         public Page(string address, int level)
         {
             Address = address;
+            Link = string.Empty;
             Level = level;
             Pages = new List<Page>();
         }
@@ -44,6 +47,29 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
                 // Add new page to pages
                 Pages.Find(x => x.Address == addressComponents[0]).Add(string.Join(SEPERATOR, addressComponents.Skip(1)));
             }
+        }
+
+        /// <summary>
+        /// Populate link property for current node and all below
+        /// </summary>
+        /// <param name="url">Base url</param>
+        public void GenerateLink(Uri url)
+        {
+            Link = $"{url.AbsoluteUri.Trim('/')}";
+            foreach (Page page in Pages)
+                page.GenerateLink(Link);
+        }
+
+        /// <summary>
+        /// Populate link property for current node and all below
+        /// </summary>
+        /// <param name="url">Base url</param>
+        /// <param name="parent">Link section of parent</param>
+        public void GenerateLink(string url)
+        {
+            Link = $"{url}/{Address}";
+            foreach (Page page in Pages)
+                page.GenerateLink(Link);
         }
     }
 }
