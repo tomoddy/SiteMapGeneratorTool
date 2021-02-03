@@ -61,11 +61,14 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>Sitemap file</returns>
         public FileResult Sitemap(string guid)
         {
+            // Log information
             Logger.LogInformation($"Returning sitemap file for {guid}");
 
+            // Download file if it does not exist locally
             if (!System.IO.File.Exists($"wwwroot/sitemaps/{guid}.xml"))
                 DownloadFile(guid, "sitemaps", Configuration.GetValue<string>("AWS:S3:Files:Sitemap"));
 
+            // Return file
             return File($"sitemaps/{guid}.xml", "application/xml");
         }
 
@@ -76,11 +79,14 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>Graph file</returns>
         public FileResult Graph(string guid)
         {
+            // Log information
             Logger.LogInformation($"Returning graph file for {guid}");
 
+            // Download file if it does not exist locally
             if (!System.IO.File.Exists($"wwwroot/graphs/{guid}.png"))
                 DownloadFile(guid, "graphs", Configuration.GetValue<string>("AWS:S3:Files:Graph"));
 
+            // Return file
             return File($"graphs/{guid}.png", "image/png");
         }
 
@@ -92,9 +98,11 @@ namespace SiteMapGeneratorTool.Controllers
         /// <param name="name">Name of file on server</param>
         private void DownloadFile(string guid, string path, string name)
         {
+            // Download memory response
             FileInfo fileInfo = new FileInfo(name);
             MemoryStream memoryStream = S3Helper.DownloadResponse(guid, fileInfo);
 
+            // Write file to disk
             using FileStream fileStream = new FileStream($"wwwroot/{path}/{guid}{fileInfo.Extension}", FileMode.OpenOrCreate);
             memoryStream.CopyTo(fileStream);
             fileStream.Flush();

@@ -126,38 +126,20 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Generate sitemap xml file
-        /// </summary>
-        /// <returns>File info for file</returns>
-        public FileInfo GetSitemapXmlFile()
-        {
-            FileInfo fileInfo = new FileInfo("sitemap-" + DateTime.Now.Ticks + ".xml");
-            File.WriteAllText(fileInfo.FullName, GetSitemapXml());
-            return fileInfo;
-        }
-
-        /// <summary>
         /// Visits url
         /// </summary>
         /// <param name="url">Url to visit</param>
         private void Visit(Uri url)
         {
-            // Add url to visited and structure
+            // Add url to visited
             Visited.Add(url);
-            Structure.Add(url.AbsolutePath[1..]);
 
             // Return if URL is fragment, tel, or emailto
             if (url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO))
                 return;
 
-            // Remove unwanted files
-            if (!Files)
-            {
-                string extension = Path.GetExtension(url.AbsoluteUri);
-                if (extension == string.Empty || new List<string>(EXTENSIONS.Split(",")).Contains(extension)) { }
-                else
-                    return;
-            }
+            // Add url to structure
+            Structure.Add(url.AbsolutePath[1..]);
 
             // Create document for webpage
             Webpage newWebpage = new Webpage(url) { LastModified = HtmlHelper.CreateDocument(url) };
@@ -188,12 +170,14 @@ namespace SiteMapGeneratorTool.WebCrawler
         private List<Uri> FormatLinks(List<string> tags)
         {
             // Return value
-            List<Uri> retVal = new List<Uri>();
+            List<Uri> retVal = new List<Uri>();            
 
             // Iterate through all hrefs and check if links is valid
             foreach (string href in tags)
             {
-                if (Uri.IsWellFormedUriString(href, UriKind.Absolute) && href.StartsWith(Domain.AbsoluteUri))
+                if (!Files && (Path.GetExtension(href) != string.Empty && !new List<string>(EXTENSIONS.Split(",")).Contains(Path.GetExtension(href))))
+                    continue;
+                else if (Uri.IsWellFormedUriString(href, UriKind.Absolute) && href.StartsWith(Domain.AbsoluteUri))
                     retVal.Add(new Uri(href));
                 else if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
                     continue;
