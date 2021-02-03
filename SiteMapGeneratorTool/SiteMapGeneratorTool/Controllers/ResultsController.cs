@@ -17,5 +17,15 @@ namespace SiteMapGeneratorTool.Controllers
             ViewBag.Message = guid;
             return View("Index");
         }
+
+        /// <summary>
+        /// View graph file
+        /// </summary>
+        /// <param name="guid">Guid of request</param>
+        /// <returns>Graph image</returns>
+        public FileResult Graph(string guid)
+        {
+            return File($"graphs/{guid}.png", "image/png");
+        }
     }
 }

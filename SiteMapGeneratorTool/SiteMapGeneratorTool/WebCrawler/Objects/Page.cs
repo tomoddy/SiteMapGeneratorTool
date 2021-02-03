@@ -11,7 +11,6 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 
         // Properties
         public string Address { get; set; }
-        public int Level { get; set; }
         public List<Page> Pages { get; set; }
 
         /// <summary>
@@ -21,46 +20,28 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
         public Page(string address)
         {
             Address = address;
-            Level = 0;
             Pages = new List<Page>();
         }
 
         /// <summary>
-        /// Secondary constructor
+        /// Add page to pages
         /// </summary>
-        /// <param name="address">Subdirectory</param>
-        /// <param name="level">Directory level</param>
-        public Page(string address, int level)
+        /// <param name="address">Address of page</param>
+        public void Add(string address)
         {
-            Address = address;
-            Level = level;
-            Pages = new List<Page>();
-        }
+            // Split address into components
+            List<string> addressComponents = address.Split(SEPERATOR).ToList();
 
-        /// <summary>
-        /// Adds new page
-        /// </summary>
-        /// <param name="subDirectory">Subdirectory</param>
-        public void Add(string subDirectory)
-        {
-            List<string> directory = subDirectory.Split(SEPERATOR).ToList();
-            Page page = Pages.FirstOrDefault(x => x.Address == directory[0]);
-            if (!(page is null))
-                page.Add(string.Join(SEPERATOR, directory.GetRange(1, directory.Count - 1)));
-            else
-                Pages.Add(new Page(subDirectory, Level + 1));
-        }
+            // Ignore if addresss  is empty
+            if (addressComponents[0] != string.Empty)
+            {
+                // Check if page exists
+                if (Pages.Find(x => x.Address == addressComponents[0]) is null)
+                    Pages.Add(new Page(addressComponents[0]));
 
-        /// <summary>
-        /// ToString override
-        /// </summary>
-        /// <returns>String value of object</returns>
-        public override string ToString()
-        {
-            string retVal = string.Concat(Enumerable.Repeat("    ", Level)) + Address + "\n";
-            foreach (Page page in Pages)
-                retVal += page.ToString();
-            return retVal;
+                // Add new page to pages
+                Pages.Find(x => x.Address == addressComponents[0]).Add(string.Join(SEPERATOR, addressComponents.Skip(1)));
+            }
         }
     }
 }

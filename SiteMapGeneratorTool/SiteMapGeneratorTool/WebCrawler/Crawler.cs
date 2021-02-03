@@ -39,6 +39,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         [JsonIgnore]
         public List<Webpage> Webpages { get; private set; }
         private List<Uri> Visited { get; set; }
+        private Page Structure { get; set; }
         private bool Files { get; set; }
         private bool Robots { get; set; }
 
@@ -56,6 +57,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             Domain = new Uri(domain);
             Webpages = new List<Webpage>();
             Visited = new List<Uri>();
+            Structure = new Page("/");
 
             Files = files;
             Robots = robots;
@@ -130,8 +132,11 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// <param name="url">Url to visit</param>
         private void Visit(Uri url)
         {
-            // Add url to visited and return if URL is fragment, tel, or emailto
+            // Add url to visited and structure
             Visited.Add(url);
+            Structure.Add(url.AbsolutePath[1..]);
+
+            // Return if URL is fragment, tel, or emailto
             if (url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO))
                 return;
 
@@ -152,7 +157,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             List<Uri> links = FormatLinks(hrefs);
             newWebpage.AddLinks(links);
 
-            // Iterate through all, remove if visited otherwise vist
+            // Iterate through all, remove if visited otherwise visit
             while (links.Count > 0)
             {
                 if (IsVisited(links.First()))
