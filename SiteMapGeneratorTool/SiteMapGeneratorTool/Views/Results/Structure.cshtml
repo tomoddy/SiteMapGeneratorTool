@@ -1,3 +1,23 @@
 ﻿@{
-    ViewData["Title"] = "Graph";
+    ViewData["Title"] = "Structure";
 }
+
+@functions{
+    private string CreateStructure(SiteMapGeneratorTool.WebCrawler.Objects.Page page)
+    {
+        foreach (SiteMapGeneratorTool.WebCrawler.Objects.Page p in page.Pages)
+        {
+            <li>@p.Address</li>
+            if (p.Pages.Count > 0)
+            {
+                <ul class="nested">
+                    @CreateStructure(p)
+                </ul>
+            }
+        }
+        return string.Empty;
+    }
+}
+<ul class="nested">
+    @CreateStructure(ViewBag.Message)
+</ul>

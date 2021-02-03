@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\graphs\" />
+    <Folder Include="wwwroot\structure\" />
     <Folder Include="wwwroot\sitemaps\" />
   </ItemGroup>
 

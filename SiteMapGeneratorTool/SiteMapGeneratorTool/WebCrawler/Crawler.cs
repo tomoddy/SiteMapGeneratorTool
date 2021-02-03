@@ -57,7 +57,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             Domain = new Uri(domain);
             Webpages = new List<Webpage>();
             Visited = new List<Uri>();
-            Structure = new Page("/");
+            Structure = new Page("/", 0);
 
             Files = files;
             Robots = robots;
@@ -91,7 +91,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Stops web crawler
+        /// Returns information json string
         /// </summary>
         /// <returns>Json string</returns>
         public string GetInformationJson()
@@ -103,6 +103,15 @@ namespace SiteMapGeneratorTool.WebCrawler
 
             // Return results
             return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// Returns structure json string
+        /// </summary>
+        /// <returns>Json string</returns>
+        public string GetStructureJson()
+        {
+            return JsonConvert.SerializeObject(Structure);
         }
 
         /// <summary>

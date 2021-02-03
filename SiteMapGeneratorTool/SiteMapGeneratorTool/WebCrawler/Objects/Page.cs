@@ -11,15 +11,17 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 
         // Properties
         public string Address { get; set; }
+        public int Level { get; set; }
         public List<Page> Pages { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="address">Domain</param>
-        public Page(string address)
+        public Page(string address, int level)
         {
             Address = address;
+            Level = level;
             Pages = new List<Page>();
         }
 
@@ -37,7 +39,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
             {
                 // Check if page exists
                 if (Pages.Find(x => x.Address == addressComponents[0]) is null)
-                    Pages.Add(new Page(addressComponents[0]));
+                    Pages.Add(new Page(addressComponents[0], Level + 1));
 
                 // Add new page to pages
                 Pages.Find(x => x.Address == addressComponents[0]).Add(string.Join(SEPERATOR, addressComponents.Skip(1)));

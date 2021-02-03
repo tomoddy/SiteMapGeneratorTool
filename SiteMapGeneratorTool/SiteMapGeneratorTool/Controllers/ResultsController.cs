@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
+using SiteMapGeneratorTool.WebCrawler.Objects;
 using System.IO;
 
 namespace SiteMapGeneratorTool.Controllers
@@ -43,6 +44,17 @@ namespace SiteMapGeneratorTool.Controllers
         }
 
         /// <summary>
+        /// Structure
+        /// </summary>
+        /// <param name="guid">Guid of request</param>
+        /// <returns>View</returns>
+        public IActionResult Structure(string guid)
+        {
+            ViewBag.Message = S3Helper.DownloadObject<Page>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Structure")));
+            return View("Structure");
+        }
+
+        /// <summary>
         /// View sitemap file
         /// </summary>
         /// <param name="guid">Guid of request</param>
@@ -65,6 +77,10 @@ namespace SiteMapGeneratorTool.Controllers
         public FileResult Graph(string guid)
         {
             Logger.LogInformation($"Returning graph file for {guid}");
+
+            if (!System.IO.File.Exists($"wwwroot/graphs/{guid}.png"))
+                DownloadFile(guid, "graphs", Configuration.GetValue<string>("AWS:S3:Files:Graph"));
+
             return File($"graphs/{guid}.png", "image/png");
         }
 

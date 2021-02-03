@@ -80,13 +80,12 @@ namespace SiteMapGeneratorTool.Workers
                     crawler.Configure();
                     crawler.Run();
 
-                    // Generate graph
-                    GraphHelper.Render(request.Guid.ToString(), crawler.Webpages);
-
                     // Upload information
                     Logger.LogInformation($"Web Crawler {Id}: Uploading files");
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Information"), crawler.GetInformationJson());
+                    S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Structure"), crawler.GetStructureJson());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
+                    S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), GraphHelper.Render(crawler.Webpages));
 
                     // Send email notification
                     if (!(request.Email is null))
