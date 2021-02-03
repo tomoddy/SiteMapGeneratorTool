@@ -58,6 +58,18 @@ namespace SiteMapGeneratorTool.Helpers
         }
 
         /// <summary>
+        /// Uploads file to S3 bucket
+        /// </summary>
+        /// <param name="guid">GUID of file</param>
+        /// <param name="name">Name of file</param>
+        /// <param name="data">Data to put in file</param>
+        public void UploadFile(string guid, string name, byte[] data)
+        {
+            using MemoryStream memoryStream = new MemoryStream(data);
+            TransferUtility.Upload(memoryStream, BucketName, $"{guid}/{name}");
+        }
+
+        /// <summary>
         /// Converts s3 file to memory stream
         /// </summary>
         /// <param name="guid">GUID of file</param>
