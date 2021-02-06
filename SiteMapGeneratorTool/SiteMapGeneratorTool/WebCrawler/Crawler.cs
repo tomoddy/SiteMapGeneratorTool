@@ -121,8 +121,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// <returns>Xml string</returns>
         public string GetSitemapXml()
         {
-            Sitemap sitemap = SitemapHelper.GenerateSitemap(Webpages);
-            return SitemapHelper.GenerateXml(sitemap);
+            return SitemapHelper.GenerateXml(SitemapHelper.GenerateSitemap(Webpages));
         }
 
         /// <summary>
@@ -147,6 +146,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             // Get and format all hrefs from document
             List<string> hrefs = HtmlHelper.GenerateTags();
             List<Uri> links = FormatLinks(hrefs);
+            links.Remove(url);            
             newWebpage.AddLinks(links);
 
             // Iterate through all, remove if visited otherwise visit
