@@ -2,24 +2,44 @@
     ViewData["Title"] = "Structure";
 }
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/structure.css" />
+}
+
 @functions{
     private string CreateStructure(SiteMapGeneratorTool.WebCrawler.Objects.Page page)
     {
         foreach (SiteMapGeneratorTool.WebCrawler.Objects.Page p in page.Pages)
         {
-            <li><a href="@p.Link">@p.Address</a></li>
-            if (p.Pages.Count > 0)
-            {
-                <ul class="nested">
-                    @CreateStructure(p)
-                </ul>
-            }
+            <li>
+                @if (p.Pages.Count > 0)
+                {
+                    <span class="caret"><a href="@p.Link">@p.Address</a></span>
+                    <ul class="nested">
+                        @CreateStructure(p)
+                    </ul>
+                }
+                else
+                {
+                    <a href="@p.Link">@p.Address</a>
+                }
+            </li>
         }
         return string.Empty;
     }
 }
 
 <p><a href="@ViewBag.Message.Link">@ViewBag.Message.Link</a></p>
-<ul class="nested">
+<ul id="structure">
     @CreateStructure(ViewBag.Message)
 </ul>
+
+<script>
+    var toggler = document.getElementsByClassName("caret");
+    for (var i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("active");
+            this.classList.toggle("caret-down");
+        });
+    }
+</script>
