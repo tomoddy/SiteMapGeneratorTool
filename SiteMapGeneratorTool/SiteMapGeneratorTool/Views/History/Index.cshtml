@@ -10,13 +10,13 @@
         <th>Elapsed</th>
         <th>Completed</th>
     </tr>
-    @foreach (var entry in ViewBag.Message.Entries)
+    @foreach (var result in ViewBag.Message.Results)
     {
         <tr>
-            <td><a href="https://@ViewBag.Message.Domain/results?guid=@entry.Guid">@entry.Information.Domain</a>
-            <td>@entry.Information.Pages</td>
-            <td>@entry.Information.Elapsed</td>
-            <td>@entry.Information.Completion</td>
+            <td><a href="https://@ViewBag.Message.Domain/results?guid=@result.Guid">@result.Information.Domain</a>
+            <td>@result.Information.Pages</td>
+            <td>@result.Information.Elapsed</td>
+            <td>@result.Information.Completion</td>
         </tr>
     }
 </table>

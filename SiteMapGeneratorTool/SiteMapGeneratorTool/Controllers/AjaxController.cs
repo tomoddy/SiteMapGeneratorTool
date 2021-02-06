@@ -36,18 +36,11 @@ namespace SiteMapGeneratorTool.Controllers
         public IActionResult Results(string guid)
         {
             // Create variables
-            bool complete = S3Helper.FileExists(guid, Configuration.GetValue<string>("AWS:S3:Files:Information"));
-            ResultsModel model = new ResultsModel
-            {
-                Guid = guid,
-                Valid = FirebaseHelper.Exists(guid),
-                Complete = complete,
-                Information = complete ? S3Helper.DownloadObject<Crawler>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Information"))) : null
-            };
+            Crawler information = FirebaseHelper.Get(guid);
 
             // Return results if completed otherwise processing http code
-            if (complete)
-                return new JsonResult(model);
+            if (information != null)
+                return new JsonResult(new ResultsModel(guid, information));
             else
                 return StatusCode(202);
         }

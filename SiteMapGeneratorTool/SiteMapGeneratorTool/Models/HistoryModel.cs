@@ -5,19 +5,13 @@ namespace SiteMapGeneratorTool.Models
 {
     public class HistoryModel
     {
-        public class Entry
-        {
-            public string Guid { get; set; }
-            public Crawler Information { get; set; }
-        }
-
         public string Domain { get; set; }
-        public List<Entry> Entries { get; set; }
+        public List<ResultsModel> Results { get; set; }
 
-        public HistoryModel(string domain)
+        public HistoryModel(string domain, List<ResultsModel> results)
         {
             Domain = domain;
-            Entries = new List<Entry>();
+            Results = results;
         }
     }
 }

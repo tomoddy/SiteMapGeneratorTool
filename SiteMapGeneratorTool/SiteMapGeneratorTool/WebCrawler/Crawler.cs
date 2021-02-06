@@ -95,7 +95,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// Returns information json string
         /// </summary>
         /// <returns>Json string</returns>
-        public string GetInformationJson()
+        public Crawler GetInformation()
         {
             // Record results
             Completion = DateTime.Now;
@@ -103,7 +103,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             Elapsed = Stopwatch.ElapsedMilliseconds / 1000.0;
 
             // Return results
-            return JsonConvert.SerializeObject(this);
+            return this;
         }
 
         /// <summary>
