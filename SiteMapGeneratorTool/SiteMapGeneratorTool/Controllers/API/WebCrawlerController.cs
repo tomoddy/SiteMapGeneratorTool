@@ -28,7 +28,9 @@ namespace SiteMapGeneratorTool.Controllers.API
         public WebCrawlerController(IConfiguration configuration, ILogger<WebCrawlerController> logger)
         {
             Configuration = configuration;
-            FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
+            FirebaseHelper = new FirebaseHelper(
+                Configuration.GetValue<string>("Firebase:BasePath"), 
+                Configuration.GetValue<string>("Firebase:AuthSecret"));
             Logger = logger;
             SQSHelperWebCrawler = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
@@ -66,10 +68,6 @@ namespace SiteMapGeneratorTool.Controllers.API
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
             SQSHelperWebCrawler.SendMessage(requestInformation);
-
-            // Add user to database
-            Logger.LogInformation($"Adding entry {requestInformation.Guid} to database");
-            FirebaseHelper.Add(requestInformation.Guid.ToString());
 
             // Return request information
             Logger.LogInformation("Request complete");

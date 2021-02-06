@@ -38,18 +38,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("TestDomain") : HttpContext.Request.Host.Value);
-            foreach (string guid in FirebaseHelper.GetAll())
-                try
-                {
-                    message.Entries.Add(new HistoryModel.Entry { Guid = guid, Information = S3Helper.DownloadObject<Crawler>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Information"))) });
-                }
-                catch (AggregateException)
-                {
-                    continue;
-                }
-
-            message.Entries = message.Entries.OrderByDescending(x => x.Information.Completion).ToList();
+            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("TestDomain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
             ViewBag.Message = message;
             return View();
         }
