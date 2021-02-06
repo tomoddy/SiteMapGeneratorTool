@@ -78,7 +78,7 @@ namespace SiteMapGeneratorTool.Helpers
             }
 
             // Return list
-            return retVal;
+            return retVal.OrderByDescending(x => x.Information.Completion).ToList();
         }
     }
 }
