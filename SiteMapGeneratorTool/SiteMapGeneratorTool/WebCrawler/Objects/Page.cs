@@ -71,5 +71,17 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
             foreach (Page page in Pages)
                 page.GenerateLink(Link);
         }
+
+        /// <summary>
+        /// Sort page tree into alphabetical order
+        /// </summary>
+        /// <returns>This page object</returns>
+        public Page Sort()
+        {
+            Pages = Pages.OrderBy(x => x.Address).ToList();
+            foreach (Page pages in Pages)
+                pages.Sort();
+            return this;
+        }
     }
 }

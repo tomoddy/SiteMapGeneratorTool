@@ -78,7 +78,6 @@ namespace SiteMapGeneratorTool.Workers
                     // Run web crawler
                     Logger.LogInformation($"Web Crawler {Id}: Crawling {request}");
                     Crawler crawler = new Crawler(request.Url.ToString(), request.Files, request.Robots);
-                    crawler.Configure();
                     crawler.Run();
 
                     // Upload files

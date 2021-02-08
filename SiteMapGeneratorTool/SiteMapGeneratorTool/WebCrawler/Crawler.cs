@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SiteMapGeneratorTool.WebCrawler
 {
@@ -22,7 +23,6 @@ namespace SiteMapGeneratorTool.WebCrawler
         private const string EXTENSIONS = ".html,.htm,.php";
 
         // Variables
-        private readonly HtmlHelper HtmlHelper;
         private readonly RobotsHelper RobotsHelper;
         private readonly SitemapHelper SitemapHelper;
         private readonly Stopwatch Stopwatch;
@@ -49,7 +49,6 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// <param name="domain">Base domain of website</param>
         public Crawler(string domain, bool files, bool robots)
         {
-            HtmlHelper = new HtmlHelper();
             RobotsHelper = new RobotsHelper();
             SitemapHelper = new SitemapHelper();
             Stopwatch = new Stopwatch();
@@ -64,11 +63,11 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Configures web crawler before it is started
+        /// Configures and runs web crawler
         /// </summary>
-        /// <param name="robots">Boolean for if robots exclusion is enabled</param>
-        public void Configure()
+        public void Run()
         {
+            // Check robots flag
             if (Robots)
             {
                 // Get exclusions from file
@@ -78,15 +77,54 @@ namespace SiteMapGeneratorTool.WebCrawler
                 foreach (string exclusion in RobotsHelper.GetExlusions())
                     Visited.Add(new Uri(Domain, exclusion));
             }
-        }
 
-        /// <summary>
-        /// Starts web crawler
-        /// </summary>
-        public void Run()
-        {
+            // Start stopwatch and create initial to visit list
             Stopwatch.Start();
-            Visit(Domain);
+            List<Uri> toVisit = new List<Uri> { Domain };
+
+            // Run while there are pages to visit
+            while (toVisit.Count > 0)
+            {
+                // Create copy of to visit list
+                List<Uri> visiting = toVisit;
+                toVisit = new List<Uri>();
+
+                // Visit links in parallel
+                Parallel.ForEach(visiting, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, (url) =>
+                {
+                    // Create new html helper
+                    HtmlHelper htmlHelper = new HtmlHelper();
+
+                    // Create local list of visited
+                    List<Uri> visitedLocal = Visited;
+                    if (!(visitedLocal.Any(x => x.AbsoluteUri == url.AbsoluteUri) || url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO)))
+                    {
+                        // Add link to structure
+                        Structure.Add(url.AbsolutePath[1..]);
+
+                        // Generate webpage object for link
+                        Webpage webpage = new Webpage(url, htmlHelper.CreateDocument(url));
+
+                        // Generate and format tags
+                        List<string> hrefs = htmlHelper.GenerateTags();
+                        List<Uri> links = FormatLinks(hrefs);
+                        links.Remove(url);
+
+                        // Add tags to visit list and webpage and add to webpages
+                        toVisit.AddRange(links);
+                        webpage.Links.AddRange(links);
+                        Webpages.Add(webpage);
+                    }
+
+                    // Add current link to visited list
+                    Visited.Add(url);
+                });
+
+                // Remove duplicate toVisit links
+                toVisit = toVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
+            }
+
+            // Stop clock and generate links in structure
             Stopwatch.Stop();
             Structure.GenerateLink(Domain);
         }
@@ -125,44 +163,6 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Visits url
-        /// </summary>
-        /// <param name="url">Url to visit</param>
-        private void Visit(Uri url)
-        {
-            // Add url to visited
-            Visited.Add(url);
-
-            // Return if URL is fragment, tel, or emailto
-            if (url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO))
-                return;
-
-            // Add url to structure
-            Structure.Add(url.AbsolutePath[1..]);
-
-            // Create document for webpage
-            Webpage newWebpage = new Webpage(url) { LastModified = HtmlHelper.CreateDocument(url) };
-
-            // Get and format all hrefs from document
-            List<string> hrefs = HtmlHelper.GenerateTags();
-            List<Uri> links = FormatLinks(hrefs);
-            links.Remove(url);            
-            newWebpage.AddLinks(links);
-
-            // Iterate through all, remove if visited otherwise visit
-            while (links.Count > 0)
-            {
-                if (IsVisited(links.First()))
-                    links.RemoveAt(0);
-                else
-                    Visit(links.First());
-            }
-
-            // Add completed webpage
-            Webpages.Add(newWebpage);
-        }
-
-        /// <summary>
         /// Checks links are well formed and in the correct domain
         /// </summary>
         /// <param name="tags">List of string links</param>
@@ -170,7 +170,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private List<Uri> FormatLinks(List<string> tags)
         {
             // Return value
-            List<Uri> retVal = new List<Uri>();            
+            List<Uri> retVal = new List<Uri>();
 
             // Iterate through all hrefs and check if links is valid
             foreach (string href in tags)
@@ -189,19 +189,6 @@ namespace SiteMapGeneratorTool.WebCrawler
 
             // Return ordered list of formatted links
             return retVal.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
-        }
-
-        /// <summary>
-        /// Checks if website has already been visited
-        /// </summary>
-        /// <param name="link">Url of webpage to check</param>
-        /// <returns>Boolean for if visited</returns>
-        private bool IsVisited(Uri link)
-        {
-            foreach (Uri visited in Visited)
-                if (link.AbsoluteUri == visited.AbsoluteUri)
-                    return true;
-            return false;
         }
     }
 }

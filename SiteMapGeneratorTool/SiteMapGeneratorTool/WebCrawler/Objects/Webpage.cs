@@ -16,9 +16,11 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 		/// Default constructor
 		/// </summary>
 		/// <param name="url">Url of webpage</param>
-		public Webpage(Uri url)
+		/// <param name="lastModified">Last modified date</param>
+		public Webpage(Uri url, DateTime? lastModified)
 		{
 			Url = url;
+			LastModified = lastModified;
 			Links = new List<Uri>();
 		}
 
@@ -37,15 +39,6 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
 			foreach (string link in links)
 				Links.Add(new Uri(link));
         }
-
-		/// <summary>
-		/// Adds list of links to Links
-		/// </summary>
-		/// <param name="newLinks">List of links</param>
-		public void AddLinks(List<Uri> newLinks)
-		{
-			Links.AddRange(newLinks);
-		}
 
 		/// <summary>
 		/// ToString override
