@@ -14,9 +14,6 @@ namespace SiteMapGeneratorTool.Workers
     /// </summary>
     public class WebCrawlerWorker : IWorker
     {
-        // Constants
-        private const int REST = 500;
-
         // Variables
         private readonly IConfiguration Configuration;
         private readonly EmailHelper EmailHelper;
@@ -44,7 +41,7 @@ namespace SiteMapGeneratorTool.Workers
                 Configuration.GetValue<string>("SMTP:Host"),
                 Configuration.GetValue<string>("SMTP:Port"));
             FirebaseHelper = new FirebaseHelper(
-                Configuration.GetValue<string>("Firebase:BasePath"), 
+                Configuration.GetValue<string>("Firebase:BasePath"),
                 Configuration.GetValue<string>("Firebase:AuthSecret"));
             GraphHelper = new GraphHelper();
             Logger = logger;
@@ -75,7 +72,7 @@ namespace SiteMapGeneratorTool.Workers
                 WebCrawlerRequestModel request = SQSHelper.DeleteAndReieveFirstMessage<WebCrawlerRequestModel>();
 
                 if (request is null)
-                    await Task.Delay(REST, cancellationToken);
+                    await Task.Delay(Configuration.GetValue<int>("Workers") * Configuration.GetValue<int>("Delay"), cancellationToken);
                 else
                 {
                     // Run web crawler
