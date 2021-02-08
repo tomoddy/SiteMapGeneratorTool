@@ -81,15 +81,15 @@ namespace SiteMapGeneratorTool.Workers
                     crawler.Configure();
                     crawler.Run();
 
-                    // Upload information
-                    Logger.LogInformation($"Web Crawler {Id}: Uploading information");
-                    FirebaseHelper.Add(request.Guid.ToString(), crawler.GetInformation());
-
                     // Upload files
                     Logger.LogInformation($"Web Crawler {Id}: Uploading files");
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Structure"), crawler.GetStructureJson());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Sitemap"), crawler.GetSitemapXml());
                     S3Helper.UploadFile(request.Guid.ToString(), Configuration.GetValue<string>("AWS:S3:Files:Graph"), GraphHelper.Render(crawler.Webpages));
+
+                    // Upload information
+                    Logger.LogInformation($"Web Crawler {Id}: Uploading information");
+                    FirebaseHelper.Add(request.Guid.ToString(), crawler.GetInformation());
 
                     // Send email notification
                     if (!(request.Email is null))

@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
+using System;
 using System.IO;
+using System.Threading;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -37,7 +39,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="guid">Guid of request</param>
         /// <returns>View</returns>
-        public IActionResult Index(string guid)
+        public ActionResult Index(string guid)
         {
             ViewBag.Message = guid;
             return View("Index");
@@ -48,9 +50,9 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="guid">Guid of request</param>
         /// <returns>View</returns>
-        public IActionResult Structure(string guid)
+        public ActionResult Structure(string guid)
         {
-            ViewBag.Message = S3Helper.DownloadObject<Page>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Structure")));
+            ViewBag.Message = S3Helper.DownloadObject<Page>(guid, new FileInfo(Configuration.GetValue<string>("AWS:S3:Files:Structure"))).Sort();
             return View("Structure");
         }
 
@@ -59,17 +61,13 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="guid">Guid of request</param>
         /// <returns>Sitemap file</returns>
-        public FileResult Sitemap(string guid)
+        public ActionResult Sitemap(string guid)
         {
             // Log information
             Logger.LogInformation($"Returning sitemap file for {guid}");
 
-            // Download file if it does not exist locally
-            if (!System.IO.File.Exists($"wwwroot/sitemaps/{guid}.xml"))
-                DownloadFile(guid, "sitemaps", Configuration.GetValue<string>("AWS:S3:Files:Sitemap"));
-
             // Return file
-            return File($"sitemaps/{guid}.xml", "application/xml");
+            return ReturnFile(guid, "Sitemap", "application/xml");
         }
 
         /// <summary>
@@ -77,35 +75,24 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="guid">Guid of request</param>
         /// <returns>Graph file</returns>
-        public FileResult Graph(string guid)
+        public ActionResult Graph(string guid)
         {
             // Log information
             Logger.LogInformation($"Returning graph file for {guid}");
 
-            // Download file if it does not exist locally
-            if (!System.IO.File.Exists($"wwwroot/graphs/{guid}.png"))
-                DownloadFile(guid, "graphs", Configuration.GetValue<string>("AWS:S3:Files:Graph"));
-
             // Return file
-            return File($"graphs/{guid}.png", "image/png");
+            return ReturnFile(guid, "Graph", "image/png");
         }
 
         /// <summary>
-        /// Downloads file from s3
+        /// Downloads and returns file from s3
         /// </summary>
         /// <param name="guid">Guid of request</param>
-        /// <param name="path">Local save path</param>
-        /// <param name="name">Name of file on server</param>
-        private void DownloadFile(string guid, string path, string name)
+        /// <param name="file">Name of file on server</param>
+        /// <param name="contentType">Content type of returned file</param>
+        private ActionResult ReturnFile(string guid, string file, string contentType)
         {
-            // Download memory response
-            FileInfo fileInfo = new FileInfo(name);
-            MemoryStream memoryStream = S3Helper.DownloadResponse(guid, fileInfo);
-
-            // Write file to disk
-            using FileStream fileStream = new FileStream($"wwwroot/{path}/{guid}{fileInfo.Extension}", FileMode.OpenOrCreate);
-            memoryStream.CopyTo(fileStream);
-            fileStream.Flush();
+            return File(S3Helper.DownloadResponse(guid, new FileInfo(Configuration.GetValue<string>($"AWS:S3:Files:{file}"))).ToArray(), contentType);
         }
     }
 }
