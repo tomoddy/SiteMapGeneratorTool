@@ -29,6 +29,11 @@
     }
 }
 
+<p><a href="@ViewBag.Message.Link">@ViewBag.Message.Link</a></p>
+<ul id="structure">
+    @CreateStructure(ViewBag.Message)
+</ul>
+
 <script>
     var toggler = document.getElementsByClassName("caret");
     for (var i = 0; i < toggler.length; i++) {
@@ -38,8 +43,3 @@
         });
     }
 </script>
-
-<p><a href="@ViewBag.Message.Link">@ViewBag.Message.Link</a></p>
-<ul id="structure">
-    @CreateStructure(ViewBag.Message)
-</ul>
