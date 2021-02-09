@@ -21,7 +21,7 @@ namespace SiteMapGeneratorTool.Controllers.API.Tests
         {
             WebCrawlerController requestController = new WebCrawlerController(Configuration, new NullLogger<WebCrawlerController>());
             RedirectResult actual = requestController.Index("http://sitemaps.org", null, false, false) as RedirectResult;
-            StringAssert.StartsWith($"https://{Configuration.GetValue<string>("TestDomain")}/results?guid=", actual.Url);
+            StringAssert.StartsWith($"https://{Configuration.GetValue<string>("Test:Domain")}/results?guid=", actual.Url);
         }
     }
 }
