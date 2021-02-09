@@ -2,6 +2,7 @@
 using SiteMapGeneratorTool.WebCrawler.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -38,7 +39,8 @@ namespace SiteMapGeneratorTool.WebCrawler
         public double Elapsed { get; private set; }
         [JsonIgnore]
         public List<Webpage> Webpages { get; private set; }
-        private List<Uri> Visited { get; set; }
+        private ConcurrentBag<Uri> Visited { get; set; }
+        private List<Uri> ToVisit { get; set; }
         private Page Structure { get; set; }
         private bool Files { get; set; }
         private bool Robots { get; set; }
@@ -55,7 +57,8 @@ namespace SiteMapGeneratorTool.WebCrawler
 
             Domain = new Uri(domain);
             Webpages = new List<Webpage>();
-            Visited = new List<Uri>();
+            Visited = new ConcurrentBag<Uri>();
+            ToVisit = new List<Uri> { Domain };
             Structure = new Page("/", 0);
 
             Files = files;
@@ -63,7 +66,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         }
 
         /// <summary>
-        /// Configures and runs web crawler
+        /// Configures and web crawler
         /// </summary>
         public void Run()
         {
@@ -78,29 +81,28 @@ namespace SiteMapGeneratorTool.WebCrawler
                     Visited.Add(new Uri(Domain, exclusion));
             }
 
-            // Start stopwatch and create initial to visit list
+            // Start stopwatch
             Stopwatch.Start();
-            List<Uri> toVisit = new List<Uri> { Domain };
 
             // Run while there are pages to visit
-            while (toVisit.Count > 0)
+            while (ToVisit.Count > 0)
             {
-                // Create copy of to visit list
-                List<Uri> visiting = toVisit;
-                toVisit = new List<Uri>();
+                // Create temporary link store and copy of to visit list
+                List<string> structureLinks = new List<string>();
+                List<Uri> toVisitLocal = ToVisit;
+                ToVisit = new List<Uri>();
 
                 // Visit links in parallel
-                Parallel.ForEach(visiting, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, (url) =>
+                Parallel.ForEach(toVisitLocal, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, (url) =>
                 {
-                    // Create new html helper
+                    // Create html helper
                     HtmlHelper htmlHelper = new HtmlHelper();
 
-                    // Create local list of visited
-                    List<Uri> visitedLocal = Visited;
-                    if (!(visitedLocal.Any(x => x.AbsoluteUri == url.AbsoluteUri) || url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO)))
+                    // Create local list of visited 
+                    if (!(Visited.Any(x => x.AbsoluteUri == url.AbsoluteUri) || url.AbsoluteUri.Contains(FRAGMENT) || url.AbsoluteUri.StartsWith(TEL) || url.AbsoluteUri.StartsWith(EMAILTO)))
                     {
                         // Add link to structure
-                        Structure.Add(url.AbsolutePath[1..]);
+                        structureLinks.Add(url.AbsolutePath[1..]);
 
                         // Generate webpage object for link
                         Webpage webpage = new Webpage(url, htmlHelper.CreateDocument(url));
@@ -111,7 +113,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                         links.Remove(url);
 
                         // Add tags to visit list and webpage and add to webpages
-                        toVisit.AddRange(links);
+                        ToVisit.AddRange(links);
                         webpage.Links.AddRange(links);
                         Webpages.Add(webpage);
                     }
@@ -120,8 +122,20 @@ namespace SiteMapGeneratorTool.WebCrawler
                     Visited.Add(url);
                 });
 
-                // Remove duplicate toVisit links
-                toVisit = toVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
+                // Add links to structure
+                foreach (string sL in structureLinks)
+                    Structure.Add(sL);
+
+                // Remove duplicate to visit links
+                try
+                {
+                    ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
+                }
+                catch (Exception ex)
+                {
+                    // TODO Remove this, potential bug catching
+                    Console.WriteLine(ex);
+                }
             }
 
             // Stop clock and generate links in structure
