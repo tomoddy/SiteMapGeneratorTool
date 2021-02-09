@@ -38,7 +38,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("TestDomain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
+            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
             ViewBag.Message = message;
             return View();
         }
