@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Static\example.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Static\valid-graph.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

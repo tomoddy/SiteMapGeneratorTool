@@ -19,7 +19,7 @@ namespace SiteMapGeneratorTool.Helpers
         // Properties
         private AmazonS3Client Client { get; set; }
         private TransferUtility TransferUtility { get; set; }
-        public string BucketName { get; set; }
+        private string BucketName { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -32,17 +32,6 @@ namespace SiteMapGeneratorTool.Helpers
             Client = new AmazonS3Client(new BasicAWSCredentials(accessKey, privateKey), RegionEndpoint.EUWest2);
             TransferUtility = new TransferUtility(Client);
             BucketName = bucketName;
-        }
-
-        /// <summary>
-        /// Checks if file exists in s3 bucket
-        /// </summary>
-        /// <param name="guid">GUID of file</param>
-        /// <param name="name">Name of file</param>
-        /// <returns>True if exists, false if not</returns>
-        public bool FileExists(string guid, string name)
-        {
-            return !(DownloadResponse(guid, new FileInfo(name)) is null);
         }
 
         /// <summary>
