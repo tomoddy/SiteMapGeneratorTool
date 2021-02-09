@@ -14,7 +14,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         ResultsController Controller;
 
         [SetUp]
-        public void Init()
+        public void ResultsControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             Controller = new ResultsController(Configuration, null);

@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         IConfiguration Configuration;
 
         [SetUp]
-        public void Init()
+        public void AjaxControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }

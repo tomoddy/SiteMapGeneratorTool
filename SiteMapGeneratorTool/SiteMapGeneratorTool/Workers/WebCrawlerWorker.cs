@@ -88,7 +88,7 @@ namespace SiteMapGeneratorTool.Workers
 
                     // Upload information
                     Logger.LogInformation($"Web Crawler {Id}: Uploading information");
-                    FirebaseHelper.Add(request.Guid.ToString(), crawler.GetInformation());
+                    FirebaseHelper.Add(request.Guid.ToString(), crawler);
 
                     // Send email notification
                     if (!(request.Email is null))

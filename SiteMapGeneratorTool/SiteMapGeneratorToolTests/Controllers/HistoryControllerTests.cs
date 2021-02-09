@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         IConfiguration Configuration;
 
         [SetUp]
-        public void Init()
+        public void HistoryControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }
