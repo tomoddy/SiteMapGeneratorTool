@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 namespace SiteMapGeneratorTool.Controllers.Tests

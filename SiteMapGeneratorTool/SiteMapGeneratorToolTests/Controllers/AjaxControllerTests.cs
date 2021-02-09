@@ -19,7 +19,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void ResultsValidTest()
         {
-            string guid = "7c785e83-1b47-420e-940b-500c3ef20e43";
+            string guid = "7941fec7-4b16-4f5d-ae75-174e8948d747";
             AjaxController controller = new AjaxController(Configuration);
             JsonResult result = (JsonResult)controller.Results(guid);
             Assert.AreEqual(guid, ((ResultsModel)result.Value).Guid);
