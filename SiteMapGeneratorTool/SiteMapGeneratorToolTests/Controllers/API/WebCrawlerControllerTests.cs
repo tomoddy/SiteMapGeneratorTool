@@ -11,7 +11,7 @@ namespace SiteMapGeneratorTool.Controllers.API.Tests
         IConfiguration Configuration;
 
         [SetUp]
-        public void Init()
+        public void WebCrawlerControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }

@@ -10,7 +10,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         IConfiguration Configuration;
 
         [SetUp]
-        public void Init()
+        public void HomeControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }

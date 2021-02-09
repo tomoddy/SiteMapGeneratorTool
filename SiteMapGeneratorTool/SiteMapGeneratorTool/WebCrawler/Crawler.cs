@@ -16,7 +16,6 @@ namespace SiteMapGeneratorTool.WebCrawler
     /// </summary>
     public class Crawler
     {
-
         // Constants
         private const string FRAGMENT = "#";
         private const string TEL = "tel:";
@@ -141,21 +140,11 @@ namespace SiteMapGeneratorTool.WebCrawler
             // Stop clock and generate links in structure
             Stopwatch.Stop();
             Structure.GenerateLink(Domain);
-        }
 
-        /// <summary>
-        /// Returns information json string
-        /// </summary>
-        /// <returns>Json string</returns>
-        public Crawler GetInformation()
-        {
             // Record results
             Completion = DateTime.Now;
             Pages = Visited.Count;
             Elapsed = Stopwatch.ElapsedMilliseconds / 1000.0;
-
-            // Return results
-            return this;
         }
 
         /// <summary>

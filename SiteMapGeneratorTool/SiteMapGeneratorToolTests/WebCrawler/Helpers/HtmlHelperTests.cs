@@ -8,12 +8,13 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
     [TestFixture()]
     public class HtmlHelperTests
     {
+        // TODO Replace with test domain
         private const string URL = "http://www.sitemaps.org";
 
         private HtmlHelper HtmlHelper;
 
         [SetUp]
-        public void HtmlHelperSetUp()
+        public void HtmlHelperSetup()
         {
             HtmlHelper = new HtmlHelper();
         }
