@@ -11,6 +11,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\empty-graph.png" />
+    <None Remove="wwwroot\invalid-graph.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\empty-graph.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\invalid-graph.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
@@ -18,6 +36,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SiteMapGeneratorTool\SiteMapGeneratorTool.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Static\valid-graph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

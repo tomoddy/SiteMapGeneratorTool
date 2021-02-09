@@ -18,7 +18,6 @@ namespace SiteMapGeneratorTool.Workers
         private readonly IConfiguration Configuration;
         private readonly EmailHelper EmailHelper;
         private readonly FirebaseHelper FirebaseHelper;
-        private readonly GraphHelper GraphHelper;
         private readonly ILogger<ParentWorker> Logger;
         private readonly SQSHelper SQSHelper;
         private readonly S3Helper S3Helper;
@@ -43,7 +42,6 @@ namespace SiteMapGeneratorTool.Workers
             FirebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:BasePath"),
                 Configuration.GetValue<string>("Firebase:AuthSecret"));
-            GraphHelper = new GraphHelper();
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
