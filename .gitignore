@@ -6,6 +6,8 @@
 /SiteMapGeneratorTool/SiteMapGeneratorTool/obj
 /SiteMapGeneratorTool/SiteMapGeneratorToolTests/bin
 /SiteMapGeneratorTool/SiteMapGeneratorToolTests/obj
+/SiteMapGeneratorTool/SiteMapGeneratorToolSelenium/bin
+/SiteMapGeneratorTool/SiteMapGeneratorToolSelenium/obj
 /SiteMapGeneratorTool/SiteMapGeneratorTool/Properties/PublishProfiles
 /SiteMapGeneratorTool/SiteMapGeneratorTool/Properties/ServiceDependencies/Tadataka - Web Deploy/profile.arm.json
 /SiteMapGeneratorTool/SiteMapGeneratorTool/wwwroot/screenshots
