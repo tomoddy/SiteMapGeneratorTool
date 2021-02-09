@@ -57,7 +57,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// Delete and retireve top message from queue
         /// </summary>
         /// <returns>Object of message body</returns>
-        public T DeleteAndReieveFirstMessage<T>()
+        public WebCrawlerRequestModel DeleteAndReieveFirstMessage()
         {
             List<Message> messages = Client.ReceiveMessageAsync(QueueUrl).Result.Messages;
             if (messages.Count == 0)
@@ -72,7 +72,7 @@ namespace SiteMapGeneratorTool.Helpers
                 }).Result;
 
                 if (response.HttpStatusCode == HttpStatusCode.OK)
-                    return JsonConvert.DeserializeObject<T>(message.Body);
+                    return JsonConvert.DeserializeObject<WebCrawlerRequestModel>(message.Body);
                 else
                     throw new AmazonServiceException($"Message could not be deleted : {response.HttpStatusCode}");
             }

@@ -18,7 +18,7 @@ namespace SiteMapGeneratorTool.Controllers.API
         private readonly IConfiguration Configuration;
         private readonly FirebaseHelper FirebaseHelper;
         private readonly ILogger Logger;
-        private readonly SQSHelper SQSHelperWebCrawler;
+        private readonly SQSHelper SQSHelper;
 
         /// <summary>
         /// Default constructor
@@ -32,7 +32,7 @@ namespace SiteMapGeneratorTool.Controllers.API
                 Configuration.GetValue<string>("Firebase:BasePath"), 
                 Configuration.GetValue<string>("Firebase:AuthSecret"));
             Logger = logger;
-            SQSHelperWebCrawler = new SQSHelper(
+            SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
                 Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
                 Configuration.GetValue<string>("AWS:SQS:ServiceUrl"),
@@ -67,7 +67,7 @@ namespace SiteMapGeneratorTool.Controllers.API
 
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
-            SQSHelperWebCrawler.SendMessage(requestInformation);
+            SQSHelper.SendMessage(requestInformation);
 
             // Return request information
             Logger.LogInformation("Request complete");
