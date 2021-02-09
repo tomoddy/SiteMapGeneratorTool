@@ -40,7 +40,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test(), Order(3)]
+        [Test()]
         public void GetLastModifiedTest()
         {
             DateTime? expected = new DateTime(2020, 01, 01);
