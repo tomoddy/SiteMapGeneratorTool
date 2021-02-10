@@ -3,7 +3,10 @@ using Microsoft.Extensions.Configuration;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
 using SiteMapGeneratorTool.WebCrawler;
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -43,6 +46,32 @@ namespace SiteMapGeneratorTool.Controllers
                 return new JsonResult(new ResultsModel(guid, information));
             else
                 return StatusCode(202);
+        }
+
+        /// <summary>
+        /// Performans background get for history
+        /// </summary>
+        /// <returns>Json of history</returns>
+        public JsonResult History()
+        {
+            // Get values from form
+            string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+            string start = Request.Form["start"].FirstOrDefault();
+            string length = Request.Form["length"].FirstOrDefault();
+            string sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+            string sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+            string searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+            // Get data
+            List<Crawler> results = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll()).Results.Select(x => x.Information).ToList();
+
+            // Get paging information
+            int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            int skip = start != null ? Convert.ToInt32(start) : 0;
+            List<Crawler> data = results.Skip(skip).Take(pageSize).ToList();
+
+            //Returning Json Data  
+            return Json(new { draw, recordsFiltered = results.Count, results.Count, data });
         }
     }
 }

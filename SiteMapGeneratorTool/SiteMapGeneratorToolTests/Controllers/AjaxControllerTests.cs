@@ -33,5 +33,11 @@ namespace SiteMapGeneratorTool.Controllers.Tests
             StatusCodeResult result = (StatusCodeResult)controller.Results(guid);
             Assert.AreEqual(202, result.StatusCode);
         }
+
+        [Test()]
+        public void HistoryTest()
+        {
+            Assert.Fail();
+        }
     }
 }
