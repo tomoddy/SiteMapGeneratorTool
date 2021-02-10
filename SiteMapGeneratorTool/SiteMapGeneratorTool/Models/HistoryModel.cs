@@ -1,5 +1,4 @@
-﻿using SiteMapGeneratorTool.WebCrawler;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SiteMapGeneratorTool.Models
 {

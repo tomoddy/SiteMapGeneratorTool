@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SiteMapGeneratorTool.Helpers;
-using SiteMapGeneratorTool.Models;
-using SiteMapGeneratorTool.WebCrawler;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -38,8 +32,6 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            HistoryModel message = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
-            ViewBag.Message = message;
             return View();
         }
     }
