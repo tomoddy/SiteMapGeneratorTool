@@ -58,12 +58,39 @@ namespace SiteMapGeneratorTool.Controllers
             string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
             string start = Request.Form["start"].FirstOrDefault();
             string length = Request.Form["length"].FirstOrDefault();
-            string sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+            string sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
             string sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
             string searchValue = Request.Form["search[value]"].FirstOrDefault();
 
             // Get data
             List<Crawler> results = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll()).Results.Select(x => x.Information).ToList();
+
+            // Sort results
+            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                results = Sort(sortColumn, sortColumnDirection, results);
+
+            // Convinience method for sorting
+            static List<Crawler> Sort(string column, string direction, List<Crawler> results)
+            {
+                if (direction == "asc")
+                    return column switch
+                    {
+                        "domain" => results.OrderBy(x => x.Domain.AbsoluteUri).ToList(),
+                        "pages" => results.OrderBy(x => x.Pages).ToList(),
+                        "elapsed" => results.OrderBy(x => x.Elapsed).ToList(),
+                        "completion" => results.OrderBy(x => x.Completion).ToList(),
+                        _ => results
+                    };
+                else
+                    return column switch
+                    {
+                        "domain" => results.OrderByDescending(x => x.Domain.AbsoluteUri).ToList(),
+                        "pages" => results.OrderByDescending(x => x.Pages).ToList(),
+                        "elapsed" => results.OrderByDescending(x => x.Elapsed).ToList(),
+                        "completion" => results.OrderByDescending(x => x.Completion).ToList(),
+                        _ => results
+                    };
+            }
 
             // Get paging information
             int pageSize = length != null ? Convert.ToInt32(length) : 0;
