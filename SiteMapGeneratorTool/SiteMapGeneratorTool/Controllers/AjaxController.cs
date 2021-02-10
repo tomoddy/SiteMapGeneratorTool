@@ -62,14 +62,20 @@ namespace SiteMapGeneratorTool.Controllers
             foreach (ResultsModel result in history.Results)
                 data.Add(new DataTableModel(result, history.Domain));
 
+            // Get search query
+            string query = Request.Form["search[value]"].FirstOrDefault();
+
             // Get sort column and direction
             string column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
             if (string.IsNullOrEmpty(column))
                 column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data][domain]"].FirstOrDefault();
             string direction = Request.Form["order[0][dir]"].FirstOrDefault();
 
-            // Get search value
-            string query = Request.Form["search[value]"].FirstOrDefault();
+            // Search results
+            if (!string.IsNullOrEmpty(query))
+                for (int i = data.Count - 1; i >= 0; i--)
+                    if (!data[i].Information.Domain.AbsoluteUri.Contains(query))
+                        data.RemoveAt(i);
 
             // Sort results
             if (!(string.IsNullOrEmpty(column) && string.IsNullOrEmpty(direction)))
