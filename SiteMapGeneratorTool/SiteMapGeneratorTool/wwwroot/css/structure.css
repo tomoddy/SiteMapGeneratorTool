@@ -10,21 +10,21 @@ ul, #structure {
 }
 
 /* Style the caret/arrow */
-.caret {
+.arrow {
     cursor: pointer;
     user-select: none; /* Prevent text selection */
 }
 
     /* Create the caret/arrow with a unicode, and style it */
-    .caret::before {
-        content: "\25B6";
+    .arrow::before {
+        content: "\003E";
         color: black;
         display: inline-block;
         margin-right: 6px;
     }
 
 /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
+.arrow-down::before {
     transform: rotate(90deg);
 }
 
