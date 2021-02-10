@@ -23,20 +23,22 @@
     <script>
         $(document).ready(function () {
             $("#historyTable").DataTable({
-                processing: true, // for show progress bar
-                serverSide: true, // for process server side
-                filter: true, // this is for disable filter (search box)
-                orderMulti: false, // for disable multiple column at once
+                processing: true,
+                serverSide: true,
+                filter: true,
+                orderMulti: false,
+                pageLength: 25,
+                order: [[3, "desc"]],
                 ajax: {
                     url: "/ajax/history",
                     type: "POST",
                     datatype: "json"
                 },
                 columns: [
-                    { data: "domain", render: (domain) => { return `<a href="${domain}">${domain}</a>` } },
-                    { data: "pages" },
-                    { data: "elapsed" },
-                    { data: "completion", render: (completion) => { return moment(completion).format("YYYY/MM/DD HH:mm:ss") } }
+                    { data: { link: "link", domain: "information.domain" }, render: (data) => { return `<a href="${data.link}">${data.information.domain}</a>` } },
+                    { data: "information.pages" },
+                    { data: "information.elapsed" },
+                    { data: "information.completion", render: (completion) => { return moment(completion).format("DD/MM/YYYY HH:mm:ss") } }
                 ]
             });
         });

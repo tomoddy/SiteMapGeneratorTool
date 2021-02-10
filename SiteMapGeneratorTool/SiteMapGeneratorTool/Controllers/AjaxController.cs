@@ -54,51 +54,61 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>Json of history</returns>
         public JsonResult History()
         {
-            // Get values from form
-            string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
-            string start = Request.Form["start"].FirstOrDefault();
-            string length = Request.Form["length"].FirstOrDefault();
-            string sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
-            string sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-            string searchValue = Request.Form["search[value]"].FirstOrDefault();
-
             // Get data
-            List<Crawler> results = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll()).Results.Select(x => x.Information).ToList();
+            HistoryModel history = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
+
+            // Create data table results
+            List<DataTableModel> data = new List<DataTableModel>();
+            foreach (ResultsModel result in history.Results)
+                data.Add(new DataTableModel(result, history.Domain));
+
+            // Get sort column and direction
+            string column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
+            if (string.IsNullOrEmpty(column))
+                column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data][domain]"].FirstOrDefault();
+            string direction = Request.Form["order[0][dir]"].FirstOrDefault();
+
+            // Get search value
+            string query = Request.Form["search[value]"].FirstOrDefault();
 
             // Sort results
-            if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                results = Sort(sortColumn, sortColumnDirection, results);
+            if (!(string.IsNullOrEmpty(column) && string.IsNullOrEmpty(direction)))
+                data = Sort(column, direction, data);
 
             // Convinience method for sorting
-            static List<Crawler> Sort(string column, string direction, List<Crawler> results)
+            static List<DataTableModel> Sort(string column, string direction, List<DataTableModel> results)
             {
                 if (direction == "asc")
                     return column switch
                     {
-                        "domain" => results.OrderBy(x => x.Domain.AbsoluteUri).ToList(),
-                        "pages" => results.OrderBy(x => x.Pages).ToList(),
-                        "elapsed" => results.OrderBy(x => x.Elapsed).ToList(),
-                        "completion" => results.OrderBy(x => x.Completion).ToList(),
+                        "information.domain" => results.OrderBy(x => x.Information.Domain.AbsoluteUri).ToList(),
+                        "information.pages" => results.OrderBy(x => x.Information.Pages).ToList(),
+                        "information.elapsed" => results.OrderBy(x => x.Information.Elapsed).ToList(),
+                        "information.completion" => results.OrderBy(x => x.Information.Completion).ToList(),
                         _ => results
                     };
                 else
                     return column switch
                     {
-                        "domain" => results.OrderByDescending(x => x.Domain.AbsoluteUri).ToList(),
-                        "pages" => results.OrderByDescending(x => x.Pages).ToList(),
-                        "elapsed" => results.OrderByDescending(x => x.Elapsed).ToList(),
-                        "completion" => results.OrderByDescending(x => x.Completion).ToList(),
+                        "information.domain" => results.OrderByDescending(x => x.Information.Domain.AbsoluteUri).ToList(),
+                        "information.pages" => results.OrderByDescending(x => x.Information.Pages).ToList(),
+                        "information.elapsed" => results.OrderByDescending(x => x.Information.Elapsed).ToList(),
+                        "information.completion" => results.OrderByDescending(x => x.Information.Completion).ToList(),
                         _ => results
                     };
             }
 
             // Get paging information
-            int pageSize = length != null ? Convert.ToInt32(length) : 0;
-            int skip = start != null ? Convert.ToInt32(start) : 0;
-            List<Crawler> data = results.Skip(skip).Take(pageSize).ToList();
+            string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+            int pageSize = Request.Form["length"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["length"].FirstOrDefault()) : 0;
+            int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
 
-            //Returning Json Data  
-            return Json(new { draw, recordsFiltered = results.Count, results.Count, data });
+            // Paginate data
+            int count = data.Count;
+            data = data.Skip(skip).Take(pageSize).ToList();
+
+            // Return json data
+            return Json(new { draw, recordsFiltered = count, recordsTotal = count, data });
         }
     }
 }
