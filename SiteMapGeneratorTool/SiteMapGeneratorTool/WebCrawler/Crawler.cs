@@ -23,6 +23,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private const string EXTENSIONS = ".html,.htm,.php";
 
         // Variables
+        private readonly ParallelOptions ParallelOptions;
         private readonly RobotsHelper RobotsHelper;
         private readonly SitemapHelper SitemapHelper;
         private readonly Stopwatch Stopwatch;
@@ -48,8 +49,14 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// Default constructor
         /// </summary>
         /// <param name="domain">Base domain of website</param>
-        public Crawler(string domain, bool files, bool robots)
+        public Crawler(int threads, string domain, bool files, bool robots)
         {
+            ParallelOptions = new ParallelOptions();
+            if (threads == 0 || threads > Environment.ProcessorCount)
+                ParallelOptions.MaxDegreeOfParallelism = Environment.ProcessorCount;
+            else
+                ParallelOptions.MaxDegreeOfParallelism = threads;
+
             RobotsHelper = new RobotsHelper();
             SitemapHelper = new SitemapHelper();
             Stopwatch = new Stopwatch();
@@ -92,7 +99,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                 ToVisit = new List<Uri>();
 
                 // Visit links in parallel
-                Parallel.ForEach(toVisitLocal, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, (url) =>
+                Parallel.ForEach(toVisitLocal, ParallelOptions, (url) =>
                 {
                     // Create html helper
                     HtmlHelper htmlHelper = new HtmlHelper();
