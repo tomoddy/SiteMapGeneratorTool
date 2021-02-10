@@ -37,7 +37,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void HistoryTest()
         {
-            Assert.Fail();
+            Assert.Fail("Not Implemented");
         }
     }
 }

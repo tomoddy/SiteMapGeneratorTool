@@ -5,12 +5,12 @@ using NUnit.Framework;
 namespace SiteMapGeneratorTool.Controllers.Tests
 {
     [TestFixture()]
-    public class HistoryControllerTests
+    public class AboutControllerTests
     {
         IConfiguration Configuration;
 
         [SetUp]
-        public void HistoryControllerSetup()
+        public void AboutControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }
@@ -18,7 +18,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void IndexTest()
         {
-            HistoryController controller = new HistoryController(Configuration);
+            AboutController controller = new AboutController(Configuration);
             ViewResult result = controller.Index() as ViewResult;
             Assert.AreEqual("Index", result.ViewName);
         }

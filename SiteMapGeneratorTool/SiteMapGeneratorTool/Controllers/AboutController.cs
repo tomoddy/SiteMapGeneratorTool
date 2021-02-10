@@ -21,6 +21,10 @@ namespace SiteMapGeneratorTool.Controllers
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Index page
+        /// </summary>
+        /// <returns>View</returns>
         public IActionResult Index()
         {
             ViewBag.Message = new Dictionary<string, string>
@@ -29,7 +33,7 @@ namespace SiteMapGeneratorTool.Controllers
                 { "Timeout (ms) : ", Configuration.GetValue<string>("Delay") },
                 { "Thread Count : ", Configuration.GetValue<string>("Threads") }
             }; ;
-            return View();
+            return View("Index");
         }
     }
 }
