@@ -12,13 +12,12 @@ namespace SiteMapGeneratorToolSelenium
         public void Setup()
         {
             Driver = new ChromeDriver();
-            Driver.Navigate().GoToUrl("https://localhost:5001");
         }
 
         [Test]
         public void ExampleTest()
         {
-            Assert.Pass();
+            Assert.Ignore();
         }
 
         [TearDown]

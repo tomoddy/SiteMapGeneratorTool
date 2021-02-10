@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace SiteMapGeneratorTool.WebCrawler.Tests
@@ -7,13 +6,13 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
     [TestFixture()]
     public class CrawlerTests
     {
-        Crawler Crawler = new Crawler("http://sitemaps.org", false, false);
+        Crawler Crawler;
 
         [OneTimeSetUp]
         public void CrawlerOneTimeSetup()
         {
             // TODO Change to test domain and add tests for different configurations
-            Crawler = new Crawler("http://sitemaps.org", false, false);
+            Crawler = new Crawler(0, "http://sitemaps.org", false, false);
             Crawler.Run();
         }
 
