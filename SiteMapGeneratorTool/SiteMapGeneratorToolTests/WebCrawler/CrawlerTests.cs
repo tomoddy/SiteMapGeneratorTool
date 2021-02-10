@@ -38,7 +38,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
             StringAssert.Contains("{\"Address\":\"/\",\"Link\":\"http://sitemaps.org\",\"Level\":0,\"Pages\":[", actual);
             StringAssert.Contains("{\"Address\":\"faq.php\",\"Link\":\"http://sitemaps.org/faq.php\",\"Level\":1,\"Pages\":[]}", actual);
             StringAssert.Contains("{\"Address\":\"protocol.php\",\"Link\":\"http://sitemaps.org/protocol.php\",\"Level\":1,\"Pages\":[]}", actual);
-            StringAssert.Contains("{\"Address\":\"terms.php\",\"Link\":\"http://sitemaps.org/terms.php\",\"Level\":1,\"Pages\":[]}]}", actual);
+            StringAssert.Contains("{\"Address\":\"terms.php\",\"Link\":\"http://sitemaps.org/terms.php\",\"Level\":1,\"Pages\":[]}", actual);
         }
 
         [Test()]
