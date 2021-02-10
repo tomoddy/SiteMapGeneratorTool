@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<p>
+@foreach(KeyValuePair<string, string> pair in ViewBag.Message)
+{
+    @pair.Key @pair.Value<br>
+}
+</p>

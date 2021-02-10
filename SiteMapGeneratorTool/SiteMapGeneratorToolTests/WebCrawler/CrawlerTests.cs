@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using System;
 
 namespace SiteMapGeneratorTool.WebCrawler.Tests
@@ -7,12 +8,15 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
     public class CrawlerTests
     {
         Crawler Crawler;
+        IConfiguration Configuration;
 
         [OneTimeSetUp]
         public void CrawlerOneTimeSetup()
         {
+            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
             // TODO Change to test domain and add tests for different configurations
-            Crawler = new Crawler(0, "http://sitemaps.org", false, false);
+            Crawler = new Crawler("http://sitemaps.org", false, false, Configuration.GetValue<int>("Threads"));
             Crawler.Run();
         }
 
