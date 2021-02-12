@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using SiteMapGeneratorTool.Models;
 
@@ -33,12 +32,6 @@ namespace SiteMapGeneratorTool.Controllers.Tests
             string guid = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             StatusCodeResult result = (StatusCodeResult)AjaxController.Results(guid);
             Assert.AreEqual(202, result.StatusCode);
-        }
-
-        [Test()]
-        public void HistoryTest()
-        {
-            Assert.Fail("Not Implemented");
         }
     }
 }
