@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using SiteMapGeneratorTool.Extensions;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -20,6 +21,9 @@ namespace SiteMapGeneratorTool.Controllers
         private readonly FirebaseHelper FirebaseHelper;
         private readonly S3Helper S3Helper;
 
+        // Properties
+        public string Domain { get; }
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -29,6 +33,8 @@ namespace SiteMapGeneratorTool.Controllers
             Configuration = configuration;
             FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
             S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
+
+            Domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
         }
 
         /// <summary>
@@ -54,22 +60,43 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>Json of history</returns>
         public JsonResult History()
         {
-            // Get data
-            HistoryModel history = new HistoryModel((HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value, FirebaseHelper.GetAll());
-
-            // Create data table results
-            List<DataTableModel> data = new List<DataTableModel>();
-            foreach (ResultsModel result in history.Results)
-                data.Add(new DataTableModel(result, history.Domain));
-
             // Get search query
             string query = Request.Form["search[value]"].FirstOrDefault();
 
             // Get sort column and direction
+            string direction = Request.Form["order[0][dir]"].FirstOrDefault();
             string column = Request.Form[$"columns[{Request.Form["order[0][column]"].FirstOrDefault()}][data]"].FirstOrDefault();
             if (string.IsNullOrEmpty(column))
                 column = Request.Form[$"columns[{Request.Form["order[0][column]"].FirstOrDefault()}][data][domain]"].FirstOrDefault();
-            string direction = Request.Form["order[0][dir]"].FirstOrDefault();
+
+            // Get paging information
+            string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+            int page = Request.Form["length"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["length"].FirstOrDefault()) : 25;
+            int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
+
+            // Get data table results
+            List<DataTableModel> data = new HistoryModel(Domain, FirebaseHelper.GetAll()).Data;
+
+            // Return generated json
+            JsonDataModel jsonData = GenerateJson(data, query, direction, column, draw, page, skip);
+            return Json(new { jsonData.Draw, recordsFiltered = jsonData.Count, recordsTotal = jsonData.Count, data = jsonData.Data });
+        }
+
+        /// <summary>
+        /// Seaches, sorts, and paginates results
+        /// </summary>
+        /// <param name="data">Data to sort/search/paginate</param>
+        /// <param name="query">Search query</param>
+        /// <param name="column">Sort column</param>
+        /// <param name="direction">Sort direction</param>
+        /// <param name="draw">Draw context</param>
+        /// <param name="page">Page size</param>
+        /// <param name="skip">Number of values to skip</param>
+        /// <returns>Json data model</returns>
+        private JsonDataModel GenerateJson(List<DataTableModel> data, string query, string direction, string column, string draw, int page, int skip)
+        {
+            // Create return model
+            JsonDataModel retVal = new JsonDataModel { Draw = draw };
 
             // Search results
             if (!string.IsNullOrEmpty(query))
@@ -79,42 +106,14 @@ namespace SiteMapGeneratorTool.Controllers
 
             // Sort results
             if (!(string.IsNullOrEmpty(column) && string.IsNullOrEmpty(direction)))
-                data = Sort(column, direction, data);
-
-            // Convinience method for sorting
-            static List<DataTableModel> Sort(string column, string direction, List<DataTableModel> results)
-            {
-                if (direction == "asc")
-                    return column switch
-                    {
-                        "information.domain" => results.OrderBy(x => x.Information.Domain.AbsoluteUri).ToList(),
-                        "information.pages" => results.OrderBy(x => x.Information.Pages).ToList(),
-                        "information.elapsed" => results.OrderBy(x => x.Information.Elapsed).ToList(),
-                        "information.completion" => results.OrderBy(x => x.Information.Completion).ToList(),
-                        _ => results
-                    };
-                else
-                    return column switch
-                    {
-                        "information.domain" => results.OrderByDescending(x => x.Information.Domain.AbsoluteUri).ToList(),
-                        "information.pages" => results.OrderByDescending(x => x.Information.Pages).ToList(),
-                        "information.elapsed" => results.OrderByDescending(x => x.Information.Elapsed).ToList(),
-                        "information.completion" => results.OrderByDescending(x => x.Information.Completion).ToList(),
-                        _ => results
-                    };
-            }
-
-            // Get paging information
-            string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
-            int pageSize = Request.Form["length"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["length"].FirstOrDefault()) : 25;
-            int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
+                data = data.Sort(column, direction);
 
             // Paginate data
-            int count = data.Count;
-            data = data.Skip(skip).Take(pageSize).ToList();
+            retVal.Count = data.Count;
+            retVal.Data = data.Skip(skip).Take(page).ToList();
 
             // Return json data
-            return Json(new { draw, recordsFiltered = count, recordsTotal = count, data });
+            return retVal;
         }
     }
 }
