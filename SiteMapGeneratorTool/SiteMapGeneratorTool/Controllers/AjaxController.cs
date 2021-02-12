@@ -66,9 +66,9 @@ namespace SiteMapGeneratorTool.Controllers
             string query = Request.Form["search[value]"].FirstOrDefault();
 
             // Get sort column and direction
-            string column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
+            string column = Request.Form[$"columns[{Request.Form["order[0][column]"].FirstOrDefault()}][data]"].FirstOrDefault();
             if (string.IsNullOrEmpty(column))
-                column = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data][domain]"].FirstOrDefault();
+                column = Request.Form[$"columns[{Request.Form["order[0][column]"].FirstOrDefault()}][data][domain]"].FirstOrDefault();
             string direction = Request.Form["order[0][dir]"].FirstOrDefault();
 
             // Search results
@@ -106,7 +106,7 @@ namespace SiteMapGeneratorTool.Controllers
 
             // Get paging information
             string draw = HttpContext.Request.Form["draw"].FirstOrDefault();
-            int pageSize = Request.Form["length"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["length"].FirstOrDefault()) : 0;
+            int pageSize = Request.Form["length"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["length"].FirstOrDefault()) : 25;
             int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
 
             // Paginate data

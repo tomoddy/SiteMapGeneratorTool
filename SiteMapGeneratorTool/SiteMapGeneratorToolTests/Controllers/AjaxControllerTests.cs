@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SiteMapGeneratorTool.Models;
 
@@ -8,20 +9,21 @@ namespace SiteMapGeneratorTool.Controllers.Tests
     [TestFixture()]
     public class AjaxControllerTests
     {
+        AjaxController AjaxController;
         IConfiguration Configuration;
 
         [SetUp]
         public void AjaxControllerSetup()
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            AjaxController = new AjaxController(Configuration);
         }
 
         [Test()]
         public void ResultsValidTest()
         {
             string guid = Configuration.GetValue<string>("Test:Guid");
-            AjaxController controller = new AjaxController(Configuration);
-            JsonResult result = (JsonResult)controller.Results(guid);
+            JsonResult result = (JsonResult)AjaxController.Results(guid);
             Assert.AreEqual(guid, ((ResultsModel)result.Value).Guid);
         }
 
@@ -29,8 +31,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         public void ResultsInvalidTest()
         {
             string guid = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-            AjaxController controller = new AjaxController(Configuration);
-            StatusCodeResult result = (StatusCodeResult)controller.Results(guid);
+            StatusCodeResult result = (StatusCodeResult)AjaxController.Results(guid);
             Assert.AreEqual(202, result.StatusCode);
         }
 
