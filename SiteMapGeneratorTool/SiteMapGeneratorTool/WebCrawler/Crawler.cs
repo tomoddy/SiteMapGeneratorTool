@@ -29,16 +29,10 @@ namespace SiteMapGeneratorTool.WebCrawler
         private readonly Stopwatch Stopwatch;
 
         // Properties
-        //TODO Remove json properties
-        [JsonProperty]
         public Uri Domain { get; private set; }
-        [JsonProperty]
         public DateTime Completion { get; set; }
-        [JsonProperty]
         public int Pages { get; private set; }
-        [JsonProperty]
         public double Elapsed { get; private set; }
-        [JsonIgnore]
         public List<Webpage> Webpages { get; private set; }
         private ConcurrentBag<Uri> Visited { get; set; }
         private List<Uri> ToVisit { get; set; }
