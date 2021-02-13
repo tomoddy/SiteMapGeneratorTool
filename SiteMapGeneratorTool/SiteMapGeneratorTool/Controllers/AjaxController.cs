@@ -31,8 +31,14 @@ namespace SiteMapGeneratorTool.Controllers
         public AjaxController(IConfiguration configuration)
         {
             Configuration = configuration;
-            FirebaseHelper = new FirebaseHelper(Configuration.GetValue<string>("Firebase:BasePath"), Configuration.GetValue<string>("Firebase:AuthSecret"));
-            S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));
+            FirebaseHelper = new FirebaseHelper(
+                Configuration.GetValue<string>("Firebase:KeyPath"),
+                Configuration.GetValue<string>("Firebase:Database"),
+                Configuration.GetValue<string>("Firebase:RequestCollection"));
+            S3Helper = new S3Helper(
+                Configuration.GetValue<string>("AWS:Credentials:AccessKey"), 
+                Configuration.GetValue<string>("AWS:Credentials:SecretKey"), 
+                Configuration.GetValue<string>("AWS:S3:BucketName"));
 
             Domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
         }
@@ -45,11 +51,11 @@ namespace SiteMapGeneratorTool.Controllers
         public IActionResult Results(string guid)
         {
             // Create variables
-            Crawler information = FirebaseHelper.Get(guid);
+            CrawlerData data = FirebaseHelper.Get<CrawlerData>(guid);
 
             // Return results if completed otherwise processing http code
-            if (information != null)
-                return new JsonResult(new ResultsModel(guid, information));
+            if (data != null)
+                return new JsonResult(data);
             else
                 return StatusCode(202);
         }
@@ -75,7 +81,7 @@ namespace SiteMapGeneratorTool.Controllers
             int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
 
             // Get data table results
-            List<DataTableModel> data = new HistoryModel(Domain, FirebaseHelper.GetAll()).Data;
+            List<CrawlerData> data = new HistoryModel(Domain, FirebaseHelper.GetAll<CrawlerData>()).Data;
 
             // Return generated json
             JsonDataModel jsonData = GenerateJson(data, query, direction, column, draw, page, skip);
@@ -93,7 +99,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <param name="page">Page size</param>
         /// <param name="skip">Number of values to skip</param>
         /// <returns>Json data model</returns>
-        private JsonDataModel GenerateJson(List<DataTableModel> data, string query, string direction, string column, string draw, int page, int skip)
+        private JsonDataModel GenerateJson(List<CrawlerData> data, string query, string direction, string column, string draw, int page, int skip)
         {
             // Create return model
             JsonDataModel retVal = new JsonDataModel { Draw = draw };
@@ -101,7 +107,7 @@ namespace SiteMapGeneratorTool.Controllers
             // Search results
             if (!string.IsNullOrEmpty(query))
                 for (int i = data.Count - 1; i >= 0; i--)
-                    if (!data[i].Information.Domain.AbsoluteUri.Contains(query))
+                    if (!data[i].Domain.Contains(query))
                         data.RemoveAt(i);
 
             // Sort results

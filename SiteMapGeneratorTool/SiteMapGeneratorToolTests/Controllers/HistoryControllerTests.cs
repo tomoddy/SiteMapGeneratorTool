@@ -7,18 +7,10 @@ namespace SiteMapGeneratorTool.Controllers.Tests
     [TestFixture()]
     public class HistoryControllerTests
     {
-        IConfiguration Configuration;
-
-        [SetUp]
-        public void HistoryControllerSetup()
-        {
-            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        }
-
         [Test()]
         public void IndexTest()
         {
-            HistoryController controller = new HistoryController(Configuration);
+            HistoryController controller = new HistoryController();
             ViewResult result = controller.Index() as ViewResult;
             Assert.AreEqual("Index", result.ViewName);
         }

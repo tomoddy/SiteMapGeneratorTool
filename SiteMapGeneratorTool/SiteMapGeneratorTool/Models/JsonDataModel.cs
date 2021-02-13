@@ -6,6 +6,6 @@ namespace SiteMapGeneratorTool.Models
     {
         public string Draw { get; set; }
         public int Count { get; set; }
-        public List<DataTableModel> Data { get; set; }
+        public List<CrawlerData> Data { get; set; }
     }
 }

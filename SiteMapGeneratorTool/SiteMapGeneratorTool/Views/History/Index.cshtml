@@ -35,10 +35,10 @@
                     datatype: "json"
                 },
                 columns: [
-                    { data: { link: "link", domain: "information.domain" }, render: (data) => { return `<a href="${data.link}">${data.information.domain}</a>` } },
-                    { data: "information.pages" },
-                    { data: "information.elapsed" },
-                    { data: "information.completion", render: (completion) => { return moment(completion).format("DD/MM/YYYY HH:mm:ss") } }
+                    { data: { link: "link", domain: "domain" }, render: (data) => { return `<a href="${data.link}">${data.domain}</a>` } },
+                    { data: "pages" },
+                    { data: "elapsed" },
+                    { data: "completion", render: (completion) => { return moment(Date.parse(completion)).format("DD/MM/YYYY HH:mm:ss") } }
                 ]
             });
         });

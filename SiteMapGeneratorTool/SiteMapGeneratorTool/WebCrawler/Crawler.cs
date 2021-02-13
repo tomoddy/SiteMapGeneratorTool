@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SiteMapGeneratorTool.Models;
 using SiteMapGeneratorTool.WebCrawler.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
@@ -28,6 +29,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private readonly Stopwatch Stopwatch;
 
         // Properties
+        //TODO Remove json properties
         [JsonProperty]
         public Uri Domain { get; private set; }
         [JsonProperty]
@@ -165,6 +167,22 @@ namespace SiteMapGeneratorTool.WebCrawler
         public string GetSitemapXml()
         {
             return SitemapHelper.GenerateXml(SitemapHelper.GenerateSitemap(Webpages));
+        }
+
+        /// <summary>
+        /// Generates crawler data object (with firestore properties(
+        /// </summary>
+        /// <returns>CrawlerData object</returns>
+        public CrawlerData GetCrawlerData(string guid)
+        {
+            return new CrawlerData
+            {
+                Guid = guid,
+                Domain = Domain.AbsoluteUri,
+                Pages = Pages,
+                Elapsed = Elapsed,
+                Completion = Completion.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
         }
 
         /// <summary>
