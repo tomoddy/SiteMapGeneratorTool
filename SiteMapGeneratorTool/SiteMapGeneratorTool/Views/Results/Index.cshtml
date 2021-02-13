@@ -25,8 +25,8 @@
                             setTimeout(getData, 1000)
                         else if (jQXHR.status === 200) {
                             $loader.html(`
-                                        <h1>Request complete for ${data.information.domain}</h1>
-                                        <p>${data.information.pages} pages found in ${data.information.elapsed} seconds.</p>
+                                        <h1>Request complete for ${data.domain}</h1>
+                                        <p>${data.pages} pages found in ${data.elapsed} seconds.</p>
                                         <a href="results/structure?guid=${data.guid}" />Structure</a>
                                         <br />
                                         <a href="results/sitemap?guid=${data.guid}" />Sitemap</a>

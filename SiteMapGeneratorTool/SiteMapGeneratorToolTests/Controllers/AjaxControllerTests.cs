@@ -23,7 +23,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         {
             string guid = Configuration.GetValue<string>("Test:Guid");
             JsonResult result = (JsonResult)AjaxController.Results(guid);
-            Assert.AreEqual(guid, ((ResultsModel)result.Value).Guid);
+            Assert.AreEqual(guid, ((CrawlerData)result.Value).Guid);
         }
 
         [Test()]

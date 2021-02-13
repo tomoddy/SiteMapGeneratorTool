@@ -40,8 +40,9 @@ namespace SiteMapGeneratorTool.Workers
                 Configuration.GetValue<string>("SMTP:Host"),
                 Configuration.GetValue<string>("SMTP:Port"));
             FirebaseHelper = new FirebaseHelper(
-                Configuration.GetValue<string>("Firebase:BasePath"),
-                Configuration.GetValue<string>("Firebase:AuthSecret"));
+                Configuration.GetValue<string>("Firebase:KeyPath"),
+                Configuration.GetValue<string>("Firebase:Database"),
+                Configuration.GetValue<string>("Firebase:RequestCollection"));
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
@@ -86,7 +87,7 @@ namespace SiteMapGeneratorTool.Workers
 
                     // Upload information
                     Logger.LogInformation($"Web Crawler {Id}: Uploading information");
-                    FirebaseHelper.Add(request.Guid.ToString(), crawler);
+                    FirebaseHelper.Add(request.Guid.ToString(), crawler.GetCrawlerData(request.Guid.ToString()));
 
                     // Send email notification
                     if (!(request.Email is null))

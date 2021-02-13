@@ -1,15 +1,7 @@
-﻿using FireSharp;
-using FireSharp.Config;
-using FireSharp.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SiteMapGeneratorTool.Models;
-using SiteMapGeneratorTool.WebCrawler;
+﻿using Google.Cloud.Firestore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using static SiteMapGeneratorTool.Models.HistoryModel;
+using System.IO;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -19,66 +11,61 @@ namespace SiteMapGeneratorTool.Helpers
     public class FirebaseHelper
     {
         // Variables
-        private readonly IFirebaseClient Client;
+        private readonly FirestoreDb Database;
+
+        // Properties
+        private string Collection { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
-        /// <param name="basePath">Firebase base path</param>
-        /// <param name="authSecret">Firebase authsecret key</param>
-        public FirebaseHelper(string basePath, string authSecret)
+        /// <param name="path">Path to key file</param>
+        /// <param name="database">Database name</param>
+        /// <param name="collection">Collection name</param>
+        public FirebaseHelper(string path, string database, string collection)
         {
-            Client = new FirebaseClient(new FirebaseConfig
-            {
-                BasePath = basePath,
-                AuthSecret = authSecret
-            });
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
+            Database = FirestoreDb.Create(database);
+            Collection = collection;
         }
 
         /// <summary>
-        /// Adds user to database as valid
+        /// Adds data to firestore
         /// </summary>
-        /// <param name="guid">GUID of user</param>
-        public void Add(string guid, Crawler information)
+        /// <typeparam name="T">Type to add (must be firestoredata)</typeparam>
+        /// <param name="id">Id of added data</param>
+        /// <param name="data">Data to add</param>
+        public void Add<T>(string id, T data)
         {
-            if (Client.Set($"requests/{guid}", information).StatusCode != HttpStatusCode.OK)
-                throw new Exception($"Could not create Firebase entry for {guid}");
+            Database.Collection(Collection).Document(id).SetAsync(data).GetAwaiter().GetResult();
         }
 
         /// <summary>
-        /// Get crawler information from database
+        /// Gets data from firestore
         /// </summary>
-        /// <param name="guid">Guid of request</param>
-        /// <returns>Crawler object</returns>
-        public Crawler Get(string guid)
+        /// <typeparam name="T">Type of data to return (must be firestoredata)</typeparam>
+        /// <param name="id">Id of data to get</param>
+        /// <returns>Data is exists, filenotfoundexception otherwise</returns>
+        public T Get<T>(string id)
         {
-            JObject information = Client.Get($"requests/{guid}").ResultAs<JObject>();
-            if (information == null)
-                return null;
-            else
-                return JsonConvert.DeserializeObject<Crawler>(information.ToString());
+            DocumentSnapshot retVal = Database.Collection(Collection).Document(id).GetSnapshotAsync().GetAwaiter().GetResult();
+            return retVal.Exists ? retVal.ConvertTo<T>() : default;
         }
 
         /// <summary>
-        /// Get all entries from database
+        /// Gets all data from firestore
         /// </summary>
-        /// <returns>List of entries</returns>
-        public List<ResultsModel> GetAll()
+        /// <typeparam name="T">Type of data to return (must be firestoredata)</typeparam>
+        /// <returns>List of data</returns>
+        public List<T> GetAll<T>()
         {
-            // Create return value and get all requests
-            List<ResultsModel> retVal = new List<ResultsModel>();
-            JObject requests = Client.Get("requests").ResultAs<JObject>();
+            List<T> retVal = new List<T>();
+            QuerySnapshot snapshot = Database.Collection(Collection).GetSnapshotAsync().GetAwaiter().GetResult();
 
-            // Check if requests exist
-            if (requests != null)
-            {
-                // Add all requests to return value
-                foreach (string guid in requests.Properties().Select(p => p.Name).ToList())
-                    retVal.Add(new ResultsModel(guid, JsonConvert.DeserializeObject<Crawler>(requests.GetValue(guid).ToString())));
-            }
+            foreach (DocumentSnapshot document in snapshot.Documents)
+                retVal.Add(document.ConvertTo<T>());
 
-            // Return list
-            return retVal.OrderByDescending(x => x.Information.Completion).ToList();
+            return retVal;
         }
     }
 }
