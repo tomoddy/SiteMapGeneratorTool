@@ -124,15 +124,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                     Structure.Add(sL);
 
                 // Remove duplicate to visit links
-                try
-                {
-                    ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
-                }
-                catch (Exception ex)
-                {
-                    // TODO Remove this, potential bug catching
-                    Console.WriteLine(ex);
-                }
+                ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
             }
 
             // Stop clock and generate links in structure
@@ -175,7 +167,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                 Domain = Domain.AbsoluteUri,
                 Pages = Pages,
                 Elapsed = Elapsed,
-                Completion = Completion.ToString("yyyy-MM-ddTHH:mm:ss")
+                Completion = new DateTimeOffset(Completion).ToUnixTimeMilliseconds()
             };
         }
 

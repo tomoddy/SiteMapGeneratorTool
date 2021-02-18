@@ -22,7 +22,7 @@ namespace SiteMapGeneratorTool.Extensions
                     "domain" => results.OrderBy(x => x.Domain).ToList(),
                     "pages" => results.OrderBy(x => x.Pages).ToList(),
                     "elapsed" => results.OrderBy(x => x.Elapsed).ToList(),
-                    "completion" => results.OrderBy(x => Convert.ToDateTime(x.Completion)).ToList(),
+                    "completion" => results.OrderBy(x => x.Completion).ToList(),
                     _ => results
                 };
             else
@@ -31,7 +31,7 @@ namespace SiteMapGeneratorTool.Extensions
                     "domain" => results.OrderByDescending(x => x.Domain).ToList(),
                     "pages" => results.OrderByDescending(x => x.Pages).ToList(),
                     "elapsed" => results.OrderByDescending(x => x.Elapsed).ToList(),
-                    "completion" => results.OrderByDescending(x => Convert.ToDateTime(x.Completion)).ToList(),
+                    "completion" => results.OrderByDescending(x => x.Completion).ToList(),
                     _ => results
                 };
         }

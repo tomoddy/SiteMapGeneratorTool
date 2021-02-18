@@ -42,7 +42,8 @@ namespace SiteMapGeneratorTool.Workers
             FirebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:KeyPath"),
                 Configuration.GetValue<string>("Firebase:Database"),
-                Configuration.GetValue<string>("Firebase:RequestCollection"));
+                Configuration.GetValue<string>("Firebase:RequestCollection"),
+                Configuration.GetValue<string>("Firebase:SearchQuery"));
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
