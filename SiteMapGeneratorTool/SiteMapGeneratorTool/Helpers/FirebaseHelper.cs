@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -10,11 +10,16 @@ namespace SiteMapGeneratorTool.Helpers
     /// </summary>
     public class FirebaseHelper
     {
+        // Constants
+        private const string ASCENDING = "asc";
+        private const string GOOGLE_APPLICATION_CREDENTIALS = "GOOGLE_APPLICATION_CREDENTIALS";
+
         // Variables
         private readonly FirestoreDb Database;
 
         // Properties
         private string Collection { get; set; }
+        public string SearchField { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -22,11 +27,12 @@ namespace SiteMapGeneratorTool.Helpers
         /// <param name="path">Path to key file</param>
         /// <param name="database">Database name</param>
         /// <param name="collection">Collection name</param>
-        public FirebaseHelper(string path, string database, string collection)
+        public FirebaseHelper(string path, string database, string collection, string searchField)
         {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
+            Environment.SetEnvironmentVariable(GOOGLE_APPLICATION_CREDENTIALS, path);
             Database = FirestoreDb.Create(database);
             Collection = collection;
+            SearchField = searchField;
         }
 
         /// <summary>
@@ -50,6 +56,39 @@ namespace SiteMapGeneratorTool.Helpers
         {
             DocumentSnapshot retVal = Database.Collection(Collection).Document(id).GetSnapshotAsync().GetAwaiter().GetResult();
             return retVal.Exists ? retVal.ConvertTo<T>() : default;
+        }
+
+        /// <summary>
+        /// Gets data from firestore
+        /// </summary>
+        /// <typeparam name="T">Type of data to return (must be firestoredata)</typeparam>
+        /// <param name="direction">Sort direction</param>
+        /// <param name="field">Sort field</param>
+        /// <param name="search">Search query</param>
+        /// <returns>List of matching data</returns>
+        public List<T> Get<T>(string direction, string field, string search)
+        {
+            // Create return value and query
+            List<T> retVal = new List<T>();
+            Query query = Database.Collection(Collection);
+
+            // Check if search query is populated
+            if (string.IsNullOrEmpty(search))
+            {
+                // Set order by for field
+                if (direction == ASCENDING)
+                    query = query.OrderBy(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(field));
+                else
+                    query = query.OrderByDescending(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(field));
+            }
+            else
+                // Set where equal to for search term
+                query = query.WhereEqualTo(SearchField, search);
+
+            // Convert documents into T and return
+            foreach (DocumentSnapshot document in query.GetSnapshotAsync().GetAwaiter().GetResult().Documents)
+                retVal.Add(document.ConvertTo<T>());
+            return retVal;
         }
 
         /// <summary>

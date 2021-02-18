@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SiteMapGeneratorTool.Extensions;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.Models;
-using SiteMapGeneratorTool.WebCrawler;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using SiteMapGeneratorTool.Extensions;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -34,7 +33,8 @@ namespace SiteMapGeneratorTool.Controllers
             FirebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:KeyPath"),
                 Configuration.GetValue<string>("Firebase:Database"),
-                Configuration.GetValue<string>("Firebase:RequestCollection"));
+                Configuration.GetValue<string>("Firebase:RequestCollection"),
+                Configuration.GetValue<string>("Firebase:SearchQuery"));
             S3Helper = new S3Helper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"), 
                 Configuration.GetValue<string>("AWS:Credentials:SecretKey"), 
@@ -67,7 +67,7 @@ namespace SiteMapGeneratorTool.Controllers
         public JsonResult History()
         {
             // Get search query
-            string query = Request.Form["search[value]"].FirstOrDefault();
+            string search = Request.Form["search[value]"].FirstOrDefault();
 
             // Get sort column and direction
             string direction = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -81,45 +81,18 @@ namespace SiteMapGeneratorTool.Controllers
             int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
 
             // Get data table results
-            List<CrawlerData> data = new HistoryModel(Domain, FirebaseHelper.GetAll<CrawlerData>()).Data;
+            List<CrawlerData> data = new HistoryModel(Domain, FirebaseHelper.Get<CrawlerData>(direction, column, search)).Data;
 
-            // Return generated json
-            JsonDataModel jsonData = GenerateJson(data, query, direction, column, draw, page, skip);
-            return Json(new { jsonData.Draw, recordsFiltered = jsonData.Count, recordsTotal = jsonData.Count, data = jsonData.Data });
-        }
-
-        /// <summary>
-        /// Seaches, sorts, and paginates results
-        /// </summary>
-        /// <param name="data">Data to sort/search/paginate</param>
-        /// <param name="query">Search query</param>
-        /// <param name="column">Sort column</param>
-        /// <param name="direction">Sort direction</param>
-        /// <param name="draw">Draw context</param>
-        /// <param name="page">Page size</param>
-        /// <param name="skip">Number of values to skip</param>
-        /// <returns>Json data model</returns>
-        private JsonDataModel GenerateJson(List<CrawlerData> data, string query, string direction, string column, string draw, int page, int skip)
-        {
-            // Create return model
-            JsonDataModel retVal = new JsonDataModel { Draw = draw };
-
-            // Search results
-            if (!string.IsNullOrEmpty(query))
-                for (int i = data.Count - 1; i >= 0; i--)
-                    if (!data[i].Domain.Contains(query))
-                        data.RemoveAt(i);
-
-            // Sort results
-            if (!(string.IsNullOrEmpty(column) && string.IsNullOrEmpty(direction)))
+            // Server side sort if search is used
+            if (!string.IsNullOrEmpty(search))
                 data = data.Sort(column, direction);
 
             // Paginate data
-            retVal.Count = data.Count;
-            retVal.Data = data.Skip(skip).Take(page).ToList();
+            int count = data.Count;
+            data = data.Skip(skip).Take(page).ToList();
 
-            // Return json data
-            return retVal;
+            // Return json
+            return Json(new { draw, recordsFiltered = count, recordsTotal = count, data });
         }
     }
 }

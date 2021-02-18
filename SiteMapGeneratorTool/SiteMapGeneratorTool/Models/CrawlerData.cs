@@ -10,7 +10,7 @@ namespace SiteMapGeneratorTool.Models
         [FirestoreProperty]
         public string Domain { get; set; }
         [FirestoreProperty]
-        public string Completion { get; set; }
+        public long Completion { get; set; }
         [FirestoreProperty]
         public int Pages { get; set; }
         [FirestoreProperty]

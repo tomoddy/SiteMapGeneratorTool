@@ -38,7 +38,7 @@
                     { data: { link: "link", domain: "domain" }, render: (data) => { return `<a href="${data.link}">${data.domain}</a>` } },
                     { data: "pages" },
                     { data: "elapsed" },
-                    { data: "completion", render: (completion) => { return moment(Date.parse(completion)).format("DD/MM/YYYY HH:mm:ss") } }
+                    { data: "completion", render: (completion) => { return moment(new Date(completion)).format("DD/MM/YYYY HH:mm:ss") } }
                 ]
             });
         });

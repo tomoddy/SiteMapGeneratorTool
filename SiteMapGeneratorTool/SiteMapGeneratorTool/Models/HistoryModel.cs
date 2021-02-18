@@ -4,7 +4,7 @@ namespace SiteMapGeneratorTool.Models
 {
     public class HistoryModel
     {
-        public string Domain { get; set; }
+        private string Domain { get; set; }
         public List<CrawlerData> Data { get; set; }
 
         public HistoryModel(string domain, List<CrawlerData> data)
