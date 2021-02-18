@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Firestore;
+﻿using SiteMapGeneratorTool.Helpers;
+using Google.Cloud.Firestore;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
@@ -33,7 +34,8 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:KeyPath"),
                 Configuration.GetValue<string>("Firebase:Database"),
-                "AddTest");
+                "AddTest",
+                string.Empty);
 
             TestData expected = new TestData { Name = "TestName", Age = 100 };
 
@@ -51,11 +53,47 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetTest");
+                   "GetTest",
+                   string.Empty);
 
             TestData actual = firebaseHelper.Get<TestData>("test");
-            Assert.AreEqual("TestName", actual.Name);
+            Assert.AreEqual("TestName1", actual.Name);
             Assert.AreEqual(100, actual.Age);
+        }
+
+        [Test()]
+        public void GetTestSort()
+        {
+            FirebaseHelper firebaseHelper = new FirebaseHelper(
+                   Configuration.GetValue<string>("Firebase:KeyPath"),
+                   Configuration.GetValue<string>("Firebase:Database"),
+                   "GetTest",
+                   string.Empty);
+
+            List<TestData> actual = firebaseHelper.Get<TestData>("asc", "Age", string.Empty);
+            Assert.AreEqual("TestName1", actual[0].Name);
+            Assert.AreEqual("TestName2", actual[1].Name);
+            Assert.AreEqual("TestName3", actual[2].Name);
+
+            List<TestData> actual2 = firebaseHelper.Get<TestData>("desc", "Age", string.Empty);
+            Assert.AreEqual("TestName3", actual2[0].Name);
+            Assert.AreEqual("TestName2", actual2[1].Name);
+            Assert.AreEqual("TestName1", actual2[2].Name);
+        }
+
+        [Test()]
+        public void GetTestSearch()
+        {
+            FirebaseHelper firebaseHelper = new FirebaseHelper(
+                   Configuration.GetValue<string>("Firebase:KeyPath"),
+                   Configuration.GetValue<string>("Firebase:Database"),
+                   "GetTest",
+                   "Name");
+
+            List<TestData> actual = firebaseHelper.Get<TestData>("asc", "Name", "");
+            Assert.AreEqual(3, actual.Count);
+            List<TestData> actual2 = firebaseHelper.Get<TestData>("asc", "Name", "TestName1");
+            Assert.AreEqual(1, actual2.Count);
         }
 
         [Test()]
@@ -64,7 +102,8 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetAllTest");
+                   "GetAllTest",
+                   string.Empty);
 
             List<TestData> actual = firebaseHelper.GetAll<TestData>();
             actual = actual.OrderBy(x => x.Age).ToList();
