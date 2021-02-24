@@ -24,7 +24,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// </summary>
         /// <param name="configuration">Injected object</param>
         /// <param name="logger">Injected object</param>
-        public ResultsController(IConfiguration configuration, ILogger<ResultsController> logger)
+        public ResultsController(IConfiguration configuration)
         {
             Configuration = configuration;
             S3Helper = new S3Helper(Configuration.GetValue<string>("AWS:Credentials:AccessKey"), Configuration.GetValue<string>("AWS:Credentials:SecretKey"), Configuration.GetValue<string>("AWS:S3:BucketName"));

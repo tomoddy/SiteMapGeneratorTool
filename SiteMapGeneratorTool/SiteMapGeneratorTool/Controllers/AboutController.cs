@@ -32,7 +32,7 @@ namespace SiteMapGeneratorTool.Controllers
                 { "Number of Workers: ", Configuration.GetValue<string>("Workers") },
                 { "Timeout (ms) : ", Configuration.GetValue<string>("Delay") },
                 { "Thread Count : ", Configuration.GetValue<string>("Threads") }
-            }; ;
+            };
             return View("Index");
         }
     }
