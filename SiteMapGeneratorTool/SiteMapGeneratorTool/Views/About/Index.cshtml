@@ -3,9 +3,9 @@
 }
 
 <p>
-@foreach(KeyValuePair<string, string> pair in ViewBag.Message)
-{
-    @pair.Key @pair.Value<br>
-}
-Processor Count : @Environment.ProcessorCount<br />
+    @foreach (KeyValuePair<string, string> pair in ViewBag.Message)
+    {
+        @pair.Key @pair.Value<br>
+    }
+    Processor Count : @Environment.ProcessorCount<br />
 </p>
