@@ -33,6 +33,7 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
+            ViewBag.applicationServerKey = Configuration.GetValue<string>("VAPID:PublicKey");
             return View("Index");
         }
 

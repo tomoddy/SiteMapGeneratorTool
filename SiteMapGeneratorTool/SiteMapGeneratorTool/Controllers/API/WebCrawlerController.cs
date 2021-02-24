@@ -16,7 +16,8 @@ namespace SiteMapGeneratorTool.Controllers.API
     {
         // Variables
         private readonly IConfiguration Configuration;
-        private readonly FirebaseHelper FirebaseHelper;
+        private readonly FirebaseHelper RequestFirebaseHelper;
+        private readonly FirebaseHelper NotificationFirebaseHelper;
         private readonly ILogger Logger;
         private readonly SQSHelper SQSHelper;
 
@@ -28,11 +29,14 @@ namespace SiteMapGeneratorTool.Controllers.API
         public WebCrawlerController(IConfiguration configuration, ILogger<WebCrawlerController> logger)
         {
             Configuration = configuration;
-            FirebaseHelper = new FirebaseHelper(
+            RequestFirebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:KeyPath"),
                 Configuration.GetValue<string>("Firebase:Database"),
-                Configuration.GetValue<string>("Firebase:RequestCollection"),
-                Configuration.GetValue<string>("Firebase:SearchQuery"));
+                Configuration.GetValue<string>("Firebase:RequestCollection"));
+            NotificationFirebaseHelper = new FirebaseHelper(
+                Configuration.GetValue<string>("Firebase:KeyPath"),
+                Configuration.GetValue<string>("Firebase:Database"),
+                Configuration.GetValue<string>("Firebase:NotificationCollection"));
             Logger = logger;
             SQSHelper = new SQSHelper(
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
@@ -49,8 +53,8 @@ namespace SiteMapGeneratorTool.Controllers.API
         /// <param name="files">Include files</param>
         /// <param name="robots">Respect robots</param>
         /// <returns>GUID</returns>
-        [HttpGet("")]
-        public IActionResult Index(string url, string email, bool files, bool robots)
+        [HttpGet]
+        public IActionResult Index(string url, string email, bool files, bool robots, string endpoint, string p256dh, string auth)
         {
             // Get domain
             string domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
@@ -70,6 +74,9 @@ namespace SiteMapGeneratorTool.Controllers.API
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
             SQSHelper.SendMessage(requestInformation);
+
+            // Upload notification information
+            NotificationFirebaseHelper.Add(requestInformation.Guid.ToString(), new SubscriptionModel(endpoint, p256dh, auth));
 
             // Return request information
             Logger.LogInformation("Request complete");

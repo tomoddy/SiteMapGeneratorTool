@@ -19,7 +19,6 @@ namespace SiteMapGeneratorTool.Helpers
 
         // Properties
         private string Collection { get; set; }
-        public string SearchField { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -27,12 +26,11 @@ namespace SiteMapGeneratorTool.Helpers
         /// <param name="path">Path to key file</param>
         /// <param name="database">Database name</param>
         /// <param name="collection">Collection name</param>
-        public FirebaseHelper(string path, string database, string collection, string searchField)
+        public FirebaseHelper(string path, string database, string collection)
         {
             Environment.SetEnvironmentVariable(GOOGLE_APPLICATION_CREDENTIALS, path);
             Database = FirestoreDb.Create(database);
             Collection = collection;
-            SearchField = searchField;
         }
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// <param name="field">Sort field</param>
         /// <param name="search">Search query</param>
         /// <returns>List of matching data</returns>
-        public List<T> Get<T>(string direction, string field, string search)
+        public List<T> Get<T>(string direction, string field, string searchField, string search)
         {
             // Create return value and query
             List<T> retVal = new List<T>();
@@ -83,7 +81,7 @@ namespace SiteMapGeneratorTool.Helpers
             }
             else
                 // Set where equal to for search term
-                query = query.WhereEqualTo(SearchField, search);
+                query = query.WhereEqualTo(searchField, search);
 
             // Convert documents into T and return
             foreach (DocumentSnapshot document in query.GetSnapshotAsync().GetAwaiter().GetResult().Documents)

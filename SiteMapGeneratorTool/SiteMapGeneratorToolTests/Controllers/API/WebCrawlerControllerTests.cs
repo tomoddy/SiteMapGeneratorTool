@@ -20,7 +20,7 @@ namespace SiteMapGeneratorTool.Controllers.API.Tests
         public void IndexTest()
         {
             WebCrawlerController requestController = new WebCrawlerController(Configuration, new NullLogger<WebCrawlerController>());
-            RedirectResult actual = requestController.Index("http://sitemaps.org", null, false, false) as RedirectResult;
+            RedirectResult actual = requestController.Index("http://sitemaps.org", null, false, false, null, null, null) as RedirectResult;
             StringAssert.StartsWith($"https://{Configuration.GetValue<string>("Test:Domain")}/results?guid=", actual.Url);
         }
     }

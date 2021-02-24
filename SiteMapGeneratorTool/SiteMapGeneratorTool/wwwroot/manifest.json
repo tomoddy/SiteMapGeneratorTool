@@ -1,0 +1,8 @@
+{
+  "name": "PWA Push Notification",
+  "short_name": "Push",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#959595",
+  "theme_color": "#FFFFFF"
+}
