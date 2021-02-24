@@ -61,7 +61,7 @@ namespace SiteMapGeneratorTool.Helpers
                 <div class='container'>
 	                <h2>Site Map Generation Complete</h2>
 	                <p>The results from your site map generation request are now available to view.</p>
-	                <p><a href='https://{domain}/generate/results?guid={guid}'>View Results</a></p>
+	                <p><a href='https://{domain}/results?guid={guid}'>View Results</a></p>
                 </div>",
                 IsBodyHtml = true
             });
