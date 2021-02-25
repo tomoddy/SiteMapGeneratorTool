@@ -6,7 +6,7 @@ self.addEventListener('push', function (e) {
 
     var options = {
         body: payload[0],
-        icon: "../favicon.ico",
+        icon: "../static/favicon.ico",
         data: {
             dateOfArrival: Date.now(),
             guid: payload[1]

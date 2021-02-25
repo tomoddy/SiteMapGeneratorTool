@@ -3,7 +3,10 @@
 }
 
 <div class="container">
-    <div class="loader">Generating site map...</div>
+    <div class="loader">
+        <h2>Generating site map...</h2>
+        <p>@ViewBag.Fact</p>
+    </div>
 </div>
 
 @section Scripts{
@@ -25,14 +28,14 @@
                             setTimeout(getData, 1000)
                         else if (jQXHR.status === 200) {
                             $loader.html(`
-                                        <h1>Request complete for ${data.domain}</h1>
-                                        <p>${data.pages} pages found in ${data.elapsed} seconds.</p>
-                                        <a href="results/structure?guid=${data.guid}" />Structure</a>
-                                        <br />
-                                        <a href="results/sitemap?guid=${data.guid}" />Sitemap</a>
-                                        <br />
-                                        <a href="results/graph?guid=${data.guid}" />Graph</a>
-                                                `)
+                                            <h1>Request complete for ${data.domain}</h1>
+                                            <p>${data.pages} pages found in ${data.elapsed} seconds.</p>
+                                            <a href="results/structure?guid=${data.guid}" />Structure</a>
+                                            <br />
+                                            <a href="results/sitemap?guid=${data.guid}" />Sitemap</a>
+                                            <br />
+                                            <a href="results/graph?guid=${data.guid}" />Graph</a>
+                                                    `)
                         }
                         else
                             $loader.text("Server Error (Success)")
