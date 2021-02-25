@@ -21,7 +21,6 @@ namespace SiteMapGeneratorTool.Controllers
         private readonly S3Helper S3Helper;
 
         // Properties
-        public string Domain { get; }
         public string SearchField { get; set; }
 
         /// <summary>
@@ -39,8 +38,6 @@ namespace SiteMapGeneratorTool.Controllers
                 Configuration.GetValue<string>("AWS:Credentials:AccessKey"), 
                 Configuration.GetValue<string>("AWS:Credentials:SecretKey"), 
                 Configuration.GetValue<string>("AWS:S3:BucketName"));
-
-            Domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
             SearchField = Configuration.GetValue<string>("Firebase:SearchField");
         }
 
@@ -82,7 +79,12 @@ namespace SiteMapGeneratorTool.Controllers
             int skip = Request.Form["start"].FirstOrDefault() != null ? Convert.ToInt32(Request.Form["start"].FirstOrDefault()) : 0;
 
             // Get data table results
-            List<CrawlerData> data = new HistoryModel(Domain, FirebaseHelper.Get<CrawlerData>(direction, column, SearchField, search)).Data;
+            List<CrawlerData> data = FirebaseHelper.Get<CrawlerData>(direction, column, SearchField, search);
+
+            // Add links to data
+            string domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
+            foreach (CrawlerData crawlerData in data)
+                crawlerData.Link = $"https://{domain}/results?guid={crawlerData.Guid}";
 
             // Server side sort if search is used
             if (!string.IsNullOrEmpty(search))
