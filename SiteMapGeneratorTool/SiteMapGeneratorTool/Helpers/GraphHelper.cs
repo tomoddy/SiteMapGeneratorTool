@@ -31,7 +31,7 @@ namespace SiteMapGeneratorTool.Helpers
             if (graph.Edges.Count <= 400)
                 return new RestClient($"https://image-charts.com/chart?cht=gv:dot&chl={graph.Build()}").Execute(new RestRequest(Method.GET)).RawBytes;
             else
-                return File.ReadAllBytes("wwwroot/empty-graph.png");
+                return File.ReadAllBytes("wwwroot/res/empty-graph.png");
         }
     }
 }

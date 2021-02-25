@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using SiteMapGeneratorTool.Helpers;
 using SiteMapGeneratorTool.WebCrawler.Objects;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -37,6 +39,9 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public ActionResult Index(string guid)
         {
+            List<string> facts = System.IO.File.ReadAllLines("wwwroot/res/facts.txt").ToList();
+            ViewBag.Fact = facts[new Random().Next(facts.Count)];
+
             ViewBag.Message = guid;
             return View("Index");
         }
