@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SiteMapGeneratorTool.Models;
-using System.Diagnostics;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -35,16 +32,6 @@ namespace SiteMapGeneratorTool.Controllers
         {
             ViewBag.applicationServerKey = Configuration.GetValue<string>("VAPID:PublicKey");
             return View("Index");
-        }
-
-        /// <summary>
-        /// Error
-        /// </summary>
-        /// <returns>View</returns>
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

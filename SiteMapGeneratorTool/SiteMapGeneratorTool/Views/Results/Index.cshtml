@@ -41,8 +41,11 @@
                             $loader.text("Server Error (Success)")
                     },
                     error: function (jQXHR) {
-                        if (jQXHR.status === 422)
-                            $loader.html(`<h1>Invalid GUID.</h1>`)
+                        if (jQXHR.status === 404)
+                            $loader.html(`
+                                            <h2>Invalid Guid</h2>
+                                            <p>No request was found for this GUID.</p>
+                                                `)
                         else
                             $loader.text("Server Error (Error)")
                     }

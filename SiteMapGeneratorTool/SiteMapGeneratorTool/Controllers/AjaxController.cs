@@ -35,8 +35,8 @@ namespace SiteMapGeneratorTool.Controllers
                 Configuration.GetValue<string>("Firebase:Database"),
                 Configuration.GetValue<string>("Firebase:RequestCollection"));
             S3Helper = new S3Helper(
-                Configuration.GetValue<string>("AWS:Credentials:AccessKey"), 
-                Configuration.GetValue<string>("AWS:Credentials:SecretKey"), 
+                Configuration.GetValue<string>("AWS:Credentials:AccessKey"),
+                Configuration.GetValue<string>("AWS:Credentials:SecretKey"),
                 Configuration.GetValue<string>("AWS:S3:BucketName"));
             SearchField = Configuration.GetValue<string>("Firebase:SearchField");
         }
@@ -52,7 +52,9 @@ namespace SiteMapGeneratorTool.Controllers
             CrawlerData data = FirebaseHelper.Get<CrawlerData>(guid);
 
             // Return results if completed otherwise processing http code
-            if (data != null)
+            if (data == null)
+                return StatusCode(404);
+            else if (data.Completion > 0)
                 return new JsonResult(data);
             else
                 return StatusCode(202);

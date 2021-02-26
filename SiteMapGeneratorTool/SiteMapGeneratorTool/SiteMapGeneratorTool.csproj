@@ -32,7 +32,7 @@
     <Content Update="wwwroot\res\facts.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\res\favicon.ico">
+    <Content Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\res\manifest.json">

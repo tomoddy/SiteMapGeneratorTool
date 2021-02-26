@@ -62,18 +62,14 @@ namespace SiteMapGeneratorTool.Controllers.API
             // Create request
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation;
-            try
-            {
-                requestInformation = new WebCrawlerRequestModel(domain, url, email, files, robots);
-            }
-            catch (UriFormatException)
-            {
-                return Redirect($"https://{domain}/generate/results?guid=invalid");
-            }
+            requestInformation = new WebCrawlerRequestModel(domain, url, email, files, robots);
 
             // Submit message
             Logger.LogInformation("Submitting request to SQS");
             SQSHelper.SendMessage(requestInformation);
+
+            // Upload request information
+            RequestFirebaseHelper.Add(requestInformation.Guid.ToString(), new CrawlerData());
 
             // Upload notification information
             NotificationFirebaseHelper.Add(requestInformation.Guid.ToString(), new SubscriptionModel(endpoint, p256dh, auth));
