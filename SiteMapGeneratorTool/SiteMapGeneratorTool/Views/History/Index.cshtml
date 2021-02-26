@@ -12,6 +12,8 @@
                     <th>Domain</th>
                     <th>Pages</th>
                     <th>Elapsed</th>
+                    <th>Depth</th>
+                    <th>Max. Pages</th>
                     <th>Completion</th>
                 </tr>
             </thead>
@@ -38,9 +40,18 @@
                     { data: { link: "link", domain: "domain" }, render: (data) => { return `<a href="${data.link}">${data.domain}</a>` } },
                     { data: "pages" },
                     { data: "elapsed" },
+                    { data: "depth", render: (depth) => getLabel(depth) },
+                    { data: "maxPages", render: (maxPages) => getLabel(maxPages) },
                     { data: "completion", render: (completion) => { return moment(new Date(completion)).format("DD/MM/YYYY HH:mm:ss") } }
                 ]
             });
         });
+
+        function getLabel(value) {
+            if (value === 0)
+                return "Unlimited"
+            else
+                return value
+        }
     </script>
 }

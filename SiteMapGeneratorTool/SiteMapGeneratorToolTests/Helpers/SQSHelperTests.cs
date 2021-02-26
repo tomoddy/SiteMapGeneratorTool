@@ -26,7 +26,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
         [Test(), Order(1)]
         public void SendMessageTest()
         {
-            WebCrawlerRequestModel messageBody = new WebCrawlerRequestModel("http://example.com/", "http://example.com/", "example@example.com", true, true);
+            WebCrawlerRequestModel messageBody = new WebCrawlerRequestModel("http://example.com/", "http://example.com/", "example@example.com", 5, 10, true, true);
             SQSHelper.SendMessage(messageBody);
         }
 
@@ -37,6 +37,8 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             Assert.AreEqual("http://example.com/", messageResonse.Domain);
             Assert.AreEqual(new Uri("http://example.com/"), messageResonse.Url);
             Assert.AreEqual("example@example.com", messageResonse.Email);
+            Assert.AreEqual(5, messageResonse.Depth);
+            Assert.AreEqual(10, messageResonse.MaxPages);
             Assert.AreEqual(true, messageResonse.Files);
             Assert.AreEqual(true, messageResonse.Robots);
         }
