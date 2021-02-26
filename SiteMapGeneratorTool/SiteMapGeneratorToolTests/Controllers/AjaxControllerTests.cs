@@ -31,7 +31,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         {
             string guid = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
             StatusCodeResult result = (StatusCodeResult)AjaxController.Results(guid);
-            Assert.AreEqual(202, result.StatusCode);
+            Assert.AreEqual(404, result.StatusCode);
         }
     }
 }
