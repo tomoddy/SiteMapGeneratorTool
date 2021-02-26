@@ -14,9 +14,6 @@ namespace SiteMapGeneratorTool.Controllers
     /// </summary>
     public class ResultsController : Controller
     {
-        // Constants
-        private const string INVALID_RESPONSE = "Invalid GUID";
-
         // Variables
         private readonly IConfiguration Configuration;
         private readonly S3Helper S3Helper;
