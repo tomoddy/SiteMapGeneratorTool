@@ -30,7 +30,11 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            ViewBag.applicationServerKey = Configuration.GetValue<string>("VAPID:PublicKey");
+            ViewBag.ApplicationServerKey = Configuration.GetValue<string>("VAPID:PublicKey");
+            ViewBag.Depth = Configuration.GetValue<int>("Depth");
+            ViewBag.DepthMid = Configuration.GetValue<int>("Depth") / 2;
+            ViewBag.MaxPages = Configuration.GetValue<int>("MaxPages");
+            ViewBag.MaxPagesMid = Configuration.GetValue<int>("MaxPages") / 2;
             return View("Index");
         }
     }
