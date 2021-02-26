@@ -9,7 +9,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects.Tests
         [Test()]
         public void AddTest()
         {
-            Page page = new Page("http://example.org", 0);
+            Page page = new Page("http://example.org", 0, 5);
             page.Add("test/test2");
 
             Assert.AreEqual("http://example.org", page.Address);
@@ -26,9 +26,24 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects.Tests
         }
 
         [Test()]
+        public void AddWithLimitTest()
+        {
+            Page page = new Page("http://example.org", 0, 1);
+            page.Add("test/test2");
+
+            Assert.AreEqual("http://example.org", page.Address);
+            Assert.AreEqual(0, page.Level);
+            Assert.AreEqual(1, page.Pages.Count);
+
+            Assert.AreEqual("test", page.Pages.FirstOrDefault().Address);
+            Assert.AreEqual(1, page.Pages.FirstOrDefault().Level);
+            Assert.AreEqual(0, page.Pages.FirstOrDefault().Pages.Count);
+        }
+
+        [Test()]
         public void GenerateLinkTest()
         {
-            Page page = new Page("http://example.org", 0);
+            Page page = new Page("http://example.org", 0, 5);
             page.Add("test");
             Assert.AreEqual(string.Empty, page.Pages.FirstOrDefault().Link);
 
@@ -39,7 +54,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects.Tests
         [Test()]
         public void SortTest()
         {
-            Page page = new Page("http://example.org", 0);
+            Page page = new Page("http://example.org", 0, 5);
             page.Add("c");
             page.Add("a");
             page.Add("b");

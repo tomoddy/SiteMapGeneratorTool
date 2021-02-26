@@ -85,9 +85,13 @@ namespace SiteMapGeneratorTool.Workers
                 {
                     try
                     {
+                        // Check depth and page maximum
+                        int depth = request.Depth == 0 ? Configuration.GetValue<int>("Depth") : request.Depth;
+                        int maxPages = request.MaxPages == 0 ? Configuration.GetValue<int>("MaxPages") : request.MaxPages;
+
                         // Run web crawler
                         Logger.LogInformation($"Web Crawler {Id}: Crawling {request}");
-                        Crawler crawler = new Crawler(request.Url.ToString(), request.Files, request.Robots, Configuration.GetValue<int>("Threads"));
+                        Crawler crawler = new Crawler(request.Url.ToString(), depth, maxPages, request.Files, request.Robots, Configuration.GetValue<int>("Threads"));
                         crawler.Run();
 
                         // Upload files
