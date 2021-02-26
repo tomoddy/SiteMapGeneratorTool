@@ -2,10 +2,24 @@
     ViewData["Title"] = "About";
 }
 
-<p>
-    @foreach (KeyValuePair<string, string> pair in ViewBag.Message)
-    {
-        @pair.Key @pair.Value<br>
-    }
-    Processor Count : @Environment.ProcessorCount<br />
-</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<string, string> pair in ViewBag.Message)
+        {
+            <tr>
+                <td>@pair.Key</td>
+                <td>@pair.Value</td>
+            </tr>
+        }
+        <tr>
+            <td>Processor Count</td>
+            <td>@Environment.ProcessorCount</td>
+        </tr>
+    </tbody>
+</table>
