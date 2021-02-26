@@ -29,9 +29,11 @@ namespace SiteMapGeneratorTool.Controllers
         {
             ViewBag.Message = new Dictionary<string, string>
             {
-                { "Number of Workers: ", Configuration.GetValue<string>("Workers") },
-                { "Timeout (ms) : ", Configuration.GetValue<string>("Delay") },
-                { "Thread Count : ", Configuration.GetValue<string>("Threads") }
+                { "Number of Workers", Configuration.GetValue<string>("Workers") },
+                { "Timeout (ms)", Configuration.GetValue<string>("Delay") },
+                { "Thread Count", Configuration.GetValue<string>("Threads") },
+                { "Maximum Depth", Configuration.GetValue<string>("Depth") },
+                { "Maximum Pages", Configuration.GetValue<string>("MaxPages") }
             };
             return View("Index");
         }
