@@ -14,17 +14,21 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
         public string Address { get; set; }
         public string Link { get; set; }
         public int Level { get; set; }
+        public int Depth { get; set; }
         public List<Page> Pages { get; set; }
 
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="address">Domain</param>
-        public Page(string address, int level)
+        /// <param name="level">Current pages level</param>
+        /// <param name="depth">Maximum depth</param>
+        public Page(string address, int level, int depth)
         {
             Address = address;
             Link = string.Empty;
             Level = level;
+            Depth = depth;
             Pages = new List<Page>();
         }
 
@@ -37,12 +41,12 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
             // Split address into components
             List<string> addressComponents = address.Split(SEPERATOR).ToList();
 
-            // Ignore if addresss  is empty
-            if (addressComponents[0] != string.Empty)
+            // Ignore if addresss is empty
+            if (addressComponents[0] != string.Empty && Level < Depth)
             {
                 // Check if page exists
                 if (Pages.Find(x => x.Address == addressComponents[0]) is null)
-                    Pages.Add(new Page(addressComponents[0], Level + 1));
+                    Pages.Add(new Page(addressComponents[0], Level + 1, Depth));
 
                 // Add new page to pages
                 Pages.Find(x => x.Address == addressComponents[0]).Add(string.Join(SEPERATOR, addressComponents.Skip(1)));

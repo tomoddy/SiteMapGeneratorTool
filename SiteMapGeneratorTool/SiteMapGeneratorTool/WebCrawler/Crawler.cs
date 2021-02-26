@@ -37,6 +37,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private ConcurrentBag<Uri> Visited { get; set; }
         private List<Uri> ToVisit { get; set; }
         private Page Structure { get; set; }
+        private int MaxPages { get; set; }
         private bool Files { get; set; }
         private bool Robots { get; set; }
         private int Threads { get; set; }
@@ -45,7 +46,12 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// Default constructor
         /// </summary>
         /// <param name="domain">Base domain of website</param>
-        public Crawler(string domain, bool files, bool robots, int threads)
+        /// <param name="depth">Maximum search depth</param>
+        /// <param name="maxPages">Maximum number of pages</param>
+        /// <param name="files">Include files</param>
+        /// <param name="robots">Respect robots.txt</param>
+        /// <param name="threads">Number of threads</param>
+        public Crawler(string domain, int depth, int maxPages, bool files, bool robots, int threads)
         {
             RobotsHelper = new RobotsHelper();
             SitemapHelper = new SitemapHelper();
@@ -55,8 +61,9 @@ namespace SiteMapGeneratorTool.WebCrawler
             Webpages = new List<Webpage>();
             Visited = new ConcurrentBag<Uri>();
             ToVisit = new List<Uri> { Domain };
-            Structure = new Page("/", 0);
+            Structure = new Page("/", 0, depth);
 
+            MaxPages = maxPages;
             Files = files;
             Robots = robots;
             Threads = threads;
@@ -81,8 +88,11 @@ namespace SiteMapGeneratorTool.WebCrawler
             // Start stopwatch
             Stopwatch.Start();
 
+            // Structure counter
+            int structureCount = 0;
+
             // Run while there are pages to visit
-            while (ToVisit.Count > 0)
+            while (Visited.Count <= MaxPages && ToVisit.Count > 0)
             {
                 // Create temporary link store and copy of to visit list
                 List<string> structureLinks = new List<string>();
@@ -121,11 +131,19 @@ namespace SiteMapGeneratorTool.WebCrawler
 
                 // Add links to structure
                 foreach (string sL in structureLinks)
-                    Structure.Add(sL);
+                    if (structureCount < MaxPages)
+                    {
+                        Structure.Add(sL);
+                        structureCount++;
+                    }
 
                 // Remove duplicate to visit links
                 ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
             }
+
+            // Impose maximum page limits
+            Visited = new ConcurrentBag<Uri>(Visited.Take(MaxPages));
+            Webpages = Webpages.Take(MaxPages).ToList();
 
             // Stop clock and generate links in structure
             Stopwatch.Stop();
