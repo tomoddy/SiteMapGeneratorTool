@@ -159,11 +159,13 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// Generates crawler data object (with firestore properties(
         /// </summary>
         /// <returns>CrawlerData object</returns>
-        public CrawlerData GetCrawlerData(string guid)
+        public CrawlerData GetCrawlerData(string guid, int depth, int maxPages)
         {
             return new CrawlerData
             {
                 Guid = guid,
+                Depth = depth,
+                MaxPages = maxPages,
                 Domain = Domain.AbsoluteUri,
                 Pages = Pages,
                 Elapsed = Elapsed,

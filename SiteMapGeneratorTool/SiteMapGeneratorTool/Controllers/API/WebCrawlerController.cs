@@ -54,7 +54,7 @@ namespace SiteMapGeneratorTool.Controllers.API
         /// <param name="robots">Respect robots</param>
         /// <returns>GUID</returns>
         [HttpGet]
-        public IActionResult Index(string url, string email, bool files, bool robots, string endpoint, string p256dh, string auth)
+        public IActionResult Index(string url, string email, int depth, int maxPages, bool files, bool robots, string endpoint, string p256dh, string auth)
         {
             // Get domain
             string domain = (HttpContext ?? null) is null ? Configuration.GetValue<string>("Test:Domain") : HttpContext.Request.Host.Value;
@@ -62,7 +62,7 @@ namespace SiteMapGeneratorTool.Controllers.API
             // Create request
             Logger.LogInformation($"Creating request for {url}");
             WebCrawlerRequestModel requestInformation;
-            requestInformation = new WebCrawlerRequestModel(domain, url, email, files, robots);
+            requestInformation = new WebCrawlerRequestModel(domain, url, email, depth, maxPages, files, robots);
 
             // Submit message
             Logger.LogInformation("Submitting request to SQS");

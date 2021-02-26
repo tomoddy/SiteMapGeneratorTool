@@ -14,6 +14,10 @@ namespace SiteMapGeneratorTool.Models
         [FirestoreProperty]
         public int Pages { get; set; }
         [FirestoreProperty]
+        public int MaxPages { get; set; }
+        [FirestoreProperty]
+        public int Depth { get; set; }
+        [FirestoreProperty]
         public double Elapsed { get; set; }
         public string Link { get; set; }
     }

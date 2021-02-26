@@ -33,7 +33,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                 Configuration.GetValue<string>("Firebase:KeyPath"),
                 Configuration.GetValue<string>("Firebase:Database"),
-                "AddTest");
+                "addtest");
 
             TestData expected = new TestData { Name = "TestName", Age = 100 };
 
@@ -51,7 +51,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetTest");
+                   "gettest");
 
             TestData actual = firebaseHelper.Get<TestData>("test");
             Assert.AreEqual("TestName1", actual.Name);
@@ -64,7 +64,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetTest");
+                   "gettest");
 
             List<TestData> actual = firebaseHelper.Get<TestData>("asc", "Age", string.Empty, string.Empty);
             Assert.AreEqual("TestName1", actual[0].Name);
@@ -83,7 +83,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetTest");
+                   "gettest");
 
             List<TestData> actual = firebaseHelper.Get<TestData>("asc", "Name", "Name", string.Empty);
             Assert.AreEqual(3, actual.Count);
@@ -97,7 +97,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
                    Configuration.GetValue<string>("Firebase:Database"),
-                   "GetAllTest");
+                   "getalltest");
 
             List<TestData> actual = firebaseHelper.GetAll<TestData>();
             actual = actual.OrderBy(x => x.Age).ToList();
