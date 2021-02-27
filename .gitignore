@@ -1,7 +1,6 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-**/appsettings*
 /SiteMapGeneratorTool/SiteMapGeneratorTool/bin
 /SiteMapGeneratorTool/SiteMapGeneratorTool/obj
 /SiteMapGeneratorTool/SiteMapGeneratorToolTests/bin
@@ -19,3 +18,4 @@
 /.vs
 /SiteMapGeneratorTool/SiteMapGeneratorTool/Keys/firebase.json
 /SiteMapGeneratorTool/SiteMapGeneratorToolSelenium/Scripts/0
+/SiteMapGeneratorTool/SiteMapGeneratorTool/appsettings.json
