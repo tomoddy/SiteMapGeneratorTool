@@ -17,12 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: LS
-      run: ls SiteMapGeneratorTool/SiteMapGeneratorTool
     - name: Decrypt Secret
-      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
-      env:
-        LARGE_SECRET_PASSPHRASE: ${{ secrets.APP_SETTINGS_PASSWORD }}
+      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh --passphrase=${{ secrets.APP_SETTINGS_PASSWORD }}
     - name: Build
       run: dotnet build SiteMapGeneratorTool
     - name: Unit Test
