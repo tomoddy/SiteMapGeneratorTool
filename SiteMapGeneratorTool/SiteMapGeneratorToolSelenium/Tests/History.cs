@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SiteMapGeneratorToolSelenium.Tests
@@ -221,6 +222,49 @@ namespace SiteMapGeneratorToolSelenium.Tests
             Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[1]/td[6]"), out completion1));
             Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[2]/td[6]"), out completion2));
             Assert.GreaterOrEqual(completion1, completion2);
+        }
+
+        [Test]
+        public void Show()
+        {
+            // Check entry count and get total
+            Assert.AreEqual(25, FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count);
+            string info = GetTextById("historyTable_info");
+            Assert.IsTrue(int.TryParse(info.Substring(info.IndexOf(" of ") + 4, info.Length - (info.IndexOf("entries") + 5)), out int total));
+
+            // Test for different settings
+            List<int> values = new List<int> { 10, 25, 50, 100 };
+            for (int i = 0; i < values.Count; i++)
+            {
+                // Change entry count
+                Click("//*[@id=\"historyTable_length\"]/label/select");
+                Click($"//*[@id=\"historyTable_length\"]/label/select/option[{i + 1}]");
+                Thread.Sleep(WAIT);
+
+                // Check entry count
+                Assert.AreEqual(values[i] <= total ? values[i] : total, FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count);
+            }
+        }
+
+        [Test]
+        public void Search()
+        {
+            // Set query
+            string query = GetText("//*[@id=\"historyTable\"]/tbody/tr[1]/td[1]/a");
+            SendKeys("//*[@id=\"historyTable_filter\"]/label/input", query);
+            Thread.Sleep(1000);
+
+            // Check values
+            for (int i = 0; i < FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count; i++)
+                TextEqual(query, "//*[@id=\"historyTable\"]/tbody/tr[1]/td[1]/a");
+
+            // Set invalid query
+            Clear("//*[@id=\"historyTable_filter\"]/label/input");
+            SendKeys("//*[@id=\"historyTable_filter\"]/label/input", "XXX");
+            Thread.Sleep(1000);
+
+            // Check values
+            TextEqual("No data available in table", "//*[@id=\"historyTable\"]/tbody/tr[1]/td[1]");
         }
 
         [Test]

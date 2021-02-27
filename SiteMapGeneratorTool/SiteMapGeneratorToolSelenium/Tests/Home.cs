@@ -41,8 +41,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
             IsSelected(false, "robotsInput");
 
             // Enter values
-            SendKeys("urlInput", Url);
-            SendKeys("emailInput", Email);
+            SendKeysById("urlInput", Url);
+            SendKeysById("emailInput", Email);
             MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
             MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
             ClickById("filesInput");
@@ -63,7 +63,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
         public void CreateRequest()
         {
             // Send request
-            SendKeys("urlInput", Url);
+            SendKeysById("urlInput", Url);
             MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
             MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
             if (new Random().Next(2) == 0)
