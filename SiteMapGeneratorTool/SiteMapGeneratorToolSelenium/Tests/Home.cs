@@ -73,6 +73,10 @@ namespace SiteMapGeneratorToolSelenium.Tests
                 Click("robotsInput");
             Click("submitInput");
 
+            // Check loading page
+            TextEqual("Generating site map...", "generatingMessage", 5);
+            ElementExists("generatingInformation");
+
             // Wait for results to completed
             TextEqual($"Request complete for {Url}/", "completeMessage", 15);
             TextContains("1 pages found", "completeInformation");

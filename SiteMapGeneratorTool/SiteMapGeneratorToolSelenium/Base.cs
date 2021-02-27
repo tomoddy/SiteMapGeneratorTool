@@ -126,6 +126,11 @@ namespace SiteMapGeneratorToolSelenium
             Assert.AreEqual(expected, FindElement(id).Selected);
         }
 
+        public bool ElementExists(string id)
+        {
+            return !(FindElement(id) is null);
+        }
+
         #endregion
 
         #region Convinience
