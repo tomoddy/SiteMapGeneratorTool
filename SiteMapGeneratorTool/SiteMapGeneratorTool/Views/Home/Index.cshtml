@@ -19,13 +19,13 @@
 
     <div class="form-group-row">
         <label id="depthLabel" for="depth" class="col-form-label">Maximum Subdirectory Level : </label>
-        <output>@ViewBag.DepthMid</output>
+        <output id="depthOutput">@ViewBag.DepthMid</output>
         <input id="depthInput" type="range" class="form-control-range" name="depth" min="0" max="@ViewBag.Depth" oninput="setOutput(this)">
     </div>
 
     <div class="form-group-row">
         <label id="maxPagesLabel" for="maxPages" class="col-form-label">Maximum Number of Pages : </label>
-        <output>@ViewBag.MaxPagesMid</output>
+        <output id="maxPagesOutput">@ViewBag.MaxPagesMid</output>
         <input id="maxPagesInput" type="range" class="form-control-range" name="maxPages" min="0" max="@ViewBag.MaxPages" oninput="setOutput(this)">
     </div>
 
