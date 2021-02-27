@@ -25,6 +25,7 @@ namespace SiteMapGeneratorToolSelenium
             Domain = "https://tadataka.azurewebsites.net/";
             Options = new ChromeOptions();
             Options.AddArgument("--disable-notifications");
+            Options.AddArguments("--headless");
             Driver = new ChromeDriver();
 
             Url = "https://example.com";
