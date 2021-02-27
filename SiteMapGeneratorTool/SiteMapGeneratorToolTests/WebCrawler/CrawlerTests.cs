@@ -45,7 +45,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
         [Test()]
         public void GetSitemapXmlTest()
         {
-            Assert.AreEqual("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\r\n  <url>\r\n    <loc>http://sitemaps.org/</loc>\r\n    <lastmod>2020-05-15</lastmod>\r\n  </url>\r\n  <url>\r\n    <loc>http://sitemaps.org/faq.php</loc>\r\n    <lastmod>2020-05-15</lastmod>\r\n  </url>\r\n  <url>\r\n    <loc>http://sitemaps.org/protocol.php</loc>\r\n    <lastmod>2020-05-15</lastmod>\r\n  </url>\r\n  <url>\r\n    <loc>http://sitemaps.org/terms.php</loc>\r\n    <lastmod>2020-05-15</lastmod>\r\n  </url>\r\n</urlset>", Crawler.GetSitemapXml());
+            Assert.AreEqual("<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>http://sitemaps.org/</loc>\n    <lastmod>2020-05-15</lastmod>\n  </url>\n  <url>\n    <loc>http://sitemaps.org/faq.php</loc>\n    <lastmod>2020-05-15</lastmod>\n  </url>\n  <url>\n    <loc>http://sitemaps.org/protocol.php</loc>\n    <lastmod>2020-05-15</lastmod>\n  </url>\n  <url>\n    <loc>http://sitemaps.org/terms.php</loc>\n    <lastmod>2020-05-15</lastmod>\n  </url>\n</urlset>", Crawler.GetSitemapXml());
         }
     }
 }

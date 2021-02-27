@@ -49,7 +49,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
             SitemapHelper sitemapHelper = new SitemapHelper();
 
             string actual = sitemapHelper.GenerateXml(sitemap);
-            string expected = "<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\r\n  <url>\r\n    <loc>http://www.teststring.com/link1</loc>\r\n    <lastmod>2021-02-03</lastmod>\r\n  </url>\r\n  <url>\r\n    <loc>http://www.teststring.com/link2</loc>\r\n    <lastmod>2024-05-06</lastmod>\r\n  </url>\r\n  <url>\r\n    <loc>http://www.teststring.com/link3</loc>\r\n    <lastmod>2027-08-09</lastmod>\r\n  </url>\r\n</urlset>";
+            string expected = "<?xml version=\"1.0\" encoding=\"utf-16\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>http://www.teststring.com/link1</loc>\n    <lastmod>2021-02-03</lastmod>\n  </url>\n  <url>\n    <loc>http://www.teststring.com/link2</loc>\n    <lastmod>2024-05-06</lastmod>\n  </url>\n  <url>\n    <loc>http://www.teststring.com/link3</loc>\n    <lastmod>2027-08-09</lastmod>\n  </url>\n</urlset>";
 
             Assert.AreEqual(expected, actual);
         }

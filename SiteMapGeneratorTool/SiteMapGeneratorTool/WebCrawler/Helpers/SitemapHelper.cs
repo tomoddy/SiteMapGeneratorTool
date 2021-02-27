@@ -27,7 +27,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
             Namespaces.Add("", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
             Serlializer = new XmlSerializer(typeof(Sitemap));
-            StringWriter = new StringWriter();
+            StringWriter = new StringWriter() { NewLine = "\n" };
         }
 
         /// <summary>
