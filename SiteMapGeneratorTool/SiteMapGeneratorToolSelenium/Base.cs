@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,7 @@ namespace SiteMapGeneratorToolSelenium
     public class Base
     {
         public string Domain { get; set; }
+        public ChromeOptions Options { get; set; }
         public IWebDriver Driver { get; set; }
         public string Url { get; set; }
         public string Email { get; set; }
@@ -19,6 +21,8 @@ namespace SiteMapGeneratorToolSelenium
         public void BaseSetup()
         {
             Domain = "https://tadataka.azurewebsites.net/";
+            Options = new ChromeOptions();
+            Options.AddArgument("--disable-notifications");
             Driver = new ChromeDriver();
 
             Url = "https://example.com";
@@ -41,13 +45,31 @@ namespace SiteMapGeneratorToolSelenium
             return Driver.FindElement(By.XPath($"//*[@id=\"{id}\"]"));
         }
 
+        public IWebElement FindElement(string id, int duration)
+        {
+            IWebElement retVal = null;
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
+
+            try
+            {
+                retVal = Driver.FindElement(By.XPath($"//*[@id=\"{id}\"]"));
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail($"Element with id \"{id}\" could not be found.");
+            }
+
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            return retVal;
+        }
+
         #endregion
 
         #region Collection
 
-        public string GetText(string id)
+        public string GetText(string id, int duration = 0)
         {
-            return FindElement(id).Text;
+            return FindElement(id, duration).Text;
         }
 
         private T GetValue<T>(string id)
@@ -84,9 +106,14 @@ namespace SiteMapGeneratorToolSelenium
 
         #region Comparisons
 
-        public void TextEqual(string expected, string id)
+        public void TextEqual(string expected, string id, int duration = 0)
         {
-            Assert.AreEqual(expected, GetText(id));
+            Assert.AreEqual(expected, GetText(id, duration));
+        }
+
+        public void TextContains(string expected, string id, int duration = 0)
+        {
+            StringAssert.Contains(expected, GetText(id, duration));
         }
 
         public void ValueEqual<T>(T expected, string id)
