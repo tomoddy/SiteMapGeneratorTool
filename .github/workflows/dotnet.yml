@@ -17,12 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: cd
-      run: cd SiteMapGeneratorTool/SiteMapGeneratorTool/SiteMapGeneratorTool
-    - name: ls
-      run: ls
+    - name: LS
+      run: ls SiteMapGeneratorTool/SiteMapGeneratorTool
     - name: Decrypt Secret
-      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt.sh
+      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt.sh
       env:
         LARGE_SECRET_PASSPHRASE: ${{ secrets.APP_SETTINGS_PASSWORD }}
     - name: Build
