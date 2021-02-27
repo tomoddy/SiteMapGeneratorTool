@@ -22,21 +22,21 @@ namespace SiteMapGeneratorToolSelenium.Tests
         public void FormValidation()
         {
             // Check labels
-            TextEqual("Website URL", "urlLabel");
-            TextEqual("Email Address", "emailLabel");
-            TextEqual("Maximum Subdirectory Level :", "depthLabel");
-            TextEqual("Maximum Number of Pages :", "maxPagesLabel");
-            TextEqual("Include Files", "filesLabel");
-            TextEqual("Respect Robots", "robotsLabel");
+            TextEqualById("Website URL", "urlLabel");
+            TextEqualById("Email Address", "emailLabel");
+            TextEqualById("Maximum Subdirectory Level :", "depthLabel");
+            TextEqualById("Maximum Number of Pages :", "maxPagesLabel");
+            TextEqualById("Include Files", "filesLabel");
+            TextEqualById("Respect Robots", "robotsLabel");
             ValueEqual("Submit", "submitInput");
 
             // Check initial values
             ValueEqual(string.Empty, "urlInput");
             ValueEqual(string.Empty, "emailInput");
             ValueEqual(Configuration["Maximum Depth"] / 2, "depthInput");
-            TextEqual((Configuration["Maximum Depth"] / 2).ToString(), "depthOutput");
+            TextEqualById((Configuration["Maximum Depth"] / 2).ToString(), "depthOutput");
             ValueEqual(Configuration["Maximum Pages"] / 2, "maxPagesInput");
-            TextEqual((Configuration["Maximum Pages"] / 2).ToString(), "maxPagesOutput");
+            TextEqualById((Configuration["Maximum Pages"] / 2).ToString(), "maxPagesOutput");
             IsSelected(false, "filesInput");
             IsSelected(false, "robotsInput");
 
@@ -52,9 +52,9 @@ namespace SiteMapGeneratorToolSelenium.Tests
             ValueEqual(Url, "urlInput");
             ValueEqual(Email, "emailInput");
             ValueEqual(SetDepth, "depthInput");
-            TextEqual(SetDepth == 0 ? "Unlimited" : SetDepth.ToString(), "depthOutput");
+            TextEqualById(SetDepth == 0 ? "Unlimited" : SetDepth.ToString(), "depthOutput");
             ValueEqual(SetMaxPages, "maxPagesInput");
-            TextEqual(SetMaxPages == 0 ? "Unlimited" : SetMaxPages.ToString(), "maxPagesOutput");
+            TextEqualById(SetMaxPages == 0 ? "Unlimited" : SetMaxPages.ToString(), "maxPagesOutput");
             IsSelected(true, "filesInput");
             IsSelected(true, "robotsInput");
         }
@@ -73,17 +73,17 @@ namespace SiteMapGeneratorToolSelenium.Tests
             ClickById("submitInput");
 
             // Check loading page
-            TextEqual("Generating site map...", "generatingMessage", 5);
+            TextEqualById("Generating site map...", "generatingMessage");
             ElementExists("generatingInformation");
 
             // Wait for results to completed
-            TextEqual($"Request complete for {Url}/", "completeMessage", 15);
-            TextContains("1 pages found", "completeInformation");
-            TextContains($"{SetMaxPages} page limit", "completeInformation");
-            TextContains($"{SetDepth} depth limit", "completeInformation");
-            TextEqual("Structure", "structureLink");
-            TextEqual("Sitemap", "sitemapLink");
-            TextEqual("Graph", "graphLink");
+            TextEqualById($"Request complete for {Url}/", "completeMessage", 15);
+            TextContainsById("1 pages found", "completeInformation");
+            TextContainsById($"{SetMaxPages} page limit", "completeInformation");
+            TextContainsById($"{SetDepth} depth limit", "completeInformation");
+            TextEqualById("Structure", "structureLink");
+            TextEqualById("Sitemap", "sitemapLink");
+            TextEqualById("Graph", "graphLink");
         }
     }
 }
