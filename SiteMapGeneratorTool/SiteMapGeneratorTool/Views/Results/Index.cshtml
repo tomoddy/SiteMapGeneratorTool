@@ -25,8 +25,8 @@
                     success: function (data, _, jQXHR) {
                         if (jQXHR.status === 202) {
                             $loader.html(`
-                                            <h2>Generating site map...</h2>
-                                            <p>@ViewBag.Fact</p>
+                                            <h2 id="generatingMessage">Generating site map...</h2>
+                                            <p id="generatingInformation">@ViewBag.Fact</p>
                                         `)
                             setTimeout(getData, 1000)
                         }
@@ -39,13 +39,13 @@
                                 depth = "unlimited"
 
                             $loader.html(`
-                                            <h1>Request complete for ${data.domain}</h1>
-                                            <p>${data.pages} pages found in ${data.elapsed} seconds (${maxPages} page limit and ${depth} depth limit).</p>
-                                            <a href="results/structure?guid=${data.guid}" />Structure</a>
+                                            <h1 id="completeMessage">Request complete for ${data.domain}</h1>
+                                            <p id="completeInformation">${data.pages} pages found in ${data.elapsed} seconds (${maxPages} page limit and ${depth} depth limit).</p>
+                                            <a id="structureLink" href="results/structure?guid=${data.guid}" />Structure</a>
                                             <br />
-                                            <a href="results/sitemap?guid=${data.guid}" />Sitemap</a>
+                                            <a id="sitemapLink" href="results/sitemap?guid=${data.guid}" />Sitemap</a>
                                             <br />
-                                            <a href="results/graph?guid=${data.guid}" />Graph</a>
+                                            <a id="graphLink" href="results/graph?guid=${data.guid}" />Graph</a>
                                         `)
                         }
                         else
@@ -54,8 +54,8 @@
                     error: function (jQXHR) {
                         if (jQXHR.status === 404)
                             $loader.html(`
-                                            <h2>Invalid Guid</h2>
-                                            <p>No request was found for this GUID.</p>
+                                            <h2 id="invalidMessage">Invalid Guid</h2>
+                                            <p id="InvalidInformation">No request was found for this GUID.</p>
                                         `)
                         else
                             $loader.text("Server Error (Error)")
