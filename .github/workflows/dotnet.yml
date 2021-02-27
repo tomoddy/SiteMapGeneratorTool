@@ -18,7 +18,8 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Decrypt Secret
-      run: | 
+      run: |
+        echo ${{ secrets.EXAMPLE }}
         cd SiteMapGeneratorTool/SiteMapGeneratorTool
         ./decrypt_secret.sh
       env:
