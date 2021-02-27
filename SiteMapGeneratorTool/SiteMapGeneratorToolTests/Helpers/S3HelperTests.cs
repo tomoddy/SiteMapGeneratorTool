@@ -49,7 +49,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
 
             MemoryStream actual = S3Helper.DownloadResponse("testing", new FileInfo(fileName));
             Assert.AreEqual(0, actual.Position);
-            Assert.AreEqual(59, actual.Length);
+            Assert.AreEqual(52, actual.Length);
             Assert.AreEqual(true, actual.CanRead);
             Assert.AreEqual(true, actual.CanSeek);
             Assert.AreEqual(false, actual.CanTimeout);
