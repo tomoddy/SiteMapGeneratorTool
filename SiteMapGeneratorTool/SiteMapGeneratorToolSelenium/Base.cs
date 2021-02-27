@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 
@@ -196,6 +195,11 @@ namespace SiteMapGeneratorToolSelenium
             foreach (IWebElement row in rows)
                 retVal.Add(row.FindElement(By.XPath("td[1]")).Text, int.Parse(row.FindElement(By.XPath("td[2]")).Text));
             return retVal;
+        }
+
+        public void UrlEquals(string subDirectory)
+        {
+            Assert.AreEqual(Domain + subDirectory, Driver.Url);
         }
 
         #endregion
