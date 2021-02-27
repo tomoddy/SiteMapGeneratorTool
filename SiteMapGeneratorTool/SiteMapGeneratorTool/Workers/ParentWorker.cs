@@ -39,6 +39,7 @@ namespace SiteMapGeneratorTool.Workers
                 List<Task> tasks = new List<Task>();
                 for (int i = 1; i <= Configuration.GetValue<int>("Workers"); i++)
                 {
+                    Logger.LogInformation($"Starting Worker {i}");
                     tasks.Add(new WebCrawlerWorker(Configuration, Logger, i).Start(cancellationToken));
                     Thread.Sleep(Configuration.GetValue<int>("Delay"));
                 }
