@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+    - name: cd
+      run: cd SiteMapGeneratorTool/SiteMapGeneratorTool
+    - name: ls
+      run: ls
     - name: Decrypt Secret
       run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt.sh
       env:
