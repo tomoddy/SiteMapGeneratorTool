@@ -29,6 +29,7 @@ namespace SiteMapGeneratorToolSelenium
             Email = "example@example.com";
 
             Configuration = GetConfiguration();
+            Driver.Navigate().GoToUrl(Domain);
         }
 
         [OneTimeTearDown]
@@ -40,19 +41,42 @@ namespace SiteMapGeneratorToolSelenium
 
         #region General
 
-        public IWebElement FindElement(string id)
+        public IWebElement FindElement(string xPath)
         {
-            return Driver.FindElement(By.XPath($"//*[@id=\"{id}\"]"));
+            return Driver.FindElement(By.XPath(xPath));
         }
 
-        public IWebElement FindElement(string id, int duration)
+        public IWebElement FindElementById(string id)
+        {
+            return FindElement($"//*[@id=\"{id}\"]");
+        }
+
+        public IWebElement FindElement(string xPath, int duration)
         {
             IWebElement retVal = null;
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
 
             try
             {
-                retVal = Driver.FindElement(By.XPath($"//*[@id=\"{id}\"]"));
+                retVal = FindElement(xPath);
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail($"Element with xPath \"{xPath}\" could not be found.");
+            }
+
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            return retVal;
+        }
+
+        public IWebElement FindElementById(string id, int duration)
+        {
+            IWebElement retVal = null;
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
+
+            try
+            {
+                retVal = FindElementById(id);
             }
             catch (NoSuchElementException)
             {
@@ -67,28 +91,38 @@ namespace SiteMapGeneratorToolSelenium
 
         #region Collection
 
-        public string GetText(string id, int duration = 0)
+        public string GetText(string xPath, int duration = 0)
         {
-            return FindElement(id, duration).Text;
+            return FindElement(xPath, duration).Text;
+        }
+
+        public string GetTextById(string id, int duration = 0)
+        {
+            return FindElementById(id, duration).Text;
         }
 
         private T GetValue<T>(string id)
         {
-            return (T)Convert.ChangeType(FindElement(id).GetAttribute("value"), typeof(T));
+            return (T)Convert.ChangeType(FindElementById(id).GetAttribute("value"), typeof(T));
         }
 
         #endregion
 
         #region Actions
 
-        public void Click(string id)
+        public void Click(string xPath)
         {
-            FindElement(id).Click();
+            FindElement(xPath).Click();
+        }
+
+        public void ClickById(string id)
+        {
+            FindElementById(id).Click();
         }
 
         public void SendKeys(string id, string text)
         {
-            FindElement(id).SendKeys(text);
+            FindElementById(id).SendKeys(text);
         }
 
         public void MoveSlider(string id, int size)
@@ -108,12 +142,12 @@ namespace SiteMapGeneratorToolSelenium
 
         public void TextEqual(string expected, string id, int duration = 0)
         {
-            Assert.AreEqual(expected, GetText(id, duration));
+            Assert.AreEqual(expected, GetTextById(id, duration));
         }
 
         public void TextContains(string expected, string id, int duration = 0)
         {
-            StringAssert.Contains(expected, GetText(id, duration));
+            StringAssert.Contains(expected, GetTextById(id, duration));
         }
 
         public void ValueEqual<T>(T expected, string id)
@@ -123,12 +157,12 @@ namespace SiteMapGeneratorToolSelenium
 
         public void IsSelected(bool expected, string id)
         {
-            Assert.AreEqual(expected, FindElement(id).Selected);
+            Assert.AreEqual(expected, FindElementById(id).Selected);
         }
 
         public bool ElementExists(string id)
         {
-            return !(FindElement(id) is null);
+            return !(FindElementById(id) is null);
         }
 
         #endregion
@@ -139,7 +173,7 @@ namespace SiteMapGeneratorToolSelenium
         {
             Dictionary<string, int> retVal = new Dictionary<string, int>();
             Driver.Navigate().GoToUrl(Domain + "/about");
-            List<IWebElement> rows = new List<IWebElement>(FindElement("configurationTable").FindElement(By.XPath("tbody")).FindElements(By.TagName("tr")));
+            List<IWebElement> rows = new List<IWebElement>(FindElementById("configurationTable").FindElement(By.XPath("tbody")).FindElements(By.TagName("tr")));
 
             foreach (IWebElement row in rows)
                 retVal.Add(row.FindElement(By.XPath("td[1]")).Text, int.Parse(row.FindElement(By.XPath("td[2]")).Text));
