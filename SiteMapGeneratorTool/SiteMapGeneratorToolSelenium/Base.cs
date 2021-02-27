@@ -10,6 +10,9 @@ namespace SiteMapGeneratorToolSelenium
     [TestFixture]
     public class Base
     {
+        private const int DURATION = 2;
+        public const int WAIT = 500;
+
         public string Domain { get; set; }
         public ChromeOptions Options { get; set; }
         public IWebDriver Driver { get; set; }
@@ -41,24 +44,19 @@ namespace SiteMapGeneratorToolSelenium
 
         #region General
 
-        public IWebElement FindElement(string xPath)
+        public List<IWebElement> FindElements(string xPath)
         {
-            return Driver.FindElement(By.XPath(xPath));
+            return new List<IWebElement>(Driver.FindElements(By.XPath(xPath)));
         }
 
-        public IWebElement FindElementById(string id)
-        {
-            return FindElement($"//*[@id=\"{id}\"]");
-        }
-
-        public IWebElement FindElement(string xPath, int duration)
+        public IWebElement FindElement(string xPath, int duration = DURATION)
         {
             IWebElement retVal = null;
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
 
             try
             {
-                retVal = FindElement(xPath);
+                retVal = Driver.FindElement(By.XPath(xPath));
             }
             catch (NoSuchElementException)
             {
@@ -69,34 +67,21 @@ namespace SiteMapGeneratorToolSelenium
             return retVal;
         }
 
-        public IWebElement FindElementById(string id, int duration)
+        public IWebElement FindElementById(string id, int duration = DURATION)
         {
-            IWebElement retVal = null;
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
-
-            try
-            {
-                retVal = FindElementById(id);
-            }
-            catch (NoSuchElementException)
-            {
-                Assert.Fail($"Element with id \"{id}\" could not be found.");
-            }
-
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
-            return retVal;
+            return FindElement($"//*[@id=\"{id}\"]", duration);
         }
 
         #endregion
 
         #region Collection
 
-        public string GetText(string xPath, int duration = 0)
+        public string GetText(string xPath, int duration = DURATION)
         {
             return FindElement(xPath, duration).Text;
         }
 
-        public string GetTextById(string id, int duration = 0)
+        public string GetTextById(string id, int duration = DURATION)
         {
             return FindElementById(id, duration).Text;
         }
@@ -110,14 +95,14 @@ namespace SiteMapGeneratorToolSelenium
 
         #region Actions
 
-        public void Click(string xPath)
+        public void Click(string xPath, int duration = DURATION)
         {
-            FindElement(xPath).Click();
+            FindElement(xPath, duration).Click();
         }
 
-        public void ClickById(string id)
+        public void ClickById(string id, int duration = DURATION)
         {
-            FindElementById(id).Click();
+            FindElementById(id, duration).Click();
         }
 
         public void SendKeys(string id, string text)
@@ -140,12 +125,22 @@ namespace SiteMapGeneratorToolSelenium
 
         #region Comparisons
 
-        public void TextEqual(string expected, string id, int duration = 0)
+        public void TextEqual(string expected, string xPath, int duration = DURATION)
+        {
+            Assert.AreEqual(expected, GetText(xPath, duration));
+        }
+
+        public void TextEqualById(string expected, string id, int duration = DURATION)
         {
             Assert.AreEqual(expected, GetTextById(id, duration));
         }
 
-        public void TextContains(string expected, string id, int duration = 0)
+        public void TextContains(string expected, string xPath, int duration = DURATION)
+        {
+            StringAssert.Contains(expected, GetText(xPath, duration));
+        }
+
+        public void TextContainsById(string expected, string id, int duration = DURATION)
         {
             StringAssert.Contains(expected, GetTextById(id, duration));
         }

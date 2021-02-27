@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -75,9 +75,9 @@ namespace SiteMapGeneratorTool.Helpers
             {
                 // Set order by for field
                 if (direction == ASCENDING)
-                    query = query.OrderBy(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(field));
+                    query = query.OrderBy(Capitalise(field));
                 else
-                    query = query.OrderByDescending(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(field));
+                    query = query.OrderByDescending(Capitalise(field));
             }
             else
                 // Set where equal to for search term
@@ -103,6 +103,16 @@ namespace SiteMapGeneratorTool.Helpers
                 retVal.Add(document.ConvertTo<T>());
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Converts name from table to name for database
+        /// </summary>
+        /// <param name="field">Name of field</param>
+        /// <returns>Capitalised field</returns>
+        private string Capitalise(string field)
+        {
+            return field.First().ToString().ToUpper() + field[1..];
         }
     }
 }
