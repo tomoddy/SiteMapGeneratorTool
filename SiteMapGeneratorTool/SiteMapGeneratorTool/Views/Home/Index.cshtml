@@ -4,43 +4,43 @@
 
 <form method="get" action="api/webcrawler">
     <div class="form-group row">
-        <label for="url" class="col-sm-2 col-form-label">Website URL</label>
+        <label id="urlLabel" for="url" class="col-sm-2 col-form-label">Website URL</label>
         <div class="col-sm-10">
-            <input class="form-control" type="url" name="url" placeholder="http://example.com" required />
+            <input id="urlInput" class="form-control" type="url" name="url" placeholder="http://example.com" required />
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="email" class="col-sm-2 col-form-label">Email Address</label>
+        <label id="emailLabel" for="email" class="col-sm-2 col-form-label">Email Address</label>
         <div class="col-sm-10">
-            <input class="form-control" type="email" name="email" placeholder="example@example.com" />
+            <input id="emailInput" class="form-control" type="email" name="email" placeholder="example@example.com" />
         </div>
     </div>
 
     <div class="form-group-row">
-        <label for="depth" class="col-form-label">Maximum Subdirectory Level : </label>
+        <label id="depthLabel" for="depth" class="col-form-label">Maximum Subdirectory Level : </label>
         <output>@ViewBag.DepthMid</output>
-        <input type="range" class="form-control-range" name="depth" min="0" max="@ViewBag.Depth" oninput="setOutput(this)">
+        <input id="depthInput" type="range" class="form-control-range" name="depth" min="0" max="@ViewBag.Depth" oninput="setOutput(this)">
     </div>
 
     <div class="form-group-row">
-        <label for="maxPages" class="col-form-label">Maximum Number of Pages : </label>
+        <label id="maxPagesLabel" for="maxPages" class="col-form-label">Maximum Number of Pages : </label>
         <output>@ViewBag.MaxPagesMid</output>
-        <input type="range" class="form-control-range" name="maxPages" min="0" max="@ViewBag.MaxPages" oninput="setOutput(this)">
+        <input id="maxPagesInput" type="range" class="form-control-range" name="maxPages" min="0" max="@ViewBag.MaxPages" oninput="setOutput(this)">
     </div>
 
     <br />
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="files" value="true" />
+        <input id="filesInput" class="form-check-input" type="checkbox" name="files" value="true" />
         <input type="hidden" name="files" value="false" />
-        <label class="form-check-label">Include Files</label>
+        <label id="filesLabel" class="form-check-label">Include Files</label>
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="robots" value="true" />
+        <input id="robotsInput" class="form-check-input" type="checkbox" name="robots" value="true" />
         <input type="hidden" name="robots" value="false" />
-        <label class="form-check-label">Respect Robots</label>
+        <label id="robotsLabel" class="form-check-label">Respect Robots</label>
     </div>
 
     <div class="form-group">
@@ -50,7 +50,7 @@
     </div>
 
     <div class="form-group">
-        <input class="btn btn-primary mb-2" type="submit" value="Submit" />
+        <input id="submitInput" class="btn btn-primary mb-2" type="submit" value="Submit" />
     </div>
 </form>
 
