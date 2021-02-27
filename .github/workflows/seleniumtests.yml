@@ -1,0 +1,29 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Decrypt Secret
+      run: |
+        chmod +x ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
+        ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
+      env:
+        APP_SETTINGS_PASSWORD: ${{ secrets.APP_SETTINGS_PASSWORD }}
+    - name: Build
+      run: dotnet build SiteMapGeneratorTool
+    - name: Selenium Test
+      run: dotnet test --no-build --verbosity normal SiteMapGeneratorTool/SiteMapGeneratorToolSelenium
