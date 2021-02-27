@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Decrypt Secret
-      run: ./.github/scripts/decrypt.sh
+      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt.sh
       env:
         LARGE_SECRET_PASSPHRASE: ${{ secrets.APP_SETTINGS_PASSWORD }}
     - name: Build
