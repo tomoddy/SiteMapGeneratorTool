@@ -18,7 +18,9 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Decrypt Secret
-      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh --passphrase=${{ secrets.APP_SETTINGS_PASSWORD }}
+      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
+      env:
+        APP_SETTINGS_PASSWORD: ${{ secrets.APP_SETTINGS_PASSWORD }}
     - name: Build
       run: dotnet build SiteMapGeneratorTool
     - name: Unit Test
