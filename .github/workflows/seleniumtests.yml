@@ -23,6 +23,10 @@ jobs:
         ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
       env:
         APP_SETTINGS_PASSWORD: ${{ secrets.APP_SETTINGS_PASSWORD }}
+    - name: Install Chrome
+      run: |
+       chmod +x ./scripts/install_chrome.sh
+        ./scripts/install_chrome.sh
     - name: Build
       run: dotnet build SiteMapGeneratorTool
     - name: Selenium Test
