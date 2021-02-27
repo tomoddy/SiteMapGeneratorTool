@@ -20,7 +20,7 @@ jobs:
     - name: LS
       run: ls SiteMapGeneratorTool/SiteMapGeneratorTool
     - name: Decrypt Secret
-      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt.sh
+      run: ./SiteMapGeneratorTool/SiteMapGeneratorTool/decrypt_secret.sh
       env:
         LARGE_SECRET_PASSPHRASE: ${{ secrets.APP_SETTINGS_PASSWORD }}
     - name: Build
