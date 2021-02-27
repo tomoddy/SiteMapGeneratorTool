@@ -26,8 +26,8 @@ jobs:
     - name: Install Chrome
       run: |
         ls
-        chmod +x ./scripts/install_chrome.sh
-        ./scripts/install_chrome.sh
+        chmod +x ./SiteMapGeneratorTool/SiteMapGeneratorToolSelenium/Scripts/install_chrome.sh
+        ./SiteMapGeneratorTool/SiteMapGeneratorToolSelenium/Scripts/install_chrome.sh
     - name: Build
       run: dotnet build SiteMapGeneratorTool
     - name: Selenium Test
