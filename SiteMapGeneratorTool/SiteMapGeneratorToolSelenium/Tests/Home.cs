@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
 using System;
 
 namespace SiteMapGeneratorToolSelenium.Tests
@@ -13,10 +12,10 @@ namespace SiteMapGeneratorToolSelenium.Tests
         [SetUp]
         public void HomeSetup()
         {
-            Driver.Navigate().GoToUrl(Domain);
-
             SetDepth = new Random().Next(Configuration["Maximum Depth"]);
             SetMaxPages = new Random().Next(Configuration["Maximum Pages"]);
+
+            ClickById("generateLink");
         }
 
         [Test]
@@ -46,8 +45,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
             SendKeys("emailInput", Email);
             MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
             MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
-            Click("filesInput");
-            Click("robotsInput");
+            ClickById("filesInput");
+            ClickById("robotsInput");
 
             // Check entered values
             ValueEqual(Url, "urlInput");
@@ -68,10 +67,10 @@ namespace SiteMapGeneratorToolSelenium.Tests
             MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
             MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
             if (new Random().Next(2) == 0)
-                Click("filesInput");
+                ClickById("filesInput");
             if (new Random().Next(2) == 0)
-                Click("robotsInput");
-            Click("submitInput");
+                ClickById("robotsInput");
+            ClickById("submitInput");
 
             // Check loading page
             TextEqual("Generating site map...", "generatingMessage", 5);
