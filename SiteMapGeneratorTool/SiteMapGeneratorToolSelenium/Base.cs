@@ -44,9 +44,22 @@ namespace SiteMapGeneratorToolSelenium
 
         #region General
 
-        public List<IWebElement> FindElements(string xPath)
+        public List<IWebElement> FindElements(string xPath, int duration = DURATION)
         {
-            return new List<IWebElement>(Driver.FindElements(By.XPath(xPath)));
+            List<IWebElement> retVal = null;
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
+
+            try
+            {
+                retVal = new List<IWebElement>(Driver.FindElements(By.XPath(xPath)));
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail($"Elements with xPath \"{xPath}\" could not be found.");
+            }
+
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            return retVal;
         }
 
         public IWebElement FindElement(string xPath, int duration = DURATION)
@@ -105,19 +118,29 @@ namespace SiteMapGeneratorToolSelenium
             FindElementById(id, duration).Click();
         }
 
-        public void SendKeys(string id, string text)
+        public void SendKeys(string xPath, string text)
+        {
+            FindElement(xPath).SendKeys(text);
+        }
+
+        public void SendKeysById(string id, string text)
         {
             FindElementById(id).SendKeys(text);
+        }
+
+        public void Clear(string xPath)
+        {
+            FindElement(xPath).Clear();
         }
 
         public void MoveSlider(string id, int size)
         {
             if (size > 0)
                 for (int i = 0; i < size; i++)
-                    SendKeys(id, Keys.Right);
+                    SendKeysById(id, Keys.Right);
             else if (size < 0)
                 for (int i = 0; i < -size; i++)
-                    SendKeys(id, Keys.Left);
+                    SendKeysById(id, Keys.Left);
             else { }
         }
 
