@@ -43,27 +43,27 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
-            @{
-                IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-                FirebaseHelper firebaseHelper = new FirebaseHelper(
-                        configuration.GetValue<string>("Firebase:KeyPath"),
-                        configuration.GetValue<string>("Firebase:Database"),
-                        configuration.GetValue<string>("Firebase:SystemCollection"));
+        @{
+            IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            FirebaseHelper firebaseHelper = new FirebaseHelper(
+                    configuration.GetValue<string>("Firebase:KeyPath"),
+                    configuration.GetValue<string>("Firebase:Database"),
+                    configuration.GetValue<string>("Firebase:SystemCollection"));
 
-                if (firebaseHelper.Get<ConfigurationData>("configuration").Power)
-                {
-                    RenderBody();
-                }
-                else
-                {
-                    IgnoreBody();
-                    <h2>System Offline</h2>
-                    <p>The system has been disabled for maintenance, please try again later.</p>
-                }
+            if (firebaseHelper.Get<ConfigurationData>(Context.Request.Host.ToString()).Power)
+            {
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             }
+            else
+            {
+                IgnoreBody();
+                <h2>System Offline</h2>
+                <p>The system has been disabled for maintenance, please try again later.</p>
+            }
+        }
 
-        </main>
     </div>
 
     <footer class="border-top footer text-muted">
