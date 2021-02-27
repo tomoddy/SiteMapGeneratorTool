@@ -20,6 +20,6 @@ jobs:
     - name: Build
       run: dotnet build SiteMapGeneratorTool
     - name: Unit Test
-      run: dotnet test --no-build --verbosity normal SiteMapGeneratorToolTests
+      run: dotnet test --no-build --verbosity normal SiteMapGeneratorTool/SiteMapGeneratorToolTests
     - name: Selenium Test
-      run: dotnet test --no-build --verbosity normal SiteMapGeneratorToolSelenium
+      run: dotnet test --no-build --verbosity normal SiteMapGeneratorTool/SiteMapGeneratorToolSelenium
