@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SiteMapGeneratorToolSelenium
 {
@@ -251,10 +252,15 @@ namespace SiteMapGeneratorToolSelenium
 
         public DateTime DateTimeTryParse(string xPath)
         {
-            if (DateTime.TryParse(GetText(xPath), out DateTime retVal))
-                return retVal;
-            else
-                throw new AssertionException(GetText(xPath));
+            string dateString = GetText(xPath);
+            try
+            {
+                return DateTime.ParseExact(dateString, "dd/MM/yyyy HH:mm:ss", CultureInfo.CurrentCulture);
+            }
+            catch(FormatException)
+            {
+                throw new AssertionException($"Could not format \"{dateString}\"");
+            }
         }
 
         #endregion
