@@ -249,6 +249,14 @@ namespace SiteMapGeneratorToolSelenium
             ValueEqual("Submit", "submitInput");
         }
 
+        public DateTime DateTimeTryParse(string xPath)
+        {
+            if (DateTime.TryParse(GetText(xPath), out DateTime retVal))
+                return retVal;
+            else
+                throw new AssertionException(GetText(xPath));
+        }
+
         #endregion
     }
 }
