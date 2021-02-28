@@ -17,7 +17,7 @@ namespace SiteMapGeneratorToolSelenium
         public IWebDriver Driver { get; set; }
         public string Url { get; set; }
         public string Email { get; set; }
-        public Dictionary<string, int> Configuration { get; set; }
+        public Dictionary<string, int> Settings { get; set; }
 
         [OneTimeSetUp]
         public void BaseSetup()
@@ -26,12 +26,13 @@ namespace SiteMapGeneratorToolSelenium
             Options = new ChromeOptions();
             Options.AddArgument("--disable-notifications");
             Options.AddArgument("--headless");
+            Options.AddArgument("--window-size=1920,1080");
             Driver = new ChromeDriver(Options);
 
             Url = "https://example.com";
             Email = "example@example.com";
 
-            Configuration = GetConfiguration();
+            Settings = GetSettings();
             Driver.Navigate().GoToUrl(Domain);
         }
 
@@ -93,6 +94,11 @@ namespace SiteMapGeneratorToolSelenium
         public void GoBack()
         {
             Driver.Navigate().Back();
+        }
+
+        public void Refresh()
+        {
+            Driver.Navigate().Refresh();
         }
 
         #endregion
@@ -202,7 +208,7 @@ namespace SiteMapGeneratorToolSelenium
 
         #region Convinience
 
-        public Dictionary<string, int> GetConfiguration()
+        public Dictionary<string, int> GetSettings()
         {
             Dictionary<string, int> retVal = new Dictionary<string, int>();
             Driver.Navigate().GoToUrl(Domain + "/about");
@@ -216,6 +222,29 @@ namespace SiteMapGeneratorToolSelenium
         public void UrlEquals(string subDirectory)
         {
             Assert.AreEqual(Domain + subDirectory, Driver.Url);
+        }
+
+        public void CheckGenerateDefaults()
+        {
+            ValueEqual(string.Empty, "urlInput");
+            ValueEqual(string.Empty, "emailInput");
+            ValueEqual(Settings["Maximum Depth"] / 2, "depthInput");
+            TextEqualById((Settings["Maximum Depth"] / 2).ToString(), "depthOutput");
+            ValueEqual(Settings["Maximum Pages"] / 2, "maxPagesInput");
+            TextEqualById((Settings["Maximum Pages"] / 2).ToString(), "maxPagesOutput");
+            IsSelectedById(false, "filesInput");
+            IsSelectedById(false, "robotsInput");
+        }
+
+        public void CheckGenerateLabels()
+        {
+            TextEqualById("Website URL", "urlLabel");
+            TextEqualById("Email Address", "emailLabel");
+            TextEqualById("Maximum Subdirectory Level :", "depthLabel");
+            TextEqualById("Maximum Number of Pages :", "maxPagesLabel");
+            TextEqualById("Include Files", "filesLabel");
+            TextEqualById("Respect Robots", "robotsLabel");
+            ValueEqual("Submit", "submitInput");
         }
 
         #endregion

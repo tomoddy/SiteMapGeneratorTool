@@ -12,8 +12,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
         [SetUp]
         public void HomeSetup()
         {
-            SetDepth = new Random().Next(Configuration["Maximum Depth"]);
-            SetMaxPages = new Random().Next(Configuration["Maximum Pages"]);
+            SetDepth = new Random().Next(Settings["Maximum Depth"]);
+            SetMaxPages = new Random().Next(Settings["Maximum Pages"]);
 
             ClickById("generateLink");
         }
@@ -22,29 +22,16 @@ namespace SiteMapGeneratorToolSelenium.Tests
         public void FormValidation()
         {
             // Check labels
-            TextEqualById("Website URL", "urlLabel");
-            TextEqualById("Email Address", "emailLabel");
-            TextEqualById("Maximum Subdirectory Level :", "depthLabel");
-            TextEqualById("Maximum Number of Pages :", "maxPagesLabel");
-            TextEqualById("Include Files", "filesLabel");
-            TextEqualById("Respect Robots", "robotsLabel");
-            ValueEqual("Submit", "submitInput");
+            CheckGenerateLabels();
 
             // Check initial values
-            ValueEqual(string.Empty, "urlInput");
-            ValueEqual(string.Empty, "emailInput");
-            ValueEqual(Configuration["Maximum Depth"] / 2, "depthInput");
-            TextEqualById((Configuration["Maximum Depth"] / 2).ToString(), "depthOutput");
-            ValueEqual(Configuration["Maximum Pages"] / 2, "maxPagesInput");
-            TextEqualById((Configuration["Maximum Pages"] / 2).ToString(), "maxPagesOutput");
-            IsSelectedById(false, "filesInput");
-            IsSelectedById(false, "robotsInput");
+            CheckGenerateDefaults();
 
             // Enter values
             SendKeysById("urlInput", Url);
             SendKeysById("emailInput", Email);
-            MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
-            MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
+            MoveSlider("depthInput", SetDepth - Settings["Maximum Depth"] / 2);
+            MoveSlider("maxPagesInput", SetMaxPages - Settings["Maximum Pages"] / 2);
             ClickById("filesInput");
             ClickById("robotsInput");
 
@@ -64,8 +51,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
         {
             // Send request
             SendKeysById("urlInput", Url);
-            MoveSlider("depthInput", SetDepth - Configuration["Maximum Depth"] / 2);
-            MoveSlider("maxPagesInput", SetMaxPages - Configuration["Maximum Pages"] / 2);
+            MoveSlider("depthInput", SetDepth - Settings["Maximum Depth"] / 2);
+            MoveSlider("maxPagesInput", SetMaxPages - Settings["Maximum Pages"] / 2);
             if (new Random().Next(2) == 0)
                 ClickById("filesInput");
             if (new Random().Next(2) == 0)
