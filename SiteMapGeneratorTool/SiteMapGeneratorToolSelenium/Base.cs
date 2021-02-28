@@ -25,10 +25,8 @@ namespace SiteMapGeneratorToolSelenium
             Domain = "https://tadataka.azurewebsites.net/";
             Options = new ChromeOptions();
             Options.AddArgument("--disable-notifications");
-            Options.AddArgument("--no-sandbox");
-            Options.AddArgument("--disable-dev-shm-usage");
             Options.AddArgument("--headless");
-            Driver = new ChromeDriver();
+            Driver = new ChromeDriver(Options);
 
             Url = "https://example.com";
             Email = "example@example.com";
@@ -45,24 +43,6 @@ namespace SiteMapGeneratorToolSelenium
         }
 
         #region General
-
-        public List<IWebElement> FindElements(string xPath, int duration = DURATION)
-        {
-            List<IWebElement> retVal = null;
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
-
-            try
-            {
-                retVal = new List<IWebElement>(Driver.FindElements(By.XPath(xPath)));
-            }
-            catch (NoSuchElementException)
-            {
-                Assert.Fail($"Elements with xPath \"{xPath}\" could not be found.");
-            }
-
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
-            return retVal;
-        }
 
         public IWebElement FindElement(string xPath, int duration = DURATION)
         {
@@ -85,6 +65,34 @@ namespace SiteMapGeneratorToolSelenium
         public IWebElement FindElementById(string id, int duration = DURATION)
         {
             return FindElement($"//*[@id=\"{id}\"]", duration);
+        }
+
+        public List<IWebElement> FindElements(string xPath, int duration = DURATION)
+        {
+            List<IWebElement> retVal = null;
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(duration);
+
+            try
+            {
+                retVal = new List<IWebElement>(Driver.FindElements(By.XPath(xPath)));
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail($"Elements with xPath \"{xPath}\" could not be found.");
+            }
+
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            return retVal;
+        }
+
+        public string GetUrl()
+        {
+            return Driver.Url;
+        }
+
+        public void GoBack()
+        {
+            Driver.Navigate().Back();
         }
 
         #endregion
@@ -175,12 +183,17 @@ namespace SiteMapGeneratorToolSelenium
             Assert.AreEqual(expected, GetValue<T>(id));
         }
 
-        public void IsSelected(bool expected, string id)
+        public void IsSelectedById(bool expected, string id)
         {
             Assert.AreEqual(expected, FindElementById(id).Selected);
         }
 
-        public bool ElementExists(string id)
+        public bool ElementExists(string xPath)
+        {
+            return !(FindElement(xPath) is null);
+        }
+
+        public bool ElementExistsById(string id)
         {
             return !(FindElementById(id) is null);
         }

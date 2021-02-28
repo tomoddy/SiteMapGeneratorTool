@@ -37,8 +37,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
             TextEqualById((Configuration["Maximum Depth"] / 2).ToString(), "depthOutput");
             ValueEqual(Configuration["Maximum Pages"] / 2, "maxPagesInput");
             TextEqualById((Configuration["Maximum Pages"] / 2).ToString(), "maxPagesOutput");
-            IsSelected(false, "filesInput");
-            IsSelected(false, "robotsInput");
+            IsSelectedById(false, "filesInput");
+            IsSelectedById(false, "robotsInput");
 
             // Enter values
             SendKeysById("urlInput", Url);
@@ -55,8 +55,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
             TextEqualById(SetDepth == 0 ? "Unlimited" : SetDepth.ToString(), "depthOutput");
             ValueEqual(SetMaxPages, "maxPagesInput");
             TextEqualById(SetMaxPages == 0 ? "Unlimited" : SetMaxPages.ToString(), "maxPagesOutput");
-            IsSelected(true, "filesInput");
-            IsSelected(true, "robotsInput");
+            IsSelectedById(true, "filesInput");
+            IsSelectedById(true, "robotsInput");
         }
 
         [Test]
@@ -74,13 +74,13 @@ namespace SiteMapGeneratorToolSelenium.Tests
 
             // Check loading page
             TextEqualById("Generating site map...", "generatingMessage");
-            ElementExists("generatingInformation");
+            ElementExistsById("generatingInformation");
 
             // Wait for results to completed
             TextEqualById($"Request complete for {Url}/", "completeMessage", 15);
             TextContainsById("1 pages found", "completeInformation");
-            TextContainsById($"{SetMaxPages} page limit", "completeInformation");
-            TextContainsById($"{SetDepth} depth limit", "completeInformation");
+            TextContainsById($"{(SetMaxPages == 0 ? "Unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
+            TextContainsById($"{(SetDepth == 0 ? "Unlimited" : SetDepth.ToString())} depth limit", "completeInformation");
             TextEqualById("Structure", "structureLink");
             TextEqualById("Sitemap", "sitemapLink");
             TextEqualById("Graph", "graphLink");
