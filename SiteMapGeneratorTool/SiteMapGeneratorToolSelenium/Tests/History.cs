@@ -212,15 +212,17 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Sort by completion asc
             ClickById("completionTitle");
             Thread.Sleep(WAIT);
-            Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[1]/td[6]"), out DateTime completion1));
-            Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[2]/td[6]"), out DateTime completion2));
+
+            DateTime completion1 = DateTimeTryParse("//*[@id=\"historyTable\"]/tbody/tr[1]/td[6]");
+            DateTime completion2 = DateTimeTryParse("//*[@id=\"historyTable\"]/tbody/tr[2]/td[6]");
+
             Assert.LessOrEqual(completion1, completion2);
 
             // Sort by completion desc
             ClickById("completionTitle");
             Thread.Sleep(WAIT);
-            Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[1]/td[6]"), out completion1));
-            Assert.IsTrue(DateTime.TryParse(GetText("//*[@id=\"historyTable\"]/tbody/tr[2]/td[6]"), out completion2));
+            completion1 = DateTimeTryParse("//*[@id=\"historyTable\"]/tbody/tr[1]/td[6]");
+            completion2 = DateTimeTryParse("//*[@id=\"historyTable\"]/tbody/tr[2]/td[6]");
             Assert.GreaterOrEqual(completion1, completion2);
         }
 
@@ -276,8 +278,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             Assert.IsTrue(double.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[3]"), out double elapsed));
             Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[4]"), out int depth));
             Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[5]"), out int maxPages));
-            Assert.IsTrue(DateTime.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[6]"), out DateTime completion));
-            Assert.IsTrue(DateTime.Now > completion);
+            DateTime completion = DateTimeTryParse($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[6]");
 
             // Click link
             Click($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[1]/a");
@@ -288,6 +289,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             TextContainsById($"in {elapsed} seconds", "completeInformation");
             TextContainsById($"{maxPages} page limit", "completeInformation");
             TextContainsById($"{depth} depth limit", "completeInformation");
+            Assert.IsTrue(DateTime.Now > completion);
         }
     }
 }
