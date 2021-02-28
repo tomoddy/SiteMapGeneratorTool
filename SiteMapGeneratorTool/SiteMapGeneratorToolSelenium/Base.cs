@@ -27,6 +27,8 @@ namespace SiteMapGeneratorToolSelenium
             Options.AddArgument("--disable-notifications");
             Options.AddArgument("--headless");
             Options.AddArgument("--window-size=1920,1080");
+            Options.AddArgument("--no-sandbox");
+            Options.AddArgument("--disable-dev-shm-usage");
             Driver = new ChromeDriver(Options);
 
             Url = "https://example.com";
