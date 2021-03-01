@@ -66,8 +66,8 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Wait for results to completed
             TextEqualById($"Request complete for {Url}/", "completeMessage", 15);
             TextContainsById("1 pages found", "completeInformation");
-            TextContainsById($"{(SetMaxPages == 0 ? "Unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
-            TextContainsById($"{(SetDepth == 0 ? "Unlimited" : SetDepth.ToString())} depth limit", "completeInformation");
+            TextContainsById($"{(SetMaxPages == 0 ? "unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
+            TextContainsById($"{(SetDepth == 0 ? "unlimited" : SetDepth.ToString())} depth limit", "completeInformation");
             TextEqualById("Structure", "structureLink");
             TextEqualById("Sitemap", "sitemapLink");
             TextEqualById("Graph", "graphLink");
