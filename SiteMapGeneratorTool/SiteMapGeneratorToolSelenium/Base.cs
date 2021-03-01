@@ -62,7 +62,7 @@ namespace SiteMapGeneratorToolSelenium
                 Assert.Fail($"Element with xPath \"{xPath}\" could not be found.");
             }
 
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(DURATION);
             return retVal;
         }
 
@@ -85,7 +85,7 @@ namespace SiteMapGeneratorToolSelenium
                 Assert.Fail($"Elements with xPath \"{xPath}\" could not be found.");
             }
 
-            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(DURATION);
             return retVal;
         }
 
