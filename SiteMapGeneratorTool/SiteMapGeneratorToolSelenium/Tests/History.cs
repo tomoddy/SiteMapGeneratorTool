@@ -272,12 +272,17 @@ namespace SiteMapGeneratorToolSelenium.Tests
         [Test]
         public void GetResult()
         {
+            // Set initial values
+            int depthInt = -1, maxPagesInt = -1;
+
             // Get values from table
             string url = GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[1]");
             Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[2]"), out int pages));
             Assert.IsTrue(double.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[3]"), out double elapsed));
-            Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[4]"), out int depth));
-            Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[5]"), out int maxPages));
+            if (GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[4]") != "Unlimited")
+                Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[4]"), out depthInt));
+            if(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[5]") != "Unlimited")
+                Assert.IsTrue(int.TryParse(GetText($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[5]"), out maxPagesInt));
             DateTime completion = DateTimeTryParse($"//*[@id=\"historyTable\"]/tbody/tr[{Index}]/td[6]");
 
             // Click link
@@ -287,8 +292,14 @@ namespace SiteMapGeneratorToolSelenium.Tests
             TextEqualById($"Request complete for {url}", "completeMessage");
             TextContainsById($"{pages} pages found", "completeInformation");
             TextContainsById($"in {elapsed} seconds", "completeInformation");
-            TextContainsById($"{maxPages} page limit", "completeInformation");
-            TextContainsById($"{depth} depth limit", "completeInformation");
+            if(depthInt > -1)
+                TextContainsById($"{depthInt} depth limit", "completeInformation");
+            else
+                TextContainsById($"unlimited depth limit", "completeInformation");
+            if(maxPagesInt > -1)
+                TextContainsById($"{maxPagesInt} page limit", "completeInformation");
+            else
+                TextContainsById($"unlimited page limit", "completeInformation");
             Assert.IsTrue(DateTime.Now > completion);
         }
     }
