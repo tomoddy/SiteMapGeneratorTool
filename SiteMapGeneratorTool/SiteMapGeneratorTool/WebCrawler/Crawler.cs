@@ -116,7 +116,7 @@ namespace SiteMapGeneratorTool.WebCrawler
 
                         // Generate and format tags
                         List<string> hrefs = htmlHelper.GenerateTags();
-                        List<Uri> links = FormatLinks(hrefs);
+                        List<Uri> links = FormatLinks(url, hrefs);
                         links.Remove(url);
 
                         // Add tags to visit list and webpage and add to webpages
@@ -131,16 +131,25 @@ namespace SiteMapGeneratorTool.WebCrawler
 
                 // Add links to structure
                 foreach (string sL in structureLinks)
+                {
                     if (structureCount < MaxPages)
                     {
                         Structure.Add(sL);
                         structureCount++;
                     }
+                }
 
                 // Remove duplicate to visit links
-                ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
+                try
+                {
+                    ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
+                }
+                catch (NullReferenceException)
+                {
+                    continue;
+                }
             }
-
+            
             // Impose maximum page limits
             Visited = new ConcurrentBag<Uri>(Visited.Take(MaxPages));
             Webpages = Webpages.Take(MaxPages).ToList();
@@ -196,7 +205,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// </summary>
         /// <param name="tags">List of string links</param>
         /// <returns>List of uri links</returns>
-        private List<Uri> FormatLinks(List<string> tags)
+        private List<Uri> FormatLinks(Uri url, List<string> tags)
         {
             // Return value
             List<Uri> retVal = new List<Uri>();
@@ -211,7 +220,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                 else if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
                     continue;
                 else if (Uri.IsWellFormedUriString(new Uri(Domain, href).AbsoluteUri, UriKind.Absolute))
-                    retVal.Add(new Uri(Domain, href));
+                    retVal.Add(new Uri(url, href));
                 else
                     continue;
             }
