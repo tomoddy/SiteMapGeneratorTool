@@ -12,6 +12,7 @@ namespace SiteMapGeneratorToolSelenium
     {
         private const int DURATION = 2;
         public const int WAIT = 500;
+        public const int LONG_WAIT = WAIT * 2;
 
         public string Domain { get; set; }
         public ChromeOptions Options { get; set; }

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,16 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
     [TestFixture()]
     public class RobotsHelperTests
     {
+        private IConfiguration Configuration;
+        private string Target;
         private RobotsHelper RobotsHelper;
+
+        [OneTimeSetUp]
+        public void CrawlerOneTimeSetup()
+        {
+            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            Target = Configuration.GetValue<string>("Test:Target");
+        }
 
         [SetUp()]
         public void RobotsHelperSetUp()
@@ -25,27 +35,27 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
                 "Disallow: ",
                 string.Empty,
                 "User-agent: *",
-                "Disallow: /cgi-bin/",
-                "Disallow: /publications/eurotex-2005-notes/",
-                "Disallow: /publications/pdfTeX-meeting-2005-09-24/",
+                "Disallow: /example1",
+                "Disallow: /example2",
+                "Disallow: /example3",
                 string.Empty
             };
 
             Assert.AreEqual(new List<string>(), RobotsHelper.Exclusions);
-            RobotsHelper.FindExclusions(new Uri("http://www.latex-project.org"));
+            RobotsHelper.FindExclusions(new Uri(Target));
             Assert.AreEqual(expected, RobotsHelper.Exclusions);
         }
 
         [Test()]
         public void GetExlusionsTest()
         {
-            RobotsHelper.FindExclusions(new Uri("http://www.latex-project.org"));
+            RobotsHelper.FindExclusions(new Uri(Target));
 
             List<string> expected = new List<string> 
             { 
-                "/cgi-bin/",
-                "/publications/eurotex-2005-notes/",
-                "/publications/pdfTeX-meeting-2005-09-24/",
+                "/example1",
+                "/example2",
+                "/example3",
             };
             List<string> actual = RobotsHelper.GetExlusions();
 

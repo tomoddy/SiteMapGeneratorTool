@@ -11,9 +11,12 @@ namespace SiteMapGeneratorTool.Helpers.Tests
     {
         List<Webpage> Pages;
 
+        [Ignore("Waiting on changes to graph class (#32)")]
         [Test()]
         public void RenderSmallTest()
         {
+            Assert.Fail();
+
             Pages = new List<Webpage>()
             {
                 new Webpage(new Uri("http://sitemaps.org/"), null) { Links = new List<Uri>()
@@ -45,6 +48,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
             Assert.AreEqual(File.ReadAllBytes("Static/valid-graph.png"), GraphHelper.Render(Pages));
         }
 
+        [Ignore("Waiting on changes to graph class (#32)")]
         [Test()]
         public void RenderLargeTest()
         {

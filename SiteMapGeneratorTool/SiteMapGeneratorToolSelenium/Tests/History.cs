@@ -232,16 +232,15 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Check entry count and get total
             Assert.AreEqual(25, FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count);
             string info = GetTextById("historyTable_info");
-            Assert.IsTrue(int.TryParse(info.Substring(info.IndexOf(" of ") + 4, info.Length - (info.IndexOf("entries") + 5)), out int total));
+            Assert.IsTrue(int.TryParse(info.Split(' ')[5], out int total));
 
             // Test for different settings
             List<int> values = new List<int> { 10, 25, 50, 100 };
             for (int i = 0; i < values.Count; i++)
             {
                 // Change entry count
-                Click("//*[@id=\"historyTable_length\"]/label/select");
                 Click($"//*[@id=\"historyTable_length\"]/label/select/option[{i + 1}]");
-                Thread.Sleep(WAIT);
+                Thread.Sleep(LONG_WAIT);
 
                 // Check entry count
                 Assert.AreEqual(values[i] <= total ? values[i] : total, FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count);
@@ -254,7 +253,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Set query
             string query = GetText("//*[@id=\"historyTable\"]/tbody/tr[1]/td[1]/a");
             SendKeys("//*[@id=\"historyTable_filter\"]/label/input", query);
-            Thread.Sleep(1000);
+            Thread.Sleep(LONG_WAIT);
 
             // Check values
             for (int i = 0; i < FindElements("//*[@id=\"historyTable\"]/tbody/tr").Count; i++)
@@ -263,7 +262,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Set invalid query
             Clear("//*[@id=\"historyTable_filter\"]/label/input");
             SendKeys("//*[@id=\"historyTable_filter\"]/label/input", "XXX");
-            Thread.Sleep(1000);
+            Thread.Sleep(LONG_WAIT);
 
             // Check values
             TextEqual("No data available in table", "//*[@id=\"historyTable\"]/tbody/tr[1]/td[1]");
