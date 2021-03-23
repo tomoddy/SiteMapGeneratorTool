@@ -139,15 +139,9 @@ namespace SiteMapGeneratorTool.WebCrawler
                     }
                 }
 
-                // Remove duplicate to visit links
-                try
-                {
-                    ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
-                }
-                catch (NullReferenceException)
-                {
-                    continue;
-                }
+                // Remove nulls and duplicate to-visit links
+                ToVisit.RemoveAll(x => x == null);
+                ToVisit = ToVisit.GroupBy(x => x.AbsoluteUri).Select(x => x.First()).ToList();
             }
             
             // Impose maximum page limits
