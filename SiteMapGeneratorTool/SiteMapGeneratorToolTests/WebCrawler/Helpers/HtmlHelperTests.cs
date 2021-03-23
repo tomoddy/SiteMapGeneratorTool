@@ -1,4 +1,4 @@
-﻿using SiteMapGeneratorTool.WebCrawler.Helpers;
+﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,16 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
     [TestFixture()]
     public class HtmlHelperTests
     {
-        // TODO Replace with test domain
-        private const string URL = "http://www.sitemaps.org";
-
+        private IConfiguration Configuration;
+        private string Target;
         private HtmlHelper HtmlHelper;
+
+        [OneTimeSetUp]
+        public void CrawlerOneTimeSetup()
+        {
+            Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            Target = Configuration.GetValue<string>("Test:Target");
+        }
 
         [SetUp]
         public void HtmlHelperSetup()
@@ -23,7 +29,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         public void CreateDocumentTest()
         {
             DateTime? expected = new DateTime(2020, 01, 01);
-            DateTime? actual = HtmlHelper.CreateDocument(new Uri(URL));
+            DateTime? actual = HtmlHelper.CreateDocument(new Uri(Target));
 
             Assert.IsNotNull(actual);
             Assert.IsTrue(expected.Value < actual.Value);
@@ -32,19 +38,15 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         [Test()]
         public void GenerateTagsTest()
         {
-            HtmlHelper.CreateDocument(new Uri(URL));
-
-            List<string> expected = new List<string> { "faq.php", "protocol.php", "#", "protocol.php", "http://creativecommons.org/licenses/by-sa/2.5/", "terms.php", "/sitemaps.css" };
-            List<string> actual = HtmlHelper.GenerateTags();
-
-            Assert.AreEqual(expected, actual);
+            HtmlHelper.CreateDocument(new Uri(Target + "smelly"));
+            Assert.AreEqual(new List<string> { "smelly/ajar", "smelly/addition", "smelly/vest", "https://www.ajar.com", "https://www.addition.com", "https://www.vest.com" }, HtmlHelper.GenerateTags());
         }
 
         [Test()]
         public void GetLastModifiedTest()
         {
             DateTime? expected = new DateTime(2020, 01, 01);
-            DateTime? actual = HtmlHelper.GetLastModified(new Uri(URL));
+            DateTime? actual = HtmlHelper.GetLastModified(new Uri(Target));
 
             Assert.IsNotNull(actual);
             Assert.IsTrue(expected.Value < actual.Value);
