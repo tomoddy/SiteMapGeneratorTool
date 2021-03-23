@@ -10,11 +10,13 @@ namespace SiteMapGeneratorTool.WebCrawler.Objects
         // Constants
         private const string SEPERATOR = "/";
 
+        // Variables
+        private readonly int Depth;
+
         // Properties
         public string Address { get; set; }
         public string Link { get; set; }
         public int Level { get; set; }
-        public int Depth { get; set; }
         public List<Page> Pages { get; set; }
 
         /// <summary>
