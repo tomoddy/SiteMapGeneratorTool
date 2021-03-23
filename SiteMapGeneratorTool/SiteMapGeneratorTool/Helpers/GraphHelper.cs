@@ -28,8 +28,9 @@ namespace SiteMapGeneratorTool.Helpers
                     graph.Edges.Add(page.Url.AbsolutePath, link.AbsolutePath);
 
             // Request image and write contents to byte array
-            if (graph.Edges.Count <= 400)
-                return new RestClient($"https://image-charts.com/chart?cht=gv:dot&chl={graph.Build()}").Execute(new RestRequest(Method.GET)).RawBytes;
+            IRestResponse response = new RestClient($"https://image-charts.com/chart?cht=gv:dot&chl={graph.Build()}").Execute(new RestRequest(Method.GET));
+            if (response.IsSuccessful)
+                return response.RawBytes;
             else
                 return File.ReadAllBytes("wwwroot/res/empty-graph.png");
         }
