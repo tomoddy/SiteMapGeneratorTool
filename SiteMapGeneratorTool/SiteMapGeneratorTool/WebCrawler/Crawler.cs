@@ -41,6 +41,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         private bool Files { get; set; }
         private bool Robots { get; set; }
         private int Threads { get; set; }
+        private int Politeness { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -51,7 +52,7 @@ namespace SiteMapGeneratorTool.WebCrawler
         /// <param name="files">Include files</param>
         /// <param name="robots">Respect robots.txt</param>
         /// <param name="threads">Number of threads</param>
-        public Crawler(string domain, int depth, int maxPages, bool files, bool robots, int threads)
+        public Crawler(string domain, int depth, int maxPages, bool files, bool robots, int threads, int politeness)
         {
             RobotsHelper = new RobotsHelper();
             SitemapHelper = new SitemapHelper();
@@ -67,6 +68,7 @@ namespace SiteMapGeneratorTool.WebCrawler
             Files = files;
             Robots = robots;
             Threads = threads;
+            Politeness = politeness;
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace SiteMapGeneratorTool.WebCrawler
                         structureLinks.Add(url.AbsolutePath[1..]);
 
                         // Generate webpage object for link
-                        Webpage webpage = new Webpage(url, htmlHelper.CreateDocument(url));
+                        Webpage webpage = new Webpage(url, htmlHelper.CreateDocument(url, Politeness));
 
                         // Generate and format tags
                         List<string> hrefs = htmlHelper.GenerateTags();

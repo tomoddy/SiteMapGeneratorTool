@@ -91,7 +91,7 @@ namespace SiteMapGeneratorTool.Workers
 
                         // Run web crawler
                         Logger.LogInformation($"Web Crawler {Id}: Crawling {request}");
-                        Crawler crawler = new Crawler(request.Url.ToString(), depth, maxPages, request.Files, request.Robots, Configuration.GetValue<int>("Threads"));
+                        Crawler crawler = new Crawler(request.Url.ToString(), depth, maxPages, request.Files, request.Robots, Configuration.GetValue<int>("Threads"), Configuration.GetValue<int>("PolitenessPolicy"));
                         crawler.Run();
 
                         // Upload files

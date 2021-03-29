@@ -29,7 +29,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         public void CreateDocumentTest()
         {
             DateTime? expected = new DateTime(2020, 01, 01);
-            DateTime? actual = HtmlHelper.CreateDocument(new Uri(Target));
+            DateTime? actual = HtmlHelper.CreateDocument(new Uri(Target), 0);
 
             Assert.IsNotNull(actual);
             Assert.IsTrue(expected.Value < actual.Value);
@@ -38,7 +38,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers.Tests
         [Test()]
         public void GenerateTagsTest()
         {
-            HtmlHelper.CreateDocument(new Uri(Target + "smelly"));
+            HtmlHelper.CreateDocument(new Uri(Target + "smelly"), 0);
             Assert.AreEqual(new List<string> { "smelly/ajar", "smelly/addition", "smelly/vest", "https://www.ajar.com", "https://www.addition.com", "https://www.vest.com" }, HtmlHelper.GenerateTags());
         }
 

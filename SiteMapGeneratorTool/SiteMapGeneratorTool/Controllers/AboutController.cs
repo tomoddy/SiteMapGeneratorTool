@@ -33,7 +33,8 @@ namespace SiteMapGeneratorTool.Controllers
                 { "Timeout (ms)", Configuration.GetValue<string>("Delay") },
                 { "Thread Count", Configuration.GetValue<string>("Threads") },
                 { "Maximum Depth", Configuration.GetValue<string>("Depth") },
-                { "Maximum Pages", Configuration.GetValue<string>("MaxPages") }
+                { "Maximum Pages", Configuration.GetValue<string>("MaxPages") },
+                { "Politeness Policy", Configuration.GetValue<string>("PolitenessPolicy") }
             };
             return View("Index");
         }

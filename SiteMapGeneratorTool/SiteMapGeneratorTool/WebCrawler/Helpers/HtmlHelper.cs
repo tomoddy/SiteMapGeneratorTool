@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 
 namespace SiteMapGeneratorTool.WebCrawler.Helpers
 {
@@ -33,12 +34,13 @@ namespace SiteMapGeneratorTool.WebCrawler.Helpers
         /// </summary>
         /// <param name="url">Url of webpage</param>
         /// <returns>Last modified date of webpage</returns>
-        public DateTime? CreateDocument(Uri url)
+        public DateTime? CreateDocument(Uri url, int sleep)
         {
             try
             {
                 // Load document and return webpage
                 Document = HtmlWeb.Load(url);
+                Thread.Sleep(sleep);
                 return GetLastModified(url);
             }
             catch (HtmlWebException)
