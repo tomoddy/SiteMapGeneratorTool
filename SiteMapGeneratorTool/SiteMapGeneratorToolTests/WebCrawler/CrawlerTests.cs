@@ -16,7 +16,7 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
         {
             Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             Target = Configuration.GetValue<string>("Test:Target");
-            Crawler = new Crawler(Target, 1000, 1000, false, false, Configuration.GetValue<int>("Threads"));
+            Crawler = new Crawler(Target, 1000, 1000, false, false, Configuration.GetValue<int>("Threads"), 0);
             Crawler.Run();
         }
 
