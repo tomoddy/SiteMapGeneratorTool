@@ -3,7 +3,10 @@
 }
 
 <h1 id="aboutTitle">About</h1>
-<p id="aboutInformation">PLACEHOLDER</p>
+<h2 id="backgroundTitle">Background</h2>
+<p>Tadataka was developed as a final year project for my Computer Science BSc at the University of Leeds. This site is free to use and does not contain any adverts. For additional information, please see the <a  asp-area="" asp-controller="privacy" asp-action="index">privacy policy</a>.</p>
+<p>Site maps can be used to aid in the navigation of a website, exploration of a website hierarchy, or increasing the quantity and quality of traffic through a website. The motivation for this project is to allow users to obtain site maps and other relevant information in a way that is intuitive, fast, free to use, and provides a better service than the existing alternative solutions.</p>
+<p>Another key motivation for the project is the development of my own skills and knowledge. The breadth of scope for this project will allow me to improve my programming skills and expand my knowledge in fields such as graph algorithms, web-crawling, and site map protocols.</p>
 
 <h2 id="helpTitle">Help</h2>
 <div id="helpBody">
@@ -28,26 +31,3 @@
     <p>If selected, and if it exists, the rules laid out in the "robots.txt" folder will be respected.</p>
 
 </div>
-
-<h2 id="configurationTitle">Configuration</h2>
-<table id="configurationTable" class="table">
-    <thead>
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (KeyValuePair<string, string> pair in ViewBag.Message)
-        {
-            <tr>
-                <td>@pair.Key</td>
-                <td>@pair.Value</td>
-            </tr>
-        }
-        <tr>
-            <td>Processor Count</td>
-            <td>@Environment.ProcessorCount</td>
-        </tr>
-    </tbody>
-</table>
