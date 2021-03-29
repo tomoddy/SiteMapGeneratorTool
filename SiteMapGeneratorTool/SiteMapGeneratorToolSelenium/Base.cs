@@ -215,7 +215,7 @@ namespace SiteMapGeneratorToolSelenium
         public Dictionary<string, int> GetSettings()
         {
             Dictionary<string, int> retVal = new Dictionary<string, int>();
-            Driver.Navigate().GoToUrl(Domain + "/about");
+            Driver.Navigate().GoToUrl(Domain + "/debug");
             List<IWebElement> rows = new List<IWebElement>(FindElementById("configurationTable").FindElement(By.XPath("tbody")).FindElements(By.TagName("tr")));
 
             foreach (IWebElement row in rows)
