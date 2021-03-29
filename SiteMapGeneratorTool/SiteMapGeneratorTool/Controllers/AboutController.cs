@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -27,15 +26,6 @@ namespace SiteMapGeneratorTool.Controllers
         /// <returns>View</returns>
         public IActionResult Index()
         {
-            ViewBag.Message = new Dictionary<string, string>
-            {
-                { "Number of Workers", Configuration.GetValue<string>("Workers") },
-                { "Timeout (ms)", Configuration.GetValue<string>("Delay") },
-                { "Thread Count", Configuration.GetValue<string>("Threads") },
-                { "Maximum Depth", Configuration.GetValue<string>("Depth") },
-                { "Maximum Pages", Configuration.GetValue<string>("MaxPages") },
-                { "Politeness Policy", Configuration.GetValue<string>("PolitenessPolicy") }
-            };
             return View("Index");
         }
     }
