@@ -90,7 +90,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
         public void Footer()
         {
             // Check footer text
-            TextEqualById($"© {DateTime.Now.Year} - tzer0m - Privacy", "footer");
+            TextEqualById($"© {DateTime.Now.Year} - Tom Oddy - Privacy", "footer");
 
             // Check link
             Click("//*[@id=\"footer\"]/a");
