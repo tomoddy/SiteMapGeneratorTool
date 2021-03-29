@@ -32,7 +32,6 @@ namespace SiteMapGeneratorTool.Helpers.Tests
                 Configuration.GetValue<string>("SMTP:Port"));
 
             string guid = Guid.NewGuid().ToString();
-            DateTime sendTime = DateTime.Now;
             emailHelper.SendEmail(Configuration.GetValue<string>("SMTP:UserName"), Configuration.GetValue<string>("Test:Domain"), guid);
         }
     }
