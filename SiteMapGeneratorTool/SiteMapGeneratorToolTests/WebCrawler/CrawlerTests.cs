@@ -35,9 +35,9 @@ namespace SiteMapGeneratorTool.WebCrawler.Tests
             string actual = Crawler.GetStructureJson();
 
             StringAssert.Contains("{\"Address\":\"/\",\"Link\":\"https://tomoddy.github.io\",\"Level\":0,\"Pages\":[", actual);
-            StringAssert.Contains("[{\"Address\":\"smelly\",\"Link\":\"https://tomoddy.github.io/smelly\",\"Level\":1,\"Pages\":[", actual);
-            StringAssert.Contains("[{\"Address\":\"ajar\",\"Link\":\"https://tomoddy.github.io/smelly/ajar\",\"Level\":2,\"Pages\":[", actual);
-            StringAssert.Contains("[{\"Address\":\"tent\",\"Link\":\"https://tomoddy.github.io/smelly/ajar/tent\",\"Level\":3,\"Pages\":[", actual);
+            StringAssert.Contains("{\"Address\":\"smelly\",\"Link\":\"https://tomoddy.github.io/smelly\",\"Level\":1,\"Pages\":[", actual);
+            StringAssert.Contains("{\"Address\":\"ajar\",\"Link\":\"https://tomoddy.github.io/smelly/ajar\",\"Level\":2,\"Pages\":[", actual);
+            StringAssert.Contains("{\"Address\":\"tent\",\"Link\":\"https://tomoddy.github.io/smelly/ajar/tent\",\"Level\":3,\"Pages\":[", actual);
         }
 
         [Test()]
