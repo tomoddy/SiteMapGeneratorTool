@@ -64,7 +64,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             ElementExistsById("generatingInformation");
 
             // Wait for results to completed
-            TextEqualById($"Request complete for {Url}/", "completeMessage", 30);
+            TextEqualById($"Request complete for {Url}/", "completeMessage", 60);
             TextContainsById("1 pages found", "completeInformation");
             TextContainsById($"{(SetMaxPages == 0 ? "unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
             TextContainsById($"{(SetDepth == 0 ? "unlimited" : SetDepth.ToString())} depth limit", "completeInformation");
