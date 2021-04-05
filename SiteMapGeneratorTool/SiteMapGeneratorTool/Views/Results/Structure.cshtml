@@ -30,6 +30,8 @@
 }
 
 <p><a id="structureLink" href="@ViewBag.Message.Link">@ViewBag.Message.Link</a></p>
+<p><span id="expandAll" style="cursor: pointer">Expand/Collapse</span></p>
+
 <ul id="structureList">
     @CreateStructure(ViewBag.Message)
 </ul>
@@ -42,4 +44,12 @@
             this.classList.toggle("arrow-down");
         });
     }
+
+    var expand = document.getElementById("expandAll");
+    expand.addEventListener("click", function () {
+        for (var j = 0; j < toggler.length; j++) {
+            toggler[j].parentElement.querySelector(".nested").classList.toggle("active");
+            toggler[j].classList.toggle("arrow-down");
+        }
+    });
 </script>
