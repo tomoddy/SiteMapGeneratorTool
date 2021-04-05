@@ -57,6 +57,11 @@
                                             <h2 id="invalidMessage">Invalid Guid</h2>
                                             <p id="InvalidInformation">No request was found for this GUID.</p>
                                         `)
+                        if (jQXHR.status === 500)
+                            $loader.html(`
+                                            <h2 id="invalidMessage">Internal Server Error</h2>
+                                            <p id="InvalidInformation">${jQXHR.responseText}</p>
+                                        `)
                         else
                             $loader.text("Server Error (Error)")
                     }

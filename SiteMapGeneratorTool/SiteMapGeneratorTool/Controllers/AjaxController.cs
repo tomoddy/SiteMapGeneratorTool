@@ -56,6 +56,8 @@ namespace SiteMapGeneratorTool.Controllers
                 return StatusCode(404);
             else if (data.Completion > 0)
                 return new JsonResult(data);
+            else if (data.Guid == "FAILURE")
+                return StatusCode(500, data.Message);
             else
                 return StatusCode(202);
         }
