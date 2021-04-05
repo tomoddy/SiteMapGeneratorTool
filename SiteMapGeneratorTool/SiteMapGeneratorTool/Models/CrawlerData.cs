@@ -19,6 +19,8 @@ namespace SiteMapGeneratorTool.Models
         public int Depth { get; set; }
         [FirestoreProperty]
         public double Elapsed { get; set; }
+        [FirestoreProperty]
+        public string Message { get; set; }
         public string Link { get; set; }
     }
 }

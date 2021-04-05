@@ -120,6 +120,7 @@ namespace SiteMapGeneratorTool.Workers
                     catch (Exception ex)
                     {
                         Logger.LogError($"Web Crawler {Id}: {ex.Message}");
+                        FirebaseHelper.Add(request.Guid.ToString(), new CrawlerData() { Guid = "FAILURE", Message = ex.Message });
                     }
                 }
             }
