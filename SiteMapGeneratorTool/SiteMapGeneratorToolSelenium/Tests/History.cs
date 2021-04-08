@@ -106,6 +106,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             string depthText1, depthText2;
 
             // Sort by depth asc
+            Thread.Sleep(LONG_WAIT);
             ClickById("depthTitle");
             Thread.Sleep(WAIT);
 
