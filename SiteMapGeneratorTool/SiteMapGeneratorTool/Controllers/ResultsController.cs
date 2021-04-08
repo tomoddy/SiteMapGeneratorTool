@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace SiteMapGeneratorTool.Controllers
 {
@@ -65,13 +66,27 @@ namespace SiteMapGeneratorTool.Controllers
         }
 
         /// <summary>
+        /// View graph render
+        /// </summary>
+        /// <param name="guid">Guid of request</param>
+        /// <returns>View</returns>
+        public ActionResult Graph(string guid)
+        {
+            string message = Encoding.UTF8.GetString(S3Helper.DownloadResponse(guid, new FileInfo(Configuration.GetValue<string>($"AWS:S3:Files:Graph"))).ToArray());
+            ViewBag.Size = new List<string>(message.Split("\r\n")).Count;
+            ViewBag.Message = message;
+            ViewBag.Guid = guid;
+            return View("Graph");
+        }
+
+        /// <summary>
         /// View graph file
         /// </summary>
         /// <param name="guid">Guid of request</param>
         /// <returns>Graph file</returns>
-        public FileResult Graph(string guid)
+        public FileResult GraphFile(string guid)
         {
-            return ReturnFile(guid, "Graph", "image/png");
+            return ReturnFile(guid, "Graph", "text/plain");
         }
 
         /// <summary>

@@ -1,10 +1,8 @@
 ﻿using GiGraph.Dot.Entities.Graphs;
 using GiGraph.Dot.Extensions;
-using RestSharp;
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SiteMapGeneratorTool.Helpers
 {
@@ -16,9 +14,9 @@ namespace SiteMapGeneratorTool.Helpers
         /// <summary>
         /// Renders dotgraph object to png image
         /// </summary>
-        /// <param name="guid">GUID of request</param>
         /// <param name="pages">List of webpages from site</param>
-        public static byte[] Render(List<Webpage> pages)
+        /// <returns>GV representation of graph</returns>
+        public static string Render(List<Webpage> pages)
         {
             // Add edges to graph
             DotGraph graph = new DotGraph(true);
@@ -26,13 +24,7 @@ namespace SiteMapGeneratorTool.Helpers
             foreach (Webpage page in pages)
                 foreach (Uri link in page.Links)
                     graph.Edges.Add(page.Url.AbsolutePath, link.AbsolutePath);
-
-            // Request image and write contents to byte array
-            IRestResponse response = new RestClient($"https://image-charts.com/chart?cht=gv:dot&chl={graph.Build()}").Execute(new RestRequest(Method.GET));
-            if (response.IsSuccessful)
-                return response.RawBytes;
-            else
-                return File.ReadAllBytes("wwwroot/res/empty-graph.png");
+            return graph.Build();
         }
     }
 }

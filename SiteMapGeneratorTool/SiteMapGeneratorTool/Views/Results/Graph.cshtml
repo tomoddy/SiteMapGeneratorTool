@@ -1,3 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Graph";
 }
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://unpkg.com/@@hpcc-js/wasm/dist/index.min.js"></script>
+<script src="https://unpkg.com/d3-graphviz@4.0.0/build/d3-graphviz.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@hpcc-js/wasm/dist/index.min.js"></script>
+<script>
+    var hpccWasm = window["@@hpcc-js/wasm"];
+</script>
+
+<h1 id="graphTitle">Graph</h1>
+<a id="graphFileLink" href="graphfile?guid=@ViewBag.Guid">Download File</a>
+
+@if (ViewBag.Size < 2500)
+{
+    <div id="graphRender"></div>
+    <script>
+        hpccWasm.graphviz.layout('@Html.Raw(ViewBag.Message.ToString().Replace("\n", string.Empty).Replace("\r", string.Empty))', "svg", "dot").then(svg => {
+            const div = document.getElementById("graphRender");
+            div.innerHTML = svg;
+        });
+    </script>
+}
+else
+{
+    <p id="graphError">Graph is too large to be rendered.</p>
+}

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
 using SiteMapGeneratorTool.WebCrawler.Objects;
+using System.IO;
 
 namespace SiteMapGeneratorTool.Controllers.Tests
 {
@@ -35,7 +36,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void StructureTest()
         {
-            ViewResult result = Controller.Structure(Configuration.GetValue<string>("Test:Guid")) as ViewResult;
+            ViewResult result = Controller.Structure(Configuration.GetValue<string>("Test:Guid:Default")) as ViewResult;
             result.ViewData.TryGetValue("Message", out object message);
 
             Assert.AreEqual("Structure", result.ViewName);
@@ -48,7 +49,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void SitemapTest()
         {
-            FileResult result = Controller.Sitemap(Configuration.GetValue<string>("Test:Guid"));
+            FileResult result = Controller.Sitemap(Configuration.GetValue<string>("Test:Guid:Default"));
 
             Assert.AreEqual("application/xml", result.ContentType);
             Assert.AreEqual(false, result.EnableRangeProcessing);
@@ -60,9 +61,19 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void GraphTest()
         {
-            FileResult result = Controller.Graph(Configuration.GetValue<string>("Test:Guid"));
+            ViewResult result = Controller.Graph(Configuration.GetValue<string>("Test:Guid:Default")) as ViewResult;
+            result.ViewData.TryGetValue("Message", out object message);
 
-            Assert.AreEqual("image/png", result.ContentType);
+            Assert.AreEqual("Graph", result.ViewName);
+            Assert.AreEqual(string.Join("\r\n", File.ReadAllLines("wwwroot/valid-graph.txt")), message.ToString().Replace("\"", "\\\""));
+        }
+
+        [Test()]
+        public void GraphFileTest()
+        {
+            FileResult result = Controller.GraphFile(Configuration.GetValue<string>("Test:Guid:Default"));
+
+            Assert.AreEqual("text/plain", result.ContentType);
             Assert.AreEqual(false, result.EnableRangeProcessing);
             Assert.AreEqual(null, result.EntityTag);
             Assert.AreEqual(string.Empty, result.FileDownloadName);

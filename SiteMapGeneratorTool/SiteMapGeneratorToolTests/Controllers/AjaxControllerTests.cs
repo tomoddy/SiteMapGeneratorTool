@@ -21,7 +21,7 @@ namespace SiteMapGeneratorTool.Controllers.Tests
         [Test()]
         public void ResultsValidTest()
         {
-            string guid = Configuration.GetValue<string>("Test:Guid");
+            string guid = Configuration.GetValue<string>("Test:Guid:Default");
             JsonResult result = (JsonResult)AjaxController.Results(guid);
             Assert.AreEqual(guid, ((CrawlerData)result.Value).Guid);
         }
