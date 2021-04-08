@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Threading;
 
 namespace SiteMapGeneratorToolSelenium.Tests
 {
@@ -64,6 +65,7 @@ namespace SiteMapGeneratorToolSelenium.Tests
             ElementExistsById("generatingInformation");
 
             // Wait for results to completed
+            Thread.Sleep(VERY_LONG_WAIT);
             TextEqualById($"Request complete for {Url}/", "completeMessage", 30);
             TextContainsById("1 pages found", "completeInformation");
             TextContainsById($"{(SetMaxPages == 0 ? "unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
