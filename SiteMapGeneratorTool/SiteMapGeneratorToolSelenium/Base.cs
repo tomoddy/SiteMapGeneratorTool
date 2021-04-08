@@ -13,6 +13,7 @@ namespace SiteMapGeneratorToolSelenium
         private const int DURATION = 2;
         public const int WAIT = 500;
         public const int LONG_WAIT = WAIT * 2;
+        public const int VERY_LONG_WAIT = WAIT * 50;
 
         public string Domain { get; set; }
         public ChromeOptions Options { get; set; }
@@ -37,7 +38,7 @@ namespace SiteMapGeneratorToolSelenium
             Email = "example@example.com";
 
             Settings = GetSettings();
-            Driver.Navigate().GoToUrl(Domain);
+            Navigate(Domain);
         }
 
         [OneTimeTearDown]
@@ -93,6 +94,11 @@ namespace SiteMapGeneratorToolSelenium
         public string GetUrl()
         {
             return Driver.Url;
+        }
+
+        public void Navigate(string url)
+        {
+            Driver.Navigate().GoToUrl(url);
         }
 
         public void GoBack()

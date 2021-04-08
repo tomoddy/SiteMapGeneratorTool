@@ -1,0 +1,17 @@
+digraph
+{
+    concentrate = true
+
+    \"/\" -> \"/faq.php\"
+    \"/\" -> \"/protocol.php\"
+    \"/\" -> \"/terms.php\"
+    \"/protocol.php\" -> \"/faq.php\"
+    \"/protocol.php\" -> \"/protocol.php\"
+    \"/protocol.php\" -> \"/terms.php\"
+    \"/terms.php\" -> \"/faq.php\"
+    \"/terms.php\" -> \"/protocol.php\"
+    \"/terms.php\" -> \"/terms.php\"
+    \"/faq.php\" -> \"/protocol.php\"
+    \"/faq.php\" -> \"/faq.php\"
+    \"/faq.php\" -> \"/terms.php\"
+}
