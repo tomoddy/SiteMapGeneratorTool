@@ -25,7 +25,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
                 new Webpage(new Uri("http://example.org/example3"), null) { Links = new List<Uri>() { } }
             };
 
-            Assert.AreEqual("digraph\r\n{\r\n    concentrate = true\r\n\r\n    \"/\" -> \"/example1\"\r\n    \"/\" -> \"/example2\"\r\n    \"/\" -> \"/example3\"\r\n}", GraphHelper.Render(pages));
+            Assert.AreEqual("digraph{    concentrate = true    \"/\" -> \"/example1\"    \"/\" -> \"/example2\"    \"/\" -> \"/example3\"}", GraphHelper.Render(pages).Replace("\r", string.Empty).Replace("\n", string.Empty));
         }
     }
 }
