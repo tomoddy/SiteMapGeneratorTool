@@ -63,16 +63,6 @@ namespace SiteMapGeneratorToolSelenium.Tests
             // Check loading page
             TextEqualById("Generating site map...", "generatingMessage");
             ElementExistsById("generatingInformation");
-
-            // Wait for results to completed
-            Thread.Sleep(VERY_LONG_WAIT);
-            TextEqualById($"Request complete for {Url}/", "completeMessage", 30);
-            TextContainsById("1 pages found", "completeInformation");
-            TextContainsById($"{(SetMaxPages == 0 ? "unlimited" : SetMaxPages.ToString())} page limit", "completeInformation");
-            TextContainsById($"{(SetDepth == 0 ? "unlimited" : SetDepth.ToString())} depth limit", "completeInformation");
-            TextEqualById("Structure", "structureLink");
-            TextEqualById("Sitemap", "sitemapLink");
-            TextEqualById("Graph", "graphLink");
         }
     }
 }

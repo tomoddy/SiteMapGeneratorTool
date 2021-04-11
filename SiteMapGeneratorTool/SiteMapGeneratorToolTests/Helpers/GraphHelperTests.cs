@@ -2,7 +2,6 @@
 using SiteMapGeneratorTool.WebCrawler.Objects;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SiteMapGeneratorTool.Helpers.Tests
 {
