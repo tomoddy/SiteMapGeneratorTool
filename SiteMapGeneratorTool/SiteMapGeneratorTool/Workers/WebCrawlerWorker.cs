@@ -77,7 +77,7 @@ namespace SiteMapGeneratorTool.Workers
             while (!cancellationToken.IsCancellationRequested)
             {
                 // Get request information
-                WebCrawlerRequestModel request = SQSHelper.DeleteAndReieveFirstMessage();
+                WebCrawlerRequestModel request = SQSHelper.DeleteAndReceiveFirstMessage();
 
                 if (request is null)
                     await Task.Delay(Configuration.GetValue<int>("Workers") * Configuration.GetValue<int>("Delay"), cancellationToken);
