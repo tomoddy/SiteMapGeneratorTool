@@ -59,7 +59,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
         }
 
         [Test()]
-        public void GetTestSort()
+        public void GetSortTest()
         {
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),
@@ -78,7 +78,7 @@ namespace SiteMapGeneratorTool.Helpers.Tests
         }
 
         [Test()]
-        public void GetTestSearch()
+        public void GetSearchTest()
         {
             FirebaseHelper firebaseHelper = new FirebaseHelper(
                    Configuration.GetValue<string>("Firebase:KeyPath"),

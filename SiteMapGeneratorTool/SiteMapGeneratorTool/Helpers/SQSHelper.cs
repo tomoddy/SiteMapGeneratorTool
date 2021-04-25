@@ -57,7 +57,7 @@ namespace SiteMapGeneratorTool.Helpers
         /// Delete and retireve top message from queue
         /// </summary>
         /// <returns>Object of message body</returns>
-        public WebCrawlerRequestModel DeleteAndReieveFirstMessage()
+        public WebCrawlerRequestModel DeleteAndReceiveFirstMessage()
         {
             List<Message> messages = Client.ReceiveMessageAsync(QueueUrl).Result.Messages;
             if (messages.Count == 0)

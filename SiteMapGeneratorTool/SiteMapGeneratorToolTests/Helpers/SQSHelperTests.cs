@@ -31,9 +31,9 @@ namespace SiteMapGeneratorTool.Helpers.Tests
         }
 
         [Test(), Order(2)]
-        public void DeleteAndReieveFirstMessageTest()
+        public void DeleteAndReceiveFirstMessageTest()
         {
-            WebCrawlerRequestModel messageResonse = SQSHelper.DeleteAndReieveFirstMessage();
+            WebCrawlerRequestModel messageResonse = SQSHelper.DeleteAndReceiveFirstMessage();
             Assert.AreEqual("http://example.com/", messageResonse.Domain);
             Assert.AreEqual(new Uri("http://example.com/"), messageResonse.Url);
             Assert.AreEqual("example@example.com", messageResonse.Email);
