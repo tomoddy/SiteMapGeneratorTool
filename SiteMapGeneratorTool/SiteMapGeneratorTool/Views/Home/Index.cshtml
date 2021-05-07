@@ -2,6 +2,11 @@
     ViewData["Title"] = "Home";
 }
 
+@section MetaTags
+{
+    <meta name="description" content="Home" />
+}
+
 <form method="get" action="api/webcrawler">
     <div class="form-group row">
         <label id="urlLabel" for="url" class="col-sm-2 col-form-label">Website URL</label>
